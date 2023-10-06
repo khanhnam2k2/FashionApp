@@ -12,7 +12,7 @@ class CategoryService
     public function searchCategory()
     {
         try {
-            $categories = Category::latest()->paginate(8);
+            $categories = Category::latest()->paginate(6);
             return $categories;
         } catch (Exception $e) {
             Log::error($e);
