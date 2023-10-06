@@ -1,3 +1,8 @@
+/**
+ * show modal dialog confirm
+ * @param {String} message message to confirm
+ * @param {Function} preConfirmCallback function call back when confirm
+ */
 function showConfirmDialog(message, preConfirmCallback) {
     Swal.fire({
         text: message,
@@ -12,8 +17,9 @@ function showConfirmDialog(message, preConfirmCallback) {
 }
 
 /**
- * show error message
- * @param {*} mess
+ * show success message
+ * @param {String} mess
+ * @param {Function} callback function call back when notification done
  */
 function notiSuccess(mess = 'Success', callback = function () { }) {
     $('#alert-error').addClass('d-none');
@@ -40,6 +46,10 @@ function notiSuccess(mess = 'Success', callback = function () { }) {
     });
 }
 
+/**
+ * show error message
+ * @param {String} mess
+ */
 function notiError(mess){
     Swal.fire({
         icon:'error',
