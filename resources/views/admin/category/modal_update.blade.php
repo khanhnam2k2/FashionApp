@@ -38,13 +38,17 @@
      * Submit form cateogry
      */
     function doSubmitCategory() {
+        let formData = new FormData();
+        formData.append('categoryId', $('#categoryId').val());
+        formData.append('name', $('#categoryName').val());
+        formData.append('status', $('#cbStatusCate').is(':checked') ? 1 : 0);
         if ($('#categoryId').val() == '') {
             showConfirmDialog('Are you sure you want to create this category?', function() {
-                createCategory();
+                createCategory(formData);
             });
         } else {
             showConfirmDialog('Are you sure you want to update this category?', function() {
-                updateCategory();
+                updateCategory(formData);
             });
         }
     }
@@ -52,18 +56,16 @@
     /**
      * Create form cateogry
      */
-    function createCategory() {
+    function createCategory(data) {
         $.ajax({
             type: "POST",
             url: "{{ route('category.create') }}",
+            contentType: false,
+            processData: false,
             headers: {
-                'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            data: JSON.stringify({
-                name: $('#categoryName').val(),
-                status: $('#cbStatusCate').is(':checked') ? 1 : 0,
-            }),
+            data: data,
 
         }).done(function(res) {
             if (res == 'ok') {
@@ -88,20 +90,16 @@
     /**
      * Update form cateogry
      */
-    function updateCategory() {
+    function updateCategory(data) {
         $.ajax({
             type: "POST",
             url: "{{ route('category.update') }}",
+            contentType: false,
+            processData: false,
             headers: {
-                'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            data: JSON.stringify({
-                id: $("#categoryId").val(),
-                name: $('#categoryName').val(),
-                status: $('#cbStatusCate').is(':checked') ? 1 : 0,
-            }),
-
+            data: data,
         }).done(function(res) {
             if (res == 'ok') {
                 notiSuccess('Category updated successfully');

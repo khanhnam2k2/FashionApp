@@ -24,7 +24,7 @@ class CategoryService
         try {
             $category = [
                 'name' => $request->name,
-                'status' => $request->status
+                'status' => $request->status,
             ];
             $data = Category::create($category);
             return $data;
@@ -39,9 +39,9 @@ class CategoryService
         try {
             $category = [
                 'name' => $request->name,
-                'status' => $request->status
+                'status' => $request->status,
             ];
-            $data = Category::where('id', $request->id)->update($category);
+            $data = Category::where('id', $request->categoryId)->update($category);
             return $data;
         } catch (Exception $e) {
             Log::error($e);
