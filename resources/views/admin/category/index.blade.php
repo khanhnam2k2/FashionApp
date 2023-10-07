@@ -18,7 +18,7 @@
 @endsection
 @section('web-script')
     <script>
-        const urlDeletePost = "{{ route('category.delete', ['id' => ':id']) }}";
+        const urlDeleteCategory = "{{ route('category.delete', ['id' => ':id']) }}";
 
         /**
          * Load cagtegory list
@@ -46,7 +46,7 @@
                 let categoryId = $(this).data('id');
                 showConfirmDialog('Are you sure you want to delete this category?', function() {
                     $.ajax({
-                        url: urlDeletePost.replace(':id', categoryId),
+                        url: urlDeleteCategory.replace(':id', categoryId),
                         type: "DELETE",
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
