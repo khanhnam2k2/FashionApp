@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float('price');
             $table->unsignedBigInteger('category_id');
             $table->string('image');
+            $table->unsignedInteger('status')->default(1);
             $table->timestamps();
         });
     }
