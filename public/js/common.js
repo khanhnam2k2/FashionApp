@@ -50,7 +50,7 @@ function notiSuccess(mess = 'Success', callback = function () { }) {
  * show error message
  * @param {String} mess
  */
-function notiError(mess){
+function notiError(mess="Something went wrong. Please try again."){
     Swal.fire({
         icon:'error',
         title:'Error',
