@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Category;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
 class CategoryService
 {
@@ -19,6 +18,7 @@ class CategoryService
             return response()->json($e, 500);
         }
     }
+
     public function createCategory($request)
     {
         try {
@@ -33,6 +33,7 @@ class CategoryService
             return response()->json($e, 500);
         }
     }
+
     public function updateCategory($request)
     {
         try {
@@ -47,6 +48,7 @@ class CategoryService
             return response()->json($e, 500);
         }
     }
+
     public function deleteCategory($id)
     {
         try {

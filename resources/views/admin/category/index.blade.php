@@ -2,12 +2,16 @@
 @section('content')
     <div class="category-container container">
         <div class="d-flex justify-content-between">
-            <h2>Category list</h2>
+            <h2>Category List</h2>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCategoryModal"
-                data-bs-backdrop="static" data-bs-keyboard="false">New Category</button>
+                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New Category</button>
         </div>
-        <div class="form-group">
-            <div id="category_table"></div>
+        <div class="mt-3">
+            <div id="category_table">
+                <div class="d-flex justify-content-center mt-5">
+                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
+                </div>
+            </div>
         </div>
     </div>
     @include('admin.category.modal_update')
@@ -16,6 +20,9 @@
     <script>
         const urlDeletePost = "{{ route('category.delete', ['id' => ':id']) }}";
 
+        /**
+         * Load cagtegory list
+         */
         function searchCategory(page = 1) {
             $.ajax({
                 url: '<?= route('category.search') ?>?page=' + page,
@@ -26,11 +33,15 @@
             }).done(function(data) {
                 $('#category_table').html(data);
             }).fail(function() {
-                console.log();
+                notiError();
             });
         }
+
         $(document).ready(function() {
             searchCategory();
+
+
+            // delete category
             $(document).on('click', '#btnDeleteCate', function() {
                 let categoryId = $(this).data('id');
                 showConfirmDialog('Are you sure you want to delete this category?', function() {
@@ -52,7 +63,7 @@
                                 notiError(errorMessages[fieldName][0]);
                             }
                         } else {
-                            notiError('Something went wrong. Please try again');
+                            notiError();
                         }
                     })
                 })

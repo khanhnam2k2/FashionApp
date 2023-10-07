@@ -24,16 +24,19 @@ class CategoryController extends Controller
         $data = $this->categoryService->searchCategory();
         return view('admin.category.table', ['data' => $data]);
     }
+
     public function create(StoreCategoryRequest $request)
     {
         $this->categoryService->createCategory($request);
         return response()->json('ok');
     }
+
     public function update(StoreCategoryRequest $request)
     {
         $this->categoryService->updateCategory($request);
         return response()->json('ok');
     }
+
     public function delete($id)
     {
         $this->categoryService->deleteCategory($id);

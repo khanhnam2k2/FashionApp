@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="updateCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="titleCategoryModal">Add Category</h5>
@@ -71,8 +71,8 @@
         left: 0;
         height: 100%;
         width: 100%;
-        color: #4d4d4d;
-        background-color: #FA896B;
+        color: #fff;
+        background-color: #dd3333;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
         transition: all 0.4s ease-in-out;
     }
@@ -88,7 +88,7 @@
         height: 100%;
         width: 100%;
         color: #ffffff;
-        background-color: #4fe132;
+        background-color: #5D87FF;
         text-align: center;
         text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
         transition: all 0.4s ease-in-out;
@@ -148,7 +148,7 @@
                     notiError(errorMessages[fieldName][0]);
                 }
             } else {
-                notiError('Something went wrong. Please try again.');
+                notiError();
             }
         })
 
@@ -185,12 +185,14 @@
                     notiError(errorMessages[fieldName][0]);
                 }
             } else {
-                notiError('Something went wrong. Please try again.');
+                notiError();
             }
         })
     }
 
     $(document).ready(function() {
+
+        // event show category modal
         $('#updateCategoryModal').on('shown.bs.modal', function(e) {
             var data = $(e.relatedTarget).data('item');
             if (data) {
@@ -199,7 +201,9 @@
                 $('#cbStatusCate').prop('checked', data.status == 1);
                 $('#titleCategoryModal').html('Update category');
             } else {
-                $('#form_category')[0].reset();
+                $("#categoryId").val("");
+                $("#categoryName").val("");
+                $('#cbStatusCate').prop('checked', true);
                 $('#titleCategoryModal').html('Create new category');
             }
         });
