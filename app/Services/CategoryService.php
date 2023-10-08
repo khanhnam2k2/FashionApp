@@ -8,10 +8,14 @@ use Illuminate\Support\Facades\Log;
 
 class CategoryService
 {
-    public function searchCategory()
+    public function searchCategory($searchName)
     {
         try {
-            $categories = Category::latest()->paginate(6);
+            $categories = Category::select('categories.*');
+            if ($searchName != null && $searchName != '') {
+                $categories->where('categories.name', 'LIKE', '%' . $searchName . '%');
+            }
+            $categories = $categories->latest()->paginate(6);
             return $categories;
         } catch (Exception $e) {
             Log::error($e);

@@ -19,9 +19,9 @@ class CategoryController extends Controller
         return view('admin.category.index');
     }
 
-    public function search()
+    public function search(Request $request)
     {
-        $data = $this->categoryService->searchCategory();
+        $data = $this->categoryService->searchCategory($request->searchName);
         return view('admin.category.table', ['data' => $data]);
     }
 
