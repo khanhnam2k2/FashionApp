@@ -57,3 +57,15 @@ function notiError(mess="Something went wrong. Please try again."){
         text:mess,
     });
 };
+
+
+/**
+ * handle image
+ * @param {Element} input
+ * @param {Element} image
+ */
+function handleImageUpload(input,image){
+    if(input.files && input.files[0]){
+        $(image).attr('src',URL.createObjectURL(input.files[0]));
+    }
+}
