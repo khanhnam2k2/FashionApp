@@ -41,11 +41,12 @@ class CategoryService
     public function updateCategory($request)
     {
         try {
+            $data = Category::findOrFail($request->categoryId);
             $category = [
                 'name' => $request->name,
                 'status' => $request->status,
             ];
-            $data = Category::where('id', $request->categoryId)->update($category);
+            $data = $data->update($category);
             return $data;
         } catch (Exception $e) {
             Log::error($e);

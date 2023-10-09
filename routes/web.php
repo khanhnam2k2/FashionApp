@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +32,14 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/create', [AdminCategoryController::class, 'create'])->name('category.create');
         Route::post('/update', [AdminCategoryController::class, 'update'])->name('category.update');
         Route::delete('/delete/{id}', [AdminCategoryController::class, 'delete'])->name('category.delete');
+    });
+
+    Route::prefix('products')->group(function () {
+        Route::get('/', [AdminProductController::class, 'index'])->name('product.index');
+        Route::post('/search', [AdminProductController::class, 'search'])->name('product.search');
+        Route::post('/create', [AdminProductController::class, 'create'])->name('product.create');
+        Route::post('/update', [AdminProductController::class, 'update'])->name('product.update');
+        Route::delete('/delete/{id}', [AdminProductController::class, 'delete'])->name('product.delete');
     });
 });
 Route::middleware('auth')->group(function () {

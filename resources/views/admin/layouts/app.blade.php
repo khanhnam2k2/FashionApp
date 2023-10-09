@@ -46,7 +46,7 @@
             @include('admin.layouts.header')
             <!--  Header End -->
 
-            <main class="container-fluid">
+            <main class="container-fluid container">
                 @yield('content')
             </main>
 
