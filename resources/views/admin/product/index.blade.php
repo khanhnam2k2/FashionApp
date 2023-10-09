@@ -8,8 +8,13 @@
                 <button class="btn btn-primary" onclick="searchProduct()"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </div>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateProductModal"
-                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New Product</button>
+            @if (count($categories) > 0)
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateProductModal"
+                    data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New
+                    Product</button>
+            @else
+                <a href="{{ route('category.index') }}">Please create a new category to add products</a>
+            @endif
         </div>
         <div class="mt-3">
             <div id="product_table">

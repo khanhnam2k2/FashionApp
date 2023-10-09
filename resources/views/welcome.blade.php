@@ -90,46 +90,48 @@
     </section>
     <!-- Banner Section End -->
     <!-- Product Section Begin -->
-    <section class="product spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="filter__controls">
-                        <li class="active" data-filter="*">All</li>
-                        @foreach ($categories as $key => $category)
-                            <li data-filter=".{{ Str::slug($category->name) }}">
-                                {{ $category->name }}</li>
-                        @endforeach
-                    </ul>
+    @if (count($categories) > 0)
+        <section class="product spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="filter__controls">
+                            <li class="active" data-filter="*">All</li>
+                            @foreach ($categories as $key => $category)
+                                <li data-filter=".{{ Str::slug($category->name) }}">
+                                    {{ $category->name }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="row product__filter">
-                @foreach ($products as $item)
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix {{ Str::slug($item->categoryName) }}">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="{{ Storage::url($item->image) }}">
-                                {{-- <span class="label">New</span> --}}
-                                <ul class="product__hover">
-                                    <li><a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a>
-                                    </li>
-                                    <li><a href="{{ route('shop.details', $item->id) }}"><img
-                                                src="{{ asset('img/icon/search.png') }}" alt=""></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6>{{ $item->name }}</h6>
-                                <a href="#" class="add-cart">+ Add To Cart</a>
-                                <h5>${{ $item->price }}</h5>
+                <div class="row product__filter">
+                    @foreach ($products as $item)
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix {{ Str::slug($item->categoryName) }}">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="{{ Storage::url($item->image) }}">
+                                    {{-- <span class="label">New</span> --}}
+                                    <ul class="product__hover">
+                                        <li><a href="#"><img src="{{ asset('img/icon/heart.png') }}"
+                                                    alt=""></a>
+                                        </li>
+                                        <li><a href="{{ route('shop.details', $item->id) }}"><img
+                                                    src="{{ asset('img/icon/search.png') }}" alt=""></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>{{ $item->name }}</h6>
+                                    <a href="#" class="add-cart">+ Add To Cart</a>
+                                    <h5>${{ $item->price }}</h5>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-
-
+                    @endforeach
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
+
     <!-- Product Section End -->
     <!-- Instagram Section Begin -->
     <section class="instagram spad">
