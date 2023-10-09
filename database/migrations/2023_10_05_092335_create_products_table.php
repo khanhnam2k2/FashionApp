@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity')->default(1);
             $table->unsignedBigInteger('category_id');
             $table->string('image');
+            $table->string('sku')->nullable();
             $table->unsignedInteger('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
