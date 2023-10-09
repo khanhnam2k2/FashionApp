@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::prefix('shop')->group(function () {
     Route::get('/', [ShopController::class, 'index'])->name('shop.index');
+    Route::get('/details/{id}', [ShopController::class, 'details'])->name('shop.details');
     Route::post('/search', [ShopController::class, 'search'])->name('shop.search');
 });
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {

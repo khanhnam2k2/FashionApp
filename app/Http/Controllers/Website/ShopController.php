@@ -26,4 +26,9 @@ class ShopController extends Controller
         $data = $this->productService->searchProduct($request->searchName, $request->sortByPrice, $request->categoryId);
         return view('website.shop.listProduct', compact('data'));
     }
+    public function details($id)
+    {
+        $product = $this->productService->getProductById($id);
+        return view('website.shop.details', compact('product'));
+    }
 }

@@ -8,22 +8,14 @@
                     background-position: top center;">
                     <ul class="product__hover">
                         <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                        <li><a href="#"><img src="img/icon/compare.png" alt="">
-                                <span>Compare</span></a>
+                        <li><a href="{{ route('shop.details', $item->id) }}"><img src="img/icon/search.png"
+                                    alt=""></a>
                         </li>
-                        <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
                     </ul>
                 </div>
                 <div class="product__item__text">
                     <h6>{{ $item->name }}</h6>
                     <a href="#" class="add-cart">+ Add To Cart</a>
-                    <div class="rating">
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                        <i class="fa fa-star-o"></i>
-                    </div>
                     <h5>${{ $item->price }}</h5>
                     <div class="product__color__select">
                         <label for="pc-4">

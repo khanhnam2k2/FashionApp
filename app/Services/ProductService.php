@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Log;
 
 class ProductService extends BaseService
 {
+    public function getProductById($id)
+    {
+        try {
+            $product = Product::select('products.*', 'categories.name as categoryName', 'categories.id as categoryId')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->where('products.id', $id)
+                ->where('products.status', Status::ON)
+                ->first();
+            return $product;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
     public function getProducts()
     {
         try {
