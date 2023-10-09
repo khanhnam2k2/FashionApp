@@ -68,8 +68,15 @@
                             window.location.reload();
                         })
                     }
-                }).fail(function() {
-                    notiError();
+                }).fail(function(xhr) {
+                    if (xhr.status === 400 && xhr.responseJSON.errors) {
+                        const errorMessages = xhr.responseJSON.errors;
+                        for (let fieldName in errorMessages) {
+                            notiError(errorMessages[fieldName][0]);
+                        }
+                    } else {
+                        notiError();
+                    }
                 })
             })
         })

@@ -24,15 +24,30 @@ class ContactService
         }
     }
 
+    public function searchContact($searchName)
+    {
+        try {
+            $contacts = Contact::select('contacts.*');
+            if ($searchName != null && $searchName != '') {
+                $contacts->where('contacts.name', 'LIKE', '%' . $searchName . '%')
+                    ->orWhere('contacts.email', 'LIKE', '%' . $searchName . '%');
+            }
+            $contacts = $contacts->latest()->paginate(5);
+            return $contacts;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
 
-    // public function deleteCategory($id)
-    // {
-    //     try {
-    //         $data = Category::where('id', $id)->delete();
-    //         return $data;
-    //     } catch (Exception $e) {
-    //         Log::error($e);
-    //         return response()->json($e, 500);
-    //     }
-    // }
+    public function deleteContact($id)
+    {
+        try {
+            $data = Contact::where('id', $id)->delete();
+            return $data;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
 }

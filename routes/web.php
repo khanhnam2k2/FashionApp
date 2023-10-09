@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\ProfileController;
@@ -49,6 +50,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/create', [AdminProductController::class, 'create'])->name('product.create');
         Route::post('/update', [AdminProductController::class, 'update'])->name('product.update');
         Route::delete('/delete/{id}', [AdminProductController::class, 'delete'])->name('product.delete');
+    });
+
+    Route::prefix('contacts')->group(function () {
+        Route::get('/', [AdminContactController::class, 'index'])->name('contact.index');
+        Route::post('/search', [AdminContactController::class, 'search'])->name('contact.search');
+        Route::delete('/delete/{id}', [AdminContactController::class, 'delete'])->name('contact.delete');
     });
 });
 Route::middleware('auth')->group(function () {

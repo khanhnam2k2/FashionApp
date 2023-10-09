@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreContactRequest;
 use App\Services\ContactService;
-use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -19,7 +19,7 @@ class ContactController extends Controller
         return view('website.contact.index');
     }
 
-    public function create(Request $request)
+    public function create(StoreContactRequest $request)
     {
         $this->contactService->createContact($request);
         return response()->json('ok');

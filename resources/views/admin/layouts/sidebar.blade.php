@@ -45,11 +45,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('contact.index') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-cards"></i>
+                            <i class="fa-solid fa-address-book"></i>
                         </span>
-                        <span class="hide-menu">Card</span>
+                        <span class="hide-menu">Contacts</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
