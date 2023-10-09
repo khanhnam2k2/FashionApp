@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Website\ContactController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,10 @@ Route::prefix('shop')->group(function () {
     Route::get('/', [ShopController::class, 'index'])->name('shop.index');
     Route::get('/details/{id}', [ShopController::class, 'details'])->name('shop.details');
     Route::post('/search', [ShopController::class, 'search'])->name('shop.search');
+});
+Route::prefix('contacts')->group(function () {
+    Route::get('/', [ContactController::class, 'showContact'])->name('contact.show');
+    Route::post('/create', [ContactController::class, 'create'])->name('contact.create');
 });
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::prefix('dashboard')->group(function () {
