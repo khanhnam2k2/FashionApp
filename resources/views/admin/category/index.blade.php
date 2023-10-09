@@ -3,8 +3,15 @@
     <div class="category-container container">
         <div class="d-flex justify-content-between">
             <h2>Category List</h2>
+            <div class="form-search d-flex algin-items-center gap-2">
+                <input type="text" id="txtSearchCategory" placeholder="search here..." class="form-control"
+                    name="nameCategory">
+                <button class="btn btn-primary" onclick="searchCategory()"><i
+                        class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCategoryModal"
-                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New Category</button>
+                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New
+                Category</button>
         </div>
         <div class="mt-3">
             <div id="category_table">
@@ -30,6 +37,9 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
+                data: {
+                    searchName: $('#txtSearchCategory').val(),
+                }
             }).done(function(data) {
                 $('#category_table').html(data);
             }).fail(function() {
