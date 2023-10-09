@@ -2,12 +2,33 @@
 
 namespace App\Services;
 
+use App\Enums\Status;
 use App\Models\Category;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
 class CategoryService
 {
+    public function getCategories()
+    {
+        try {
+            $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->get();
+            return $categories;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+    public function getLimitCategories()
+    {
+        try {
+            $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->take(3)->get();
+            return $categories;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
     public function searchCategory($searchName)
     {
         try {

@@ -9,7 +9,20 @@ use Illuminate\Support\Facades\Log;
 
 class ProductService extends BaseService
 {
-    public function searchProduct($searchName)
+    public function getProducts()
+    {
+        try {
+            $products = Product::select('products.*', 'categories.name as categoryName', 'categories.id as categoryId')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->where('products.status', Status::ON)
+                ->get();
+            return $products;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+    public function searchProduct($searchName, $sortByPrice = null, $categoryId = null)
     {
         try {
             $products = Product::select('products.*', 'categories.name as categoryName')
@@ -19,7 +32,13 @@ class ProductService extends BaseService
                     ->orWhere('products.price', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('categories.name', 'LIKE', '%' . $searchName . '%');
             }
-            $products = $products->latest()->paginate(4);
+            if ($sortByPrice != null && $sortByPrice != '') {
+                $products->orderBy('price', $sortByPrice);
+            }
+            if ($categoryId != null && $categoryId != '') {
+                $products->where('products.category_id', $categoryId);
+            }
+            $products = $products->latest()->paginate(9);
             return $products;
         } catch (Exception $e) {
             Log::error($e);
@@ -37,6 +56,7 @@ class ProductService extends BaseService
                 'quantity' => $request->quantity,
                 'category_id' => $request->category_id,
                 'description' => $request->description,
+                'sku' => $request->sku,
                 'image' => $uploadImage,
                 'status' => $request->statusProduct
             ];
@@ -61,6 +81,7 @@ class ProductService extends BaseService
                 'quantity' => $request->quantity,
                 'category_id' => $request->category_id,
                 'description' => $request->description,
+                'sku' => $request->sku,
                 'image' => $uploadImage ?? $data->image,
                 'status' => $request->statusProduct
             ];

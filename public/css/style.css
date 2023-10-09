@@ -1156,41 +1156,41 @@ ol {
 	margin-bottom: 45px;
 }
 
-.shop__sidebar__search form {
+.shop__sidebar__search .form-search {
 	position: relative;
 }
 
-.shop__sidebar__search form input {
+.shop__sidebar__search .form-search input {
 	width: 100%;
 	font-size: 15px;
-	color: #b7b7b7;
+	color: #000;
 	padding-left: 20px;
 	border: 1px solid #e5e5e5;
 	height: 42px;
 }
 
-.shop__sidebar__search form input::-webkit-input-placeholder {
-	color: #b7b7b7;
+.shop__sidebar__search .form-search input::-webkit-input-placeholder {
+	color: #000;
 }
 
-.shop__sidebar__search form input::-moz-placeholder {
-	color: #b7b7b7;
+.shop__sidebar__search .form-search input::-moz-placeholder {
+	color: #000;
 }
 
-.shop__sidebar__search form input:-ms-input-placeholder {
-	color: #b7b7b7;
+.shop__sidebar__search .form-search input:-ms-input-placeholder {
+	color: #000;
 }
 
-.shop__sidebar__search form input::-ms-input-placeholder {
-	color: #b7b7b7;
+.shop__sidebar__search .form-search input::-ms-input-placeholder {
+	color: #000;
 }
 
-.shop__sidebar__search form input::placeholder {
-	color: #b7b7b7;
+.shop__sidebar__search .form-search input::placeholder {
+	color: #000;
 }
 
-.shop__sidebar__search form button {
-	color: #b7b7b7;
+.shop__sidebar__search .form-search button {
+	color: #000;
 	font-size: 15px;
 	border: none;
 	background: transparent;
@@ -1247,20 +1247,24 @@ ol {
 	list-style: none;
 }
 
-.shop__sidebar__categories ul li a,
-.shop__sidebar__price ul li a,
-.shop__sidebar__brand ul li a {
+.shop__sidebar__categories ul li span,
+.shop__sidebar__price ul li span,
+.shop__sidebar__brand ul li span {
 	color: #b7b7b7;
-	font-size: 15px;
+	font-size: 18px;
+	cursor: pointer;
 	line-height: 32px;
 	-webkit-transition: all, 0.3s;
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
 }
 
-.shop__sidebar__categories ul li a:hover,
-.shop__sidebar__price ul li a:hover,
-.shop__sidebar__brand ul li a:hover {
+.shop__sidebar__categories ul li span:hover,
+.shop__sidebar__price ul li span:hover,
+.shop__sidebar__brand ul li span:hover {
+	color: #111111;
+}
+.shop__sidebar__categories ul li  .active{
 	color: #111111;
 }
 

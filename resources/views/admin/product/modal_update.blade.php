@@ -26,7 +26,7 @@
                     <div class="w-100 d-flex justify-content-center my-2" id="imageProductPreviewContainer">
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             <label for="category" class="form-label">Category<span class="text-danger">*</span></label>
                             <select name="category_id" class="form-select" id="category">
                                 @foreach ($categories as $category)
@@ -34,11 +34,15 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="productQuantity" class="form-label">Quantity<span
                                     class="text-danger">*</span></label>
-                            <input type="number" value="1" class="form-control" id="productQuantity"
+                            <input type="number" min="1" class="form-control" id="productQuantity"
                                 name="quantity">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="productSku" class="form-label">SKU</label>
+                            <input type="text" class="form-control" id="productSku" name="sku">
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -176,6 +180,7 @@
                 $("#productQuantity").val(data.quantity);
                 $('#imageProductPreviewContainer').html(imagePreviewHtml);
                 $("#productDescription").val(data.description);
+                $("#productSku").val(data.sku);
                 $('#category').val(data.category_id);
                 $('#cbStatusProduct').prop('checked', data.status == 1);
                 $('#titleCategoryModal').html('Update product');
@@ -185,7 +190,9 @@
                 $("#productName").val('');
                 $("#productPrice").val('');
                 $("#productQuantity").val('');
+                $("#productImage").val('');
                 $("#productDescription").val('');
+                $("#productSku").val('');
                 $('#imageProductPreviewContainer').html(imagePreviewHtml);
                 $('#cbStatusProduct').prop('checked', true);
                 $('#titleCategoryModal').html('Create new product');
