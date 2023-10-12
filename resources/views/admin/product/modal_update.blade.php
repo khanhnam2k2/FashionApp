@@ -185,7 +185,8 @@
                 $('#cbStatusProduct').prop('checked', data.status == 1);
                 $('#titleCategoryModal').html('Update product');
             } else {
-                imagePreviewHtml = `<img src="{{ asset('img/logo.png') }}" id="imageProductPreview" />`;
+                imagePreviewHtml =
+                    `<img src="{{ asset('img/default-img.png') }}" id="imageProductPreview" />`;
                 $("#productId").val('');
                 $("#productName").val('');
                 $("#productPrice").val('');
