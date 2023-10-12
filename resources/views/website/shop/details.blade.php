@@ -34,12 +34,14 @@
                             <p>{{ $product->description }}</p>
                             <div class="product__details__cart__option">
                                 <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1">
-                                    </div>
+                                    <input type="number" class="form-control" id="quantityProduct" value="1">
                                 </div>
-                                <a href="#" class="primary-btn">add to cart</a>
+                                <button id="addToCart" class="primary-btn">add to cart</button>
+                                <div class="mt-3">
+                                    <h5>{{ $product->quantity }} products available</h5>
+                                </div>
                             </div>
+
                             <div class="product__details__btns__option">
                                 <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
                             </div>
@@ -180,4 +182,17 @@
         </div>
     </section>
     <!-- Shop Details Section End -->
+@endsection
+@section('web-script')
+    <script>
+        $(document).ready(function() {
+            $('#addToCart').on('click', function(e) {
+                e.preventDefault();
+                const productId = {{ $product->id }};
+                const quantity = parseInt($('#quantityProduct').val());
+
+                addToCart(productId, quantity);
+            })
+        })
+    </script>
 @endsection

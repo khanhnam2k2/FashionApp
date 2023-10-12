@@ -61,6 +61,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     });
 });
 Route::middleware('auth')->group(function () {
+    Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('add_to_cart', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

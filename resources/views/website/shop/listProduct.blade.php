@@ -15,7 +15,8 @@
                 </div>
                 <div class="product__item__text">
                     <h6>{{ $item->name }}</h6>
-                    <a href="#" class="add-cart">+ Add To Cart</a>
+                    <button onclick="addToCart({{ $item->id }},1)" class="add-cart btn">+ Add To
+                        Cart</button>
                     <h5>${{ $item->price }}</h5>
                     <div class="product__color__select">
                         <label for="pc-4">

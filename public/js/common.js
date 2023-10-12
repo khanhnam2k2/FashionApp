@@ -69,3 +69,34 @@ function handleImageUpload(input,image){
         $(image).attr('src',URL.createObjectURL(input.files[0]));
     }
 }
+
+/**
+ * handle image
+ * @param {Number} productId id of product
+ * @param {Number} quantity 
+ */
+function addToCart(productId,quantity){
+    $.ajax({
+        type: "POST",
+        url: globalRouter.urlAddToCart,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            productId: productId,
+            quantity: quantity,
+        }
+    }).done(function(res) {
+        const data = res.data.original;
+        console.log(data);
+        if (data.success) {
+            notiSuccess(data.success)
+        } else if (data.error) {
+            notiError(data.error);
+        }
+    }).fail(function(err) {
+        if (err.status === 401) {
+            window.location.href = "{{ route('login') }}";
+        }
+    }).always(function() {})
+}

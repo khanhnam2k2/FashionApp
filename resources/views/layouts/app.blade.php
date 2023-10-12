@@ -110,6 +110,12 @@
     </div>
     <!-- Search End -->
 
+
+    <script>
+        var globalRouter = {
+            urlAddToCart: "{{ route('cart.add') }}"
+        }
+    </script>
     @yield('web-script')
 
 
