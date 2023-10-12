@@ -23,12 +23,14 @@ class ProductService extends BaseService
             return response()->json($e, 500);
         }
     }
+
     public function getProducts()
     {
         try {
             $products = Product::select('products.*', 'categories.name as categoryName', 'categories.id as categoryId')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->where('products.status', Status::ON)
+                ->where('products.quantity', '>', 0)
                 ->get();
             return $products;
         } catch (Exception $e) {
@@ -36,11 +38,13 @@ class ProductService extends BaseService
             return response()->json($e, 500);
         }
     }
+
     public function searchProduct($searchName, $sortByPrice = null, $categoryId = null)
     {
         try {
             $products = Product::select('products.*', 'categories.name as categoryName')
-                ->join('categories', 'products.category_id', '=', 'categories.id');
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->where('products.quantity', '>', 0);
             if ($searchName != null && $searchName != '') {
                 $products->where('products.name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('products.price', 'LIKE', '%' . $searchName . '%')
