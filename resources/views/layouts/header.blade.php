@@ -20,8 +20,7 @@
                                 <ul>
                                     <li><a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            <img src="{{ asset('icons/logout.svg') }}" class="icon-svg"
-                                                alt="">{{ __('Logout') }}
+                                            {{ __('Logout') }}
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                             @csrf
@@ -47,9 +46,9 @@
                     <ul>
                         <li class="active"><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('shop.index') }}">Shop</a></li>
+                        <li><a href="{{ route('about') }}">About</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="dropdown">
-                                <li><a href="./about.html">About Us</a></li>
                                 <li><a href="./shop-details.html">Shop Details</a></li>
                                 <li><a href="./shopping-cart.html">Shopping Cart</a></li>
                                 <li><a href="./checkout.html">Check Out</a></li>
@@ -64,8 +63,8 @@
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a>
-                    <a href="#"><img src="{{ asset('img/icon/cart.png') }}" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
+                    <a href="{{ route('cart.index') }}"><img src="{{ asset('img/icon/cart.png') }}" alt="">
+                        <span>0</span></a>
                 </div>
             </div>
         </div>
