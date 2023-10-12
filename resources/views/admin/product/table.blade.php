@@ -5,10 +5,10 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Name Product</th>
+            <th>Name</th>
             <th>Image</th>
             <th>Price</th>
-            {{-- <th>Quantity</th> --}}
+            <th>Quantity</th>
             <th>Category</th>
             <th>Status</th>
             <th>Option</th>
@@ -26,7 +26,7 @@
                     </a>
                 </td>
                 <td>{{ $item->price }} $</td>
-                {{-- <td>{{ $item->quantity }}</td> --}}
+                <td>{{ $item->quantity }}</td>
                 <td>{{ $item->categoryName }} </td>
                 <td><button style="cursor: unset"
                         class="btn btn-{{ $item->status == Status::ON ? 'primary' : 'danger' }}">{{ $item->status == Status::ON ? 'ON' : 'OFF' }}</button>
