@@ -88,15 +88,22 @@ function addToCart(productId,quantity){
         }
     }).done(function(res) {
         const data = res.data.original;
-        console.log(data);
         if (data.success) {
             notiSuccess(data.success)
         } else if (data.error) {
             notiError(data.error);
         }
-    }).fail(function(err) {
-        if (err.status === 401) {
+    }).fail(function(xhr, status, error) {
+        if (error.status === 401) {
             window.location.href = "{{ route('login') }}";
+        }
+        else if (xhr.status === 400 && xhr.responseJSON.errors) {
+            const errorMessages = xhr.responseJSON.errors;
+            for (let fieldName in errorMessages) {
+                notiError(errorMessages[fieldName][0]);
+            }
+        } else {
+            notiError();
         }
     }).always(function() {})
 }

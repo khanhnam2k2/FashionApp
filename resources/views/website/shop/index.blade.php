@@ -144,6 +144,12 @@
                 $(this).addClass('active');
                 searchProductShop(page = 1, searchName = null, sortByPrice = sortByPrice ?? null,
                     categoryId = categoryId);
+            });
+
+            $(document).on('click', '.add-cart', function() {
+                const productId = $(this).data('id');
+                addToCart(productId, 1);
+                searchProductShop();
             })
         })
     </script>

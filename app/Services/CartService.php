@@ -31,17 +31,18 @@ class CartService
                     $cart->save();
                 }
             }
+
             $existingCartItem = CartItem::where('cart_id', $cart->id)
                 ->where('product_id', $product->id)
                 ->first();
             if ($existingCartItem) {
                 $newQuantity = $existingCartItem->quantity + $request->quantity;
 
-                if ($newQuantity > $product->quantity) {
+                if ($request->quantity > $product->quantity) {
                     return response()->json(['error' => 'The number of products in the shopping cart exceeds the quantity in stock']);
                 }
 
-                $existingCartItem->quantity += $request->quantity;
+                $existingCartItem->quantity = $newQuantity;
                 $existingCartItem->save();
             } else {
                 if ($request->quantity > $product->quantity) {
@@ -53,7 +54,8 @@ class CartService
                 $cartItem->quantity = $request->quantity;
                 $cartItem->save();
             }
-
+            $product->quantity -= $request->quantity;
+            $product->save();
             return response()->json(['success' => 'Product added successfully']);
         } catch (Exception $e) {
             Log::error($e);
@@ -69,7 +71,7 @@ class CartService
                 $cart = Cart::where('user_id', $user->id)->first();
             }
             if (!$cart) {
-                return redirect()->route('website.cart.index')->with('message', 'Giỏ hàng của bạn đang trống.');
+                return false;
             }
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')

@@ -34,7 +34,8 @@
                             <p>{{ $product->description }}</p>
                             <div class="product__details__cart__option">
                                 <div class="quantity">
-                                    <input type="number" class="form-control" id="quantityProduct" value="1">
+                                    <input type="number" min="1" class="form-control" id="quantityProduct"
+                                        value="1">
                                 </div>
                                 <button id="addToCart" class="primary-btn">add to cart</button>
                                 <div class="mt-3">
@@ -189,8 +190,7 @@
             $('#addToCart').on('click', function(e) {
                 e.preventDefault();
                 const productId = {{ $product->id }};
-                const quantity = parseInt($('#quantityProduct').val());
-
+                const quantity = $('#quantityProduct').val();
                 addToCart(productId, quantity);
             })
         })
