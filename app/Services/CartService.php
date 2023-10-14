@@ -102,12 +102,19 @@ class CartService
                 return false;
             }
 
+            // cart item delete
             $cartItem = CartItem::where('cart_id', $cart->id)
                 ->where('product_id', $request->productId)
                 ->where('size', $request->size)
                 ->first();
+            $cartItem->delete();
 
-            return $cartItem->delete();
+            // increment quantity for product was deleted
+            $product = Product::findOrFail($request->productId);
+            $product->quantity += $cartItem->quantity;
+            $product->save();
+
+            return true;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);
