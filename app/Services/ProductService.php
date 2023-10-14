@@ -76,6 +76,7 @@ class ProductService extends BaseService
                 'description' => $request->description,
                 'sku' => $request->sku,
                 'image' => $uploadImage,
+                'sizes' => json_encode($request->sizes),
                 'status' => $request->statusProduct
             ];
             $data = Product::create($product);

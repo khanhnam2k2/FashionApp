@@ -26,7 +26,7 @@
                     <div class="w-100 d-flex justify-content-center my-2" id="imageProductPreviewContainer">
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <label for="category" class="form-label">Category<span class="text-danger">*</span></label>
                             <select name="category_id" class="form-select" id="category">
                                 @foreach ($categories as $category)
@@ -34,13 +34,25 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="productQuantity" class="form-label">Quantity<span
                                     class="text-danger">*</span></label>
                             <input type="number" min="1" class="form-control" id="productQuantity"
                                 name="quantity">
                         </div>
-                        <div class="col-md-3">
+
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <label for="productDescription" class="label-select">Description</label>
+                            <select name="sizes[]" class="form-select" id="sizes" multiple>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
                             <label for="productSku" class="form-label">SKU</label>
                             <input type="text" class="form-control" id="productSku" name="sku">
                         </div>
@@ -170,9 +182,10 @@
         });
         // event show product modal
         $('#updateProductModal').on('shown.bs.modal', function(e) {
-            var data = $(e.relatedTarget).data('item');
+            const data = $(e.relatedTarget).data('item');
             let imagePreviewHtml = '';
             if (data) {
+                const selectedSize = data.sizes;
                 imagePreviewHtml = `<img src="/storage/${data.image}" id="imageProductPreview" />`
                 $("#productId").val(data.id);
                 $("#productName").val(data.name);
@@ -180,6 +193,13 @@
                 $("#productQuantity").val(data.quantity);
                 $('#imageProductPreviewContainer').html(imagePreviewHtml);
                 $("#productDescription").val(data.description);
+                $('#sizes option').each(function() {
+                    if (selectedSize.includes($(this).val())) {
+                        $(this).prop('selected', true);
+                    } else {
+                        $(this).prop('selected', false);
+                    }
+                })
                 $("#productSku").val(data.sku);
                 $('#category').val(data.category_id);
                 $('#cbStatusProduct').prop('checked', data.status == 1);
@@ -194,6 +214,7 @@
                 $("#productImage").val('');
                 $("#productDescription").val('');
                 $("#productSku").val('');
+                $('#sizes').val('');
                 $('#imageProductPreviewContainer').html(imagePreviewHtml);
                 $('#cbStatusProduct').prop('checked', true);
                 $('#titleCategoryModal').html('Create new product');
