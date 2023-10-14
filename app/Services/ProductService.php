@@ -102,6 +102,7 @@ class ProductService extends BaseService
                 'description' => $request->description,
                 'sku' => $request->sku,
                 'image' => $uploadImage ?? $data->image,
+                'sizes' => json_encode($request->sizes),
                 'status' => $request->statusProduct
             ];
             $data = $data->update($product);
