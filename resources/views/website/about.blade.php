@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'About Us - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">

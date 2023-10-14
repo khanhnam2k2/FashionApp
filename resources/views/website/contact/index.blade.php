@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@section('title', 'Contacts - Male Fashion')
+
 @section('content')
     <!-- Map Begin -->
     <div class="map">
