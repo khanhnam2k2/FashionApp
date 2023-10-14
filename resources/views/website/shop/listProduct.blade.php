@@ -19,19 +19,16 @@
                         Cart</button>
                     <div class="d-flex justify-content-between align-items-center">
                         <h5>${{ $item->price }}</h5>
+                        @php
+                            $sizes = json_decode($item->sizes);
+                        @endphp
                         <div class="size-group btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn ">
-                                <input type="radio" name="size" id="s" value="S"> S
-                            </label>
-                            <label class="btn active ">
-                                <input type="radio" checked name="size" id="m" value="M"> M
-                            </label>
-                            <label class="btn ">
-                                <input type="radio" name="size" id="l" value="L"> L
-                            </label>
-                            <label class="btn ">
-                                <input type="radio" name="size" id="xl" value="XL"> XL
-                            </label>
+                            @foreach ($sizes as $size)
+                                <label class="btn {{ $size == 'M' ? 'active' : '' }} ">
+                                    <input type="radio" {{ $size == 'M' ? 'checked' : '' }} name="size"
+                                        id="{{ $size }}" value="{{ $size }}"> {{ $size }}
+                                </label>
+                            @endforeach
                         </div>
                     </div>
 
