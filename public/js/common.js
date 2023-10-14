@@ -21,14 +21,14 @@ function showConfirmDialog(message, preConfirmCallback) {
  * @param {String} mess
  * @param {Function} callback function call back when notification done
  */
-function notiSuccess(mess = 'Success', callback = function () { }) {
+function notiSuccess(mess = 'Success',position = 'top-end', callback = function () { }) {
     $('#alert-error').addClass('d-none');
     $('html, body').animate({
         scrollTop: $(".container").offset().top
     });
     const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: position,
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
@@ -91,7 +91,7 @@ function addToCart(productId,quantity,size){
         const quantityAvailable = res.data.original.quantityAvailable;
         const data = res.data.original;
         if (data.success) {
-            notiSuccess(data.success);
+            notiSuccess(data.success,'center');
             $('#product-available').text(quantityAvailable);
 
         } else if (data.error) {
