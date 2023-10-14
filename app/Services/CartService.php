@@ -81,8 +81,14 @@ class CartService
                 ->selectRaw('SUM(cart_items.quantity * products.price) as total')
                 ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.name', 'products.price', 'products.image')
                 ->get();
-
-            return $cartItems;
+            $totalCarts = 0;
+            foreach ($cartItems as $item) {
+                $totalCarts += $item->total;
+            }
+            return [
+                'cartItems' => $cartItems,
+                'totalCarts' => $totalCarts
+            ];
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);

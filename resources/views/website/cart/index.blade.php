@@ -18,7 +18,7 @@
         </div>
     </section>
     <!-- Breadcrumb Section End -->
-    @if ($data)
+    @if ($cartItems)
         <!-- Shopping Cart Section Begin -->
         <section class="shopping-cart spad">
             <div class="container">
@@ -36,7 +36,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data as $item)
+                                    @foreach ($cartItems as $item)
                                         <tr>
                                             <td class="product__cart__item">
                                                 <div class="product__cart__item__pic">
@@ -87,7 +87,7 @@
                         <div class="cart__total">
                             <h6>Cart total</h6>
                             <ul>
-                                <li>Total <span>$ 169.50</span></li>
+                                <li>Total <span>$<span id="total-cart"> {{ $totalCarts }} </span></span></li>
                             </ul>
                             <a href="#" class="primary-btn">Proceed to checkout</a>
                         </div>
@@ -104,4 +104,11 @@
         </div>
     @endif
     <!-- Shopping Cart Section End -->
+@endsection
+@section('web-script')
+    <script>
+        $(document).ready(function() {
+
+        })
+    </script>
 @endsection

@@ -19,7 +19,10 @@ class CartController extends Controller
     public function index()
     {
         $data = $this->cartService->showCart();
-        return view('website.cart.index', compact('data'));
+        return view('website.cart.index', [
+            'cartItems' => $data['cartItems'],
+            'totalCarts' => $data['totalCarts'],
+        ]);
     }
 
     public function addToCart(CartRequest $request)
