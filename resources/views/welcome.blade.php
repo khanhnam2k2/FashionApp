@@ -121,9 +121,27 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>{{ $item->name }}</h6>
-                                    <button onclick="addToCart({{ $item->id }},1)" class="add-cart btn">+ Add To
+                                    <button data-id="{{ $item->id }}" class="add-cart btn">+ Add To
                                         Cart</button>
-                                    <h5>${{ $item->price }}</h5>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5>${{ $item->price }}</h5>
+                                        <div class="size-group btn-group btn-group-toggle" data-toggle="buttons">
+                                            <label class="btn ">
+                                                <input type="radio" name="size" id="s" value="S"> S
+                                            </label>
+                                            <label class="btn active ">
+                                                <input type="radio" checked name="size" id="m" value="M">
+                                                M
+                                            </label>
+                                            <label class="btn ">
+                                                <input type="radio" name="size" id="l" value="L"> L
+                                            </label>
+                                            <label class="btn ">
+                                                <input type="radio" name="size" id="xl" value="XL"> XL
+                                            </label>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -206,4 +224,17 @@
         </div>
     </section>
     <!-- Latest Blog Section End -->
+@endsection
+@section('web-script')
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.add-cart', function() {
+                const productId = $(this).data('id');
+                const selectedSize = $('input[name="size"]:checked');
+                const sizeValue = selectedSize.val();
+                addToCart(productId, 1, sizeValue);
+                searchProductShop();
+            })
+        })
+    </script>
 @endsection
