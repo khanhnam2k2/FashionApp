@@ -97,9 +97,9 @@ function addToCart(productId,quantity,size){
         } else if (data.error) {
             notiError(data.error);
         }
-    }).fail(function(xhr, status, error) {
-        if (error.status === 401) {
-            window.location.href = "{{ route('login') }}";
+    }).fail(function(xhr) {
+        if (xhr.status === 401) {
+            window.location.href = "/login";
         }
         else if (xhr.status === 400 && xhr.responseJSON.errors) {
             const errorMessages = xhr.responseJSON.errors;
