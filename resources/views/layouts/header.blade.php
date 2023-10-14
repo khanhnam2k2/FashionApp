@@ -44,9 +44,11 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="{{ route('home') }}">Home</a></li>
-                        <li><a href="{{ route('shop.index') }}">Shop</a></li>
-                        <li><a href="{{ route('about') }}">About</a></li>
+                        <li class="{{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
+                        <li class="{{ request()->is('shop') ? 'active' : '' }}"><a
+                                href="{{ route('shop.index') }}">Shop</a></li>
+                        <li class="{{ request()->is('about') ? 'active' : '' }}"><a
+                                href="{{ route('about') }}">About</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="./shop-details.html">Shop Details</a></li>
@@ -56,7 +58,8 @@
                             </ul>
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="{{ route('contact.show') }}">Contacts</a></li>
+                        <li class="{{ request()->is('contacts') ? 'active' : '' }}"><a
+                                href="{{ route('contact.show') }}">Contacts</a></li>
                     </ul>
                 </nav>
             </div>
