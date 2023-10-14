@@ -18,16 +18,26 @@ class CartController extends Controller
 
     public function index()
     {
+        return view('website.cart.index');
+    }
+
+    public function search()
+    {
         $data = $this->cartService->showCart();
-        return view('website.cart.index', [
+        return view('website.cart.table', [
             'cartItems' => $data['cartItems'],
             'totalCarts' => $data['totalCarts'],
         ]);
     }
-
     public function addToCart(CartRequest $request)
     {
         $data = $this->cartService->handleAddToCart($request);
         return response()->json(['data' => $data]);
+    }
+
+    public function removeProduct(Request $request)
+    {
+        $this->cartService->removeProductFromCart($request);
+        return response()->json('ok');
     }
 }

@@ -72,9 +72,9 @@ class CartService
             }
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
-                ->select('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.name as productName', 'products.price as productPrice', 'products.image as productImage')
+                ->select('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id as productId', 'products.name as productName', 'products.price as productPrice', 'products.image as productImage')
                 ->selectRaw('SUM(cart_items.quantity * products.price) as total')
-                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.name', 'products.price', 'products.image')
+                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.image')
                 ->get();
 
             $totalCarts = 0;
@@ -86,6 +86,28 @@ class CartService
                 'cartItems' => $cartItems,
                 'totalCarts' => $totalCarts
             ];
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    public function removeProductFromCart($request)
+    {
+        try {
+            $user  = Auth::user();
+            $cart = Cart::where('user_id', $user->id)->first();
+
+            if (!$cart) {
+                return false;
+            }
+
+            $cartItem = CartItem::where('cart_id', $cart->id)
+                ->where('product_id', $request->productId)
+                ->where('size', $request->size)
+                ->first();
+
+            return $cartItem->delete();
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);
