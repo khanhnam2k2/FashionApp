@@ -25,17 +25,17 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="shopping__cart__table">
-                            <table>
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Product</th>
+                                        <th>Size</th>
                                         <th>Quantity</th>
                                         <th>Total</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @foreach ($data as $item)
                                         <tr>
                                             <td class="product__cart__item">
@@ -46,6 +46,13 @@
                                                 <div class="product__cart__item__text">
                                                     <h6>{{ $item->productName }}</h6>
                                                     <h5>${{ $item->productPrice }}</h5>
+                                                </div>
+                                            </td>
+                                            <td class="size__item">
+                                                <div class="size">
+                                                    <div class="pro-size-2">
+                                                        <span>{{ $item->size }}</span>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td class="quantity__item">
@@ -80,7 +87,6 @@
                         <div class="cart__total">
                             <h6>Cart total</h6>
                             <ul>
-                                <li>Subtotal <span>$ 169.50</span></li>
                                 <li>Total <span>$ 169.50</span></li>
                             </ul>
                             <a href="#" class="primary-btn">Proceed to checkout</a>

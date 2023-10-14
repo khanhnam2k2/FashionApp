@@ -968,7 +968,11 @@ ol {
 	opacity: 0;
 }
 
-.product__item:hover .product__item__text .product__color__select {
+.product__item .product__item__text .size-group{
+	opacity: 0;
+}
+
+.product__item:hover .product__item__text .size-group {
 	opacity: 1;
 }
 
@@ -1505,7 +1509,15 @@ ol {
 /*---------------------
   Shop
 -----------------------*/
+.btn-group-toggle label.active {
+	background-color: #000;
+	color: #fff;
+}
 
+.btn-group-toggle label {
+	background-color: #fff;
+	color: #000;
+}
 .product__details__pic {
 	text-align: center;
 	background: #f3f2ee;

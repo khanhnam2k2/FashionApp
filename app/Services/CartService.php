@@ -34,6 +34,7 @@ class CartService
 
             $existingCartItem = CartItem::where('cart_id', $cart->id)
                 ->where('product_id', $product->id)
+                ->where('size', $request->size)
                 ->first();
             if ($existingCartItem) {
                 $newQuantity = $existingCartItem->quantity + $request->quantity;
@@ -51,12 +52,13 @@ class CartService
                 $cartItem = new CartItem();
                 $cartItem->cart_id = $cart->id;
                 $cartItem->product_id = $product->id;
+                $cartItem->size = $request->size;
                 $cartItem->quantity = $request->quantity;
                 $cartItem->save();
             }
             $product->quantity -= $request->quantity;
             $product->save();
-            return response()->json(['success' => 'Product added successfully']);
+            return response()->json(['success' => 'Product added successfully', 'quantityAvailable' => $product->quantity]);
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);
@@ -75,9 +77,9 @@ class CartService
             }
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
-                ->select('cart_items.cart_id', 'cart_items.quantity', 'products.name as productName', 'products.price as productPrice', 'products.image as productImage')
+                ->select('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.name as productName', 'products.price as productPrice', 'products.image as productImage')
                 ->selectRaw('SUM(cart_items.quantity * products.price) as total')
-                ->groupBy('cart_items.cart_id', 'cart_items.quantity', 'products.name', 'products.price', 'products.image')
+                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.name', 'products.price', 'products.image')
                 ->get();
 
             return $cartItems;

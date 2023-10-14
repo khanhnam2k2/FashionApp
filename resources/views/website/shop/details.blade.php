@@ -32,6 +32,23 @@
                             <h4>{{ $product->name }}</h4>
                             <h3>${{ $product->price }}</h3>
                             <p>{{ $product->description }}</p>
+                            <div class="product__details__option">
+                                <div class="product__details__option__size">
+                                    <span>Size:</span>
+                                    <label for="s">s
+                                        <input type="radio" id="s" name="size" value="S">
+                                    </label>
+                                    <label class="active" for="m">m
+                                        <input type="radio" id="m" name="size" value="M" checked>
+                                    </label>
+                                    <label for="l">l
+                                        <input type="radio" id="l" name="size" value="L">
+                                    </label>
+                                    <label for="xl">xl
+                                        <input type="radio" id="xl" name="size" value="XL">
+                                    </label>
+                                </div>
+                            </div>
                             <div class="product__details__cart__option">
                                 <div class="quantity">
                                     <input type="number" min="1" class="form-control" id="quantityProduct"
@@ -39,7 +56,7 @@
                                 </div>
                                 <button id="addToCart" class="primary-btn">add to cart</button>
                                 <div class="mt-3">
-                                    <h5>{{ $product->quantity }} products available</h5>
+                                    <h5><span id="product-available">{{ $product->quantity }}</span> products available</h5>
                                 </div>
                             </div>
 
@@ -189,9 +206,11 @@
         $(document).ready(function() {
             $('#addToCart').on('click', function(e) {
                 e.preventDefault();
+                const selectedSize = $('input[name="size"]:checked');
+                const sizeValue = selectedSize.val();
                 const productId = {{ $product->id }};
                 const quantity = $('#quantityProduct').val();
-                addToCart(productId, quantity);
+                addToCart(productId, quantity, sizeValue);
             })
         })
     </script>

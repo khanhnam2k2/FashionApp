@@ -148,7 +148,9 @@
 
             $(document).on('click', '.add-cart', function() {
                 const productId = $(this).data('id');
-                addToCart(productId, 1);
+                const selectedSize = $('input[name="size"]:checked');
+                const sizeValue = selectedSize.val();
+                addToCart(productId, 1, sizeValue);
                 searchProductShop();
             })
         })

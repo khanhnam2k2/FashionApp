@@ -26,6 +26,7 @@ class CartRequest extends FormRequest
     {
         return [
             'quantity' => 'required|integer|min:1',
+            'size' => 'required'
         ];
     }
 
@@ -35,6 +36,7 @@ class CartRequest extends FormRequest
             'quantity.required' => 'Quantity is required',
             'quantity.integer' => 'Quantity must be an integer',
             'quantity.min' => 'Minimum quantity is 1',
+            'size.required' => 'Size is required',
         ];
     }
 

@@ -75,7 +75,7 @@ function handleImageUpload(input,image){
  * @param {Number} productId id of product
  * @param {Number} quantity 
  */
-function addToCart(productId,quantity){
+function addToCart(productId,quantity,size){
     $.ajax({
         type: "POST",
         url: globalRouter.urlAddToCart,
@@ -85,11 +85,15 @@ function addToCart(productId,quantity){
         data: {
             productId: productId,
             quantity: quantity,
+            size:size
         }
     }).done(function(res) {
+        const quantityAvailable = res.data.original.quantityAvailable;
         const data = res.data.original;
         if (data.success) {
-            notiSuccess(data.success)
+            notiSuccess(data.success);
+            $('#product-available').text(quantityAvailable);
+
         } else if (data.error) {
             notiError(data.error);
         }

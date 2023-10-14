@@ -17,18 +17,24 @@
                     <h6>{{ $item->name }}</h6>
                     <button data-id="{{ $item->id }}" class="add-cart btn">+ Add To
                         Cart</button>
-                    <h5>${{ $item->price }}</h5>
-                    <div class="product__color__select">
-                        <label for="pc-4">
-                            <input type="radio" id="pc-4">
-                        </label>
-                        <label class="active black" for="pc-5">
-                            <input type="radio" id="pc-5">
-                        </label>
-                        <label class="grey" for="pc-6">
-                            <input type="radio" id="pc-6">
-                        </label>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5>${{ $item->price }}</h5>
+                        <div class="size-group btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn ">
+                                <input type="radio" name="size" id="s" value="S"> S
+                            </label>
+                            <label class="btn active ">
+                                <input type="radio" checked name="size" id="m" value="M"> M
+                            </label>
+                            <label class="btn ">
+                                <input type="radio" name="size" id="l" value="L"> L
+                            </label>
+                            <label class="btn ">
+                                <input type="radio" name="size" id="xl" value="XL"> XL
+                            </label>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
