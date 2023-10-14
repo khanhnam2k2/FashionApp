@@ -29,6 +29,7 @@ class StoreProductRequest extends FormRequest
             'image' => 'required|image|mimes:jpeg,jpg,png,gif|max:20000',
             'price' => 'required',
             'quantity' => 'required',
+            'sizes' => 'required'
         ];
     }
 
