@@ -8,8 +8,6 @@
             <th>Name</th>
             <th>Image</th>
             <th>Price</th>
-            <th>Quantity</th>
-            <th>Sizes</th>
             <th>Category</th>
             <th>Status</th>
             <th>Option</th>
@@ -27,15 +25,6 @@
                     </a>
                 </td>
                 <td>{{ $item->price }} $</td>
-                <td>{{ $item->quantity }}</td>
-                @php
-                    $sizes = json_decode($item->sizes);
-                @endphp
-                <td class="d-flex gap-2">
-                    @foreach ($sizes as $size)
-                        <span class="btn btn-primary">{{ $size }}</span>
-                    @endforeach
-                </td>
                 <td>{{ $item->categoryName }} </td>
                 <td><button style="cursor: unset"
                         class="btn btn-{{ $item->status == Status::ON ? 'primary' : 'danger' }}">{{ $item->status == Status::ON ? 'ON' : 'OFF' }}</button>

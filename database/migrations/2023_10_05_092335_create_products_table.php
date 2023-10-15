@@ -16,10 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->float('price');
-            $table->integer('quantity')->default(1);
             $table->unsignedBigInteger('category_id');
             $table->string('image');
-            $table->json('sizes')->nullable();
             $table->string('sku')->nullable();
             $table->unsignedInteger('status')->default(1);
             $table->softDeletes();

@@ -35,27 +35,35 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label for="productQuantity" class="form-label">Quantity<span
-                                    class="text-danger">*</span></label>
-                            <input type="number" min="1" class="form-control" id="productQuantity"
-                                name="quantity">
+                            <label for="productSku" class="form-label">SKU</label>
+                            <input type="text" class="form-control" id="productSku" name="sku">
                         </div>
 
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-8">
-                            <label for="productDescription" class="label-select">Description</label>
-                            <select name="sizes[]" class="form-select" id="sizes" multiple>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                            </select>
+                        <div class="col-md-12">
+                            <div id="sizeAndQuantityFields">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="productSize" class="form-label">Size<span
+                                                class="text-danger">*</span></label>
+                                        <select name="sizes[]" class="form-select" id="productSize">
+                                            <option value="S">S</option>
+                                            <option value="M">M</option>
+                                            <option value="L">L</option>
+                                            <option value="XL">XL</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="productQuantity" class="form-label">Quantity<span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" type="number" value="1" name="quantity[]">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn" id="addSize">Add size</button>
                         </div>
-                        <div class="col-md-4">
-                            <label for="productSku" class="form-label">SKU</label>
-                            <input type="text" class="form-control" id="productSku" name="sku">
-                        </div>
+
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-12">
@@ -175,6 +183,34 @@
     }
 
     $(document).ready(function() {
+
+        $('#addSize').click(function(e) {
+            e.preventDefault();
+            let newField = `
+            <div class="row ">
+                <span class="removeSize text-end mt-2" style="cursor:pointer;color:red"><i class="fa-solid fa-circle-xmark"></i></span>
+                <div class="col-md-6">
+                    <label for="productSize" class="form-label">Size<span
+                            class="text-danger">*</span></label>
+                    <select name="sizes[]" class="form-select" id="productSize">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="productQuantity" class="form-label">Quantity<span
+                            class="text-danger">*</span></label>
+                    <input class="form-control" type="number" name="quantity[]">
+                </div>
+            </div>`;
+            $('#sizeAndQuantityFields').append(newField);
+        });
+
+        $('#sizeAndQuantityFields').on('click', '.removeSize', function() {
+            $(this).parent().remove();
+        });
 
         // add/change image for product
         $('#productImage').on('change', function() {

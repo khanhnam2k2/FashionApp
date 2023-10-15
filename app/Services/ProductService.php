@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\Status;
 use App\Models\Product;
+use App\Models\ProductSizeQuantity;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -30,7 +31,6 @@ class ProductService extends BaseService
             $products = Product::select('products.*', 'categories.name as categoryName', 'categories.id as categoryId')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->where('products.status', Status::ON)
-                ->where('products.quantity', '>', 0)
                 ->get();
             return $products;
         } catch (Exception $e) {
@@ -43,8 +43,7 @@ class ProductService extends BaseService
     {
         try {
             $products = Product::select('products.*', 'categories.name as categoryName')
-                ->join('categories', 'products.category_id', '=', 'categories.id')
-                ->where('products.quantity', '>', 0);
+                ->join('categories', 'products.category_id', '=', 'categories.id');
             if ($searchName != null && $searchName != '') {
                 $products->where('products.name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('products.price', 'LIKE', '%' . $searchName . '%')
@@ -71,16 +70,26 @@ class ProductService extends BaseService
             $product = [
                 'name' => $request->name,
                 'price' => $request->price,
-                'quantity' => $request->quantity,
                 'category_id' => $request->category_id,
                 'description' => $request->description,
                 'sku' => $request->sku,
                 'image' => $uploadImage,
-                'sizes' => json_encode($request->sizes),
                 'status' => $request->statusProduct
             ];
-            $data = Product::create($product);
-            return $data;
+            $product = Product::create($product);
+            if ($product) {
+                $sizes = $request->sizes;
+                $quantities = $request->quantity;
+                foreach ($sizes as $key => $size) {
+                    $productSizeQuantity = new ProductSizeQuantity();
+                    $productSizeQuantity->product_id = $product->id;
+                    $productSizeQuantity->size = $size;
+                    $productSizeQuantity->quantity = $quantities[$key];
+                    $productSizeQuantity->save();
+                }
+            }
+
+            return true;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);

@@ -28,8 +28,8 @@ class StoreProductRequest extends FormRequest
             'name' => 'required',
             'image' => 'required|image|mimes:jpeg,jpg,png,gif|max:20000',
             'price' => 'required',
-            'quantity' => 'required',
-            'sizes' => 'required'
+            'quantity.*' => 'required',
+            'sizes.*' => 'required'
         ];
     }
 
@@ -38,7 +38,8 @@ class StoreProductRequest extends FormRequest
         return [
             'name.required' => 'Name product is required',
             'price.required' => 'Price product is required',
-            'price.required' => 'Quantity product is required',
+            'quantity.*.required' => 'Quantity product is required',
+            'sizes.*.required' => 'Size product is required',
             'image.required' => 'Image product is required',
             'image.mines' => 'Image format must be jpeg, jpg, png, gif',
             'image.max' => 'The maximum size of a photo is 20MB',
