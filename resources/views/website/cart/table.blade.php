@@ -33,7 +33,7 @@
                                         <td class="size__item">
                                             <div class="size">
                                                 <div class="pro-size-2">
-                                                    <select name="size" id="size" style="border:none">
+                                                    <select name="size" class="sizeProductCart" style="border:none">
                                                         @foreach ($sizes as $size)
                                                             <option {{ $item->size == $size ? 'selected' : '' }}
                                                                 value="{{ $size }}">{{ $size }}
@@ -47,14 +47,17 @@
                                         <td class="quantity__item">
                                             <div class="quantity">
                                                 <div class="pro-qty-2">
-                                                    <input type="number" value="{{ $item->quantity }}">
+                                                    <input type="number" data-product-id="{{ $item->productId }}"
+                                                        class="qtyProductCart" data-size="{{ $item->size }}"
+                                                        value="{{ $item->quantity }}">
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="cart__price">$ {{ $item->total }}</td>
                                         <td class="cart__close"><span class="remove-from-cart"
-                                                data-product-id="{{ $item->productId }}" data-size="{{ $item->size }}"
-                                                style="cursor: pointer"><i class="fa fa-close"></i></span></td>
+                                                data-product-id="{{ $item->productId }}"
+                                                data-size="{{ $item->size }}" style="cursor: pointer"><i
+                                                    class="fa fa-close"></i></span></td>
                                     </tr>
                                 @endforeach
                             </tbody>

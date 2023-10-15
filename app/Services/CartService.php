@@ -120,4 +120,42 @@ class CartService
             return response()->json($e, 500);
         }
     }
+
+    public function updateCart($request)
+    {
+        try {
+            $newQuantity = $request->quantity;
+            $user  = Auth::user();
+            $cart = Cart::where('user_id', $user->id)->first();
+
+            if (!$cart) {
+                return false;
+            }
+            // cart item update
+            $cartItem = CartItem::where('cart_id', $cart->id)
+                ->where('product_id', $request->productId)
+                ->where('size', $request->size)
+                ->first();
+
+            if ($cartItem) {
+                $product = Product::findOrFail($request->productId);
+                if ($newQuantity <= $product->quantity) {
+                    $product->quantity += $cartItem->quantity - $newQuantity;
+                    $product->save();
+
+                    // update size and quantity for cart
+                    $cartItem->size = $request->size;
+                    $cartItem->quantity = $newQuantity;
+                    $cartItem->save();
+
+                    return response()->json(['success' => 'Cart updated successfully']);
+                } else {
+                    return response()->json(['error' => 'New quantity exceeds available quantity']);
+                }
+            }
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
 }

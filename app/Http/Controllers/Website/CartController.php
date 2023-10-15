@@ -40,4 +40,9 @@ class CartController extends Controller
         $this->cartService->removeProductFromCart($request);
         return response()->json('ok');
     }
+    public function updateCart(Request $request)
+    {
+        $data = $this->cartService->updateCart($request);
+        return response()->json(['data' => $data]);
+    }
 }
