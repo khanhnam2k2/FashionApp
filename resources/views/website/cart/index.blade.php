@@ -19,8 +19,11 @@
         </div>
     </section>
     <!-- Breadcrumb Section End -->
+
+    <!-- Shopping Cart Section Begin -->
     <div id="cart_table"></div>
     <!-- Shopping Cart Section End -->
+
 @endsection
 @section('web-script')
     <script>
@@ -39,9 +42,12 @@
         }
         $(document).ready(function() {
             searchCart();
+
+            // remove product from cart
             $(document).on('click', '.remove-from-cart', function() {
                 const productId = $(this).data('product-id');
                 const size = $(this).data('size');
+                $(this).prop('disabled', true);
                 showConfirmDialog('Are you sure you want to remove this product?', function() {
                     $.ajax({
                         type: "DELETE",
@@ -60,7 +66,9 @@
                         }
 
                     }).fail(function() {
-
+                        notiError();
+                    }).always(function() {
+                        $(this).prop('disabled', false);
                     })
                 });
             })

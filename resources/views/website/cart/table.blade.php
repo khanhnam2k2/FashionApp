@@ -1,5 +1,4 @@
 @if (count($cartItems) > 0)
-    <!-- Shopping Cart Section Begin -->
     <section class="shopping-cart spad">
         <div class="container">
             <div class="row">
@@ -28,17 +27,27 @@
                                                 <h5>${{ $item->productPrice }}</h5>
                                             </div>
                                         </td>
+                                        @php
+                                            $sizes = json_decode($item->productSizes);
+                                        @endphp
                                         <td class="size__item">
                                             <div class="size">
                                                 <div class="pro-size-2">
-                                                    <span>{{ $item->size }}</span>
+                                                    <select name="size" id="size" style="border:none">
+                                                        @foreach ($sizes as $size)
+                                                            <option {{ $item->size == $size ? 'selected' : '' }}
+                                                                value="{{ $size }}">{{ $size }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="quantity__item">
                                             <div class="quantity">
                                                 <div class="pro-qty-2">
-                                                    <input type="text" value="{{ $item->quantity }}">
+                                                    <input type="number" value="{{ $item->quantity }}">
                                                 </div>
                                             </div>
                                         </td>
@@ -57,11 +66,7 @@
                                 <a href="{{ route('shop.index') }}">Continue Shopping</a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
-                            </div>
-                        </div>
+
                     </div>
 
                 </div>
