@@ -24,11 +24,8 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
-    {{-- SweetAlert  --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.31/sweetalert2.min.js"
-        integrity="sha512-dbgWBkIauIf3iy96dqgzBD9ysKHp7mAuym+V7AqaNIuICxDBVm6nzvl1Yi+rdfnh25SdmYDw2JbFk/FOXf6Ycg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Js Plugins -->
+    <link rel="stylesheet" href="{{ asset('css/sweetalert.css') }}" type="text/css">
+   
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/jquery.nice-select.min.js') }}"></script>
@@ -40,6 +37,7 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/common.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     </body>
 </head>
 
