@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Models\Product;
 use App\Models\ProductSizeQuantity;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ProductService extends BaseService
@@ -42,20 +43,35 @@ class ProductService extends BaseService
     public function searchProduct($searchName, $sortByPrice = null, $categoryId = null)
     {
         try {
-            $products = Product::select('products.*', 'categories.name as categoryName')
-                ->join('categories', 'products.category_id', '=', 'categories.id');
-            if ($searchName != null && $searchName != '') {
-                $products->where('products.name', 'LIKE', '%' . $searchName . '%')
-                    ->orWhere('products.price', 'LIKE', '%' . $searchName . '%')
-                    ->orWhere('categories.name', 'LIKE', '%' . $searchName . '%');
-            }
-            if ($sortByPrice != null && $sortByPrice != '') {
-                $products->orderBy('price', $sortByPrice);
-            }
-            if ($categoryId != null && $categoryId != '') {
-                $products->where('products.category_id', $categoryId);
-            }
-            $products = $products->latest()->paginate(9);
+            $products = Product::select(
+                'products.id',
+                'products.name',
+                'products.price',
+                'products.category_id',
+                'products.description',
+                'products.sku',
+                'products.image',
+                'products.status',
+                'categories.name as categoryName',
+                DB::raw('GROUP_CONCAT(product_size_quantities.size) as sizes'),
+                DB::raw('GROUP_CONCAT(product_size_quantities.quantity) as quantities')
+            )
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('product_size_quantities', 'product_size_quantities.product_id', '=', 'products.id')
+                ->whereNull('products.deleted_at')
+                ->groupBy(
+                    'products.id',
+                    'products.name',
+                    'products.price',
+                    'products.category_id',
+                    'products.description',
+                    'products.sku',
+                    'products.image',
+                    'products.status',
+                    'categories.name'
+                )
+                ->orderBy('products.created_at', 'desc')
+                ->paginate(9);
             return $products;
         } catch (Exception $e) {
             Log::error($e);
@@ -99,24 +115,43 @@ class ProductService extends BaseService
     public function updateProduct($request)
     {
         try {
-            $data = Product::findOrFail($request->productId);
+            DB::beginTransaction();
+
+            $product = Product::findOrFail($request->productId);
+
             if (!empty($request->file('image'))) {
                 $uploadImage = $this->uploadFile($request->file('image'), 'products');
             }
-            $product = [
+
+            $productArr = [
                 'name' => $request->name,
                 'price' => $request->price,
-                'quantity' => $request->quantity,
                 'category_id' => $request->category_id,
                 'description' => $request->description,
                 'sku' => $request->sku,
-                'image' => $uploadImage ?? $data->image,
-                'sizes' => json_encode($request->sizes),
+                'image' => $uploadImage ?? $product->image,
                 'status' => $request->statusProduct
             ];
-            $data = $data->update($product);
-            return $data;
+
+            $product->update($productArr);
+
+            ProductSizeQuantity::where('product_id', $product->id)->delete();
+
+            $sizes = $request->sizes;
+            $quantities = $request->quantity;
+            foreach ($sizes as $key => $size) {
+                $productSizeQuantity = new ProductSizeQuantity();
+                $productSizeQuantity->product_id = $product->id;
+                $productSizeQuantity->size = $size;
+                $productSizeQuantity->quantity = $quantities[$key];
+                $productSizeQuantity->save();
+            }
+
+            DB::commit();
+
+            return true;
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e);
             return response()->json($e, 500);
         }

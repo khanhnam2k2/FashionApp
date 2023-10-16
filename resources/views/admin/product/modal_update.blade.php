@@ -43,21 +43,23 @@
                     <div class="row mb-4">
                         <div class="col-md-12">
                             <div id="sizeAndQuantityFields">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="productSize" class="form-label">Size<span
-                                                class="text-danger">*</span></label>
-                                        <select name="sizes[]" class="form-select" id="productSize">
-                                            <option value="S">S</option>
-                                            <option value="M">M</option>
-                                            <option value="L">L</option>
-                                            <option value="XL">XL</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="productQuantity" class="form-label">Quantity<span
-                                                class="text-danger">*</span></label>
-                                        <input class="form-control" type="number" value="1" name="quantity[]">
+                                <div class="">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="productSize" class="form-label">Size<span
+                                                    class="text-danger">*</span></label>
+                                            <select name="sizes[]" class="form-select" id="productSize">
+                                                <option value="S">S</option>
+                                                <option value="M">M</option>
+                                                <option value="L">L</option>
+                                                <option value="XL">XL</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="productQuantity" class="form-label">Quantity<span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control" type="number" value="1" name="quantity[]">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -171,6 +173,9 @@
 
             }
         }).fail(function(xhr) {
+            if (xhr.status == 500) {
+                console.log(1);
+            }
             if (xhr.status === 400 && xhr.responseJSON.errors) {
                 const errorMessages = xhr.responseJSON.errors;
                 for (let fieldName in errorMessages) {
@@ -202,7 +207,7 @@
                 <div class="col-md-6">
                     <label for="productQuantity" class="form-label">Quantity<span
                             class="text-danger">*</span></label>
-                    <input class="form-control" type="number" name="quantity[]">
+                    <input class="form-control" type="number" value="1" name="quantity[]">
                 </div>
             </div>`;
             $('#sizeAndQuantityFields').append(newField);
@@ -219,23 +224,40 @@
         // event show product modal
         $('#updateProductModal').on('shown.bs.modal', function(e) {
             const data = $(e.relatedTarget).data('item');
+            const sizes = data.sizes.split(",");
+            const quantities = data.quantities.split(",");
             let imagePreviewHtml = '';
             if (data) {
-                const selectedSize = data.sizes;
+                let rowSizeQuantityContainer = $('<div></div>');
                 imagePreviewHtml = `<img src="/storage/${data.image}" id="imageProductPreview" />`
                 $("#productId").val(data.id);
                 $("#productName").val(data.name);
                 $("#productPrice").val(data.price);
-                $("#productQuantity").val(data.quantity);
                 $('#imageProductPreviewContainer').html(imagePreviewHtml);
+                sizes.forEach(function(size, index) {
+                    let html = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="productSize" class="form-label">Size<span
+                                    class="text-danger">*</span></label>
+                            <select name="sizes[]" class="form-select" id="productSize">
+                                <option ${size == 'S' ? 'selected' : ''} value="S">S</option>
+                                <option ${size == 'M' ? 'selected' : ''} value="M">M</option>
+                                <option ${size == 'L' ? 'selected' : ''} value="L">L</option>
+                                <option ${size == 'XL' ? 'selected' : ''} value="XL">XL</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="productQuantity" class="form-label">Quantity<span
+                                    class="text-danger">*</span></label>
+                            <input class="form-control" type="number" value="${quantities[index]}" name="quantity[]">
+                        </div>
+                    </div>
+                    `;
+                    rowSizeQuantityContainer.append(html);
+                });
+                $('#sizeAndQuantityFields').html(rowSizeQuantityContainer);
                 $("#productDescription").val(data.description);
-                $('#sizes option').each(function() {
-                    if (selectedSize.includes($(this).val())) {
-                        $(this).prop('selected', true);
-                    } else {
-                        $(this).prop('selected', false);
-                    }
-                })
                 $("#productSku").val(data.sku);
                 $('#category').val(data.category_id);
                 $('#cbStatusProduct').prop('checked', data.status == 1);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
@@ -33,7 +34,7 @@ class ProductController extends Controller
         return response()->json('ok');
     }
 
-    public function update(Request $request)
+    public function update(UpdateProductRequest $request)
     {
         $this->productService->updateProduct($request);
         return response()->json('ok');
