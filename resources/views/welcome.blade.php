@@ -127,7 +127,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h5>${{ $item->price }}</h5>
                                         @php
-                                            $sizes = json_decode($item->sizes);
+                                            $sizes = explode(',', $item->sizes);
                                         @endphp
                                         <div class="size-group btn-group btn-group-toggle" data-toggle="buttons">
                                             @foreach ($sizes as $size)

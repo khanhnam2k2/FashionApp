@@ -40,7 +40,7 @@ class ProductService extends BaseService
         }
     }
 
-    public function searchProduct($searchName, $sortByPrice = null, $categoryId = null)
+    public function searchProduct($searchName = null, $sortByPrice = null, $categoryId = null)
     {
         try {
             $products = Product::select(
@@ -58,18 +58,31 @@ class ProductService extends BaseService
             )
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('product_size_quantities', 'product_size_quantities.product_id', '=', 'products.id')
-                ->whereNull('products.deleted_at')
-                ->groupBy(
-                    'products.id',
-                    'products.name',
-                    'products.price',
-                    'products.category_id',
-                    'products.description',
-                    'products.sku',
-                    'products.image',
-                    'products.status',
-                    'categories.name'
-                )
+                ->whereNull('products.deleted_at');
+
+            if ($searchName != null && $searchName != '') {
+                $products->where('products.name', 'LIKE', '%' . $searchName . '%')
+                    ->orWhere('products.price', 'LIKE', '%' . $searchName . '%')
+                    ->orWhere('categories.name', 'LIKE', '%' . $searchName . '%');
+            }
+            if ($sortByPrice != null && $sortByPrice != '') {
+                $products->orderBy('price', $sortByPrice);
+            }
+            if ($categoryId != null && $categoryId != '') {
+                $products->where('products.category_id', $categoryId);
+            }
+
+            $products = $products->groupBy(
+                'products.id',
+                'products.name',
+                'products.price',
+                'products.category_id',
+                'products.description',
+                'products.sku',
+                'products.image',
+                'products.status',
+                'categories.name'
+            )
                 ->orderBy('products.created_at', 'desc')
                 ->paginate(9);
             return $products;

@@ -21,7 +21,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = $this->categoryService->getLimitCategories();
-        $products = $this->productService->getProducts();
+        $products = $this->productService->searchProduct();
         return view('welcome', compact('categories', 'products'));
     }
 
