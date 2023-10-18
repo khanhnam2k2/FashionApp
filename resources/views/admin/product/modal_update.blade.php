@@ -173,9 +173,6 @@
 
             }
         }).fail(function(xhr) {
-            if (xhr.status == 500) {
-                console.log(1);
-            }
             if (xhr.status === 400 && xhr.responseJSON.errors) {
                 const errorMessages = xhr.responseJSON.errors;
                 for (let fieldName in errorMessages) {
@@ -224,10 +221,10 @@
         // event show product modal
         $('#updateProductModal').on('shown.bs.modal', function(e) {
             const data = $(e.relatedTarget).data('item');
-            const sizes = data.sizes.split(",");
-            const quantities = data.quantities.split(",");
             let imagePreviewHtml = '';
             if (data) {
+                const sizes = data.sizes.split(",");
+                const quantities = data.quantities.split(",");
                 let rowSizeQuantityContainer = $('<div></div>');
                 imagePreviewHtml = `<img src="/storage/${data.image}" id="imageProductPreview" />`
                 $("#productId").val(data.id);
