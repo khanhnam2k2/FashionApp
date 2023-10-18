@@ -1,5 +1,5 @@
 <div class="row position-relative">
-    @foreach ($data as $item)
+    @foreach ($data as $key => $item)
         <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="product__item">
                 <div class="product__item__pic"
@@ -15,14 +15,16 @@
                 </div>
                 <div class="product__item__text">
                     <h6>{{ $item->name }}</h6>
-                    <button data-id="{{ $item->id }}" class="add-cart btn">+ Add To
+                    <button data-id="{{ $key }}" data-product-id="{{ $item->id }}" class="add-cart btn">+
+                        Add To
                         Cart</button>
                     <div class="d-flex justify-content-between align-items-center">
                         <h5>${{ $item->price }}</h5>
                         @php
-                            $sizes = json_decode($item->sizes);
+                            $sizes = explode(',', $item->sizes);
                         @endphp
-                        <div class="size-group btn-group btn-group-toggle" data-toggle="buttons">
+                        <div class="size-group btn-group btn-group-toggle" id="size-group-{{ $key }}"
+                            data-toggle="buttons">
                             @foreach ($sizes as $size)
                                 <label class="btn {{ $size == 'M' ? 'active' : '' }} ">
                                     <input type="radio" {{ $size == 'M' ? 'checked' : '' }} name="size"

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\ProductSizeQuantity;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -22,10 +23,19 @@ class CartService
             $user = Auth::user();
             $cart = Cart::where('user_id', $user->id)->first();
 
+
+            // check cart exists
             if (!$cart) {
                 $cart = new Cart();
                 $cart->user_id = $user->id;
                 $cart->save();
+            }
+
+            $productSizeQuantity = ProductSizeQuantity::where('product_id', $product->id)
+                ->where('size', $request->size)
+                ->first();
+            if (!$productSizeQuantity) {
+                return response()->json(['error' => 'Product size not found']);
             }
 
             $existingCartItem = CartItem::where('cart_id', $cart->id)
@@ -36,13 +46,13 @@ class CartService
             if ($existingCartItem) {
                 $newQuantity = $existingCartItem->quantity + $request->quantity;
 
-                if ($request->quantity > $product->quantity) {
+                if ($request->quantity > $productSizeQuantity->quantity) {
                     return response()->json(['error' => 'The number of products in the shopping cart exceeds the quantity in stock']);
                 }
                 $existingCartItem->quantity = $newQuantity;
                 $existingCartItem->save();
             } else {
-                if ($request->quantity > $product->quantity) {
+                if ($request->quantity > $productSizeQuantity->quantity) {
                     return response()->json(['error' => 'The number of products in the shopping cart exceeds the quantity in stock']);
                 }
                 $cartItem = new CartItem();
@@ -52,8 +62,11 @@ class CartService
                 $cartItem->quantity = $request->quantity;
                 $cartItem->save();
             }
-            $product->quantity -= $request->quantity;
-            $product->save();
+
+            //Subtract the number of products in the Product_Size_quantities
+            $productSizeQuantity->quantity -= $request->quantity;
+            $productSizeQuantity->save();
+
             return response()->json(['success' => 'Product added successfully', 'quantityAvailable' => $product->quantity]);
         } catch (Exception $e) {
             Log::error($e);

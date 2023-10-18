@@ -148,9 +148,9 @@
             });
 
             $(document).on('click', '.add-cart', function() {
-                const productId = $(this).data('id');
-                const selectedSize = $('input[name="size"]:checked');
-                const sizeValue = selectedSize.val();
+                const id = $(this).data('id');
+                const productId = $(this).data('product-id');
+                const sizeValue = $(`#size-group-${id}`).find(".active input[type='radio']").val();
                 addToCart(productId, 1, sizeValue);
                 searchProductShop();
             })

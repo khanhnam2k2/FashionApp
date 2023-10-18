@@ -23,9 +23,9 @@ function showConfirmDialog(message, preConfirmCallback) {
  */
 function notiSuccess(mess = 'Success',position = 'top-end', callback = function () { }) {
     $('#alert-error').addClass('d-none');
-    $('html, body').animate({
-        scrollTop: $(".container").offset().top
-    });
+    // $('html, body').animate({
+    //     scrollTop: $(".container").offset().top
+    // });
     const Toast = Swal.mixin({
         toast: true,
         position: position,

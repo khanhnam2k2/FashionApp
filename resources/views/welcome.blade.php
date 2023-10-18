@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="row product__filter">
-                    @foreach ($products as $item)
+                    @foreach ($products as $key => $item)
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix {{ Str::slug($item->categoryName) }}">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="{{ Storage::url($item->image) }}">
@@ -122,14 +122,16 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6>{{ $item->name }}</h6>
-                                    <button data-id="{{ $item->id }}" class="add-cart btn">+ Add To
+                                    <button data-id="{{ $key }}" data-product-id="{{ $item->id }}"
+                                        class="add-cart btn">+ Add To
                                         Cart</button>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h5>${{ $item->price }}</h5>
                                         @php
                                             $sizes = explode(',', $item->sizes);
                                         @endphp
-                                        <div class="size-group btn-group btn-group-toggle" data-toggle="buttons">
+                                        <div class="size-group btn-group btn-group-toggle"
+                                            id="size-group-{{ $key }}" data-toggle="buttons">
                                             @foreach ($sizes as $size)
                                                 <label class="btn {{ $size == 'M' ? 'active' : '' }} ">
                                                     <input type="radio" {{ $size == 'M' ? 'checked' : '' }}
@@ -227,11 +229,10 @@
     <script>
         $(document).ready(function() {
             $(document).on('click', '.add-cart', function() {
-                const productId = $(this).data('id');
-                const selectedSize = $('input[name="size"]:checked');
-                const sizeValue = selectedSize.val();
+                const id = $(this).data('id');
+                const productId = $(this).data('product-id');
+                const sizeValue = $(`#size-group-${id}`).find(".active input[type='radio']").val();
                 addToCart(productId, 1, sizeValue);
-                searchProductShop();
             })
         })
     </script>
