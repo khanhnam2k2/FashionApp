@@ -267,6 +267,29 @@
                 $("#productPrice").val('');
                 $("#productQuantity").val('');
                 $("#productImage").val('');
+                $('#sizeAndQuantityFields').html(
+                    `
+                    <div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="productSize" class="form-label">Size<span
+                                        class="text-danger">*</span></label>
+                                <select name="sizes[]" class="form-select" id="productSize">
+                                    <option  value="S">S</option>
+                                    <option  value="M">M</option>
+                                    <option  value="L">L</option>
+                                    <option  value="XL">XL</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productQuantity" class="form-label">Quantity<span
+                                        class="text-danger">*</span></label>
+                                <input class="form-control" type="number" value="1" name="quantity[]">
+                            </div>
+                        </div>
+                    </div>
+                    `
+                );
                 $("#productDescription").val('');
                 $("#productSku").val('');
                 $('#sizes').val('');

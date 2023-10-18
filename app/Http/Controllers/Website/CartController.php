@@ -37,8 +37,8 @@ class CartController extends Controller
 
     public function removeProduct(Request $request)
     {
-        $this->cartService->removeProductFromCart($request);
-        return response()->json('ok');
+        $data = $this->cartService->removeProductFromCart($request);
+        return response()->json(['data' => $data]);
     }
     public function updateCart(Request $request)
     {

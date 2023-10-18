@@ -9,8 +9,8 @@
                     <div class="breadcrumb__text">
                         <h4>Shopping Cart</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
+                            <a href="{{ route('home') }}">Home</a>
+                            <a href="{{ route('shop.index') }}">Shop</a>
                             <span>Shopping Cart</span>
                         </div>
                     </div>
@@ -81,9 +81,12 @@
                             size: size
                         }
                     }).done(function(res) {
-                        if (res == 'ok') {
-                            notiSuccess('Successfully removed the product from the cart');
+                        const data = res.data.original;
+                        if (data.success) {
+                            notiSuccess(data.success);
                             searchCart();
+                        } else if (data.error) {
+                            notiError(data.error);
                         }
 
                     }).fail(function() {

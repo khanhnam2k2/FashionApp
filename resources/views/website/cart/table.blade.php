@@ -27,12 +27,12 @@
                                                 <h5>${{ $item->productPrice }}</h5>
                                             </div>
                                         </td>
-                                        @php
-                                            $sizes = json_decode($item->productSizes);
-                                        @endphp
                                         <td class="size__item">
                                             <div class="size">
                                                 <div class="pro-size-2">
+                                                    @php
+                                                        $sizes = ['S', 'M', 'L', 'XL'];
+                                                    @endphp
                                                     <select name="size" class="sizeProductCart" style="border:none">
                                                         @foreach ($sizes as $size)
                                                             <option {{ $item->size == $size ? 'selected' : '' }}
@@ -40,7 +40,6 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
-
                                                 </div>
                                             </div>
                                         </td>
