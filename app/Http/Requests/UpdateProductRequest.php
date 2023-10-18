@@ -28,7 +28,9 @@ class UpdateProductRequest extends FormRequest
             'name' => 'required',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:20000',
             'price' => 'required',
-            'quantity.*' => 'required',
+            'quantity' => 'required|array|min:1',
+            'quantity.*' => 'required|integer|min:1',
+            'sizes' => 'required',
             'sizes.*' => 'required'
         ];
     }
@@ -38,8 +40,14 @@ class UpdateProductRequest extends FormRequest
         return [
             'name.required' => 'Name product is required',
             'price.required' => 'Price product is required',
-            'quantity.*.required' => 'Quantity product is required',
-            'sizes.*.required' => 'Size product is required',
+            'quantity.required' => 'The quantity field is required.',
+            'quantity.array' => 'The quantity must be an array.',
+            'quantity.min' => 'The quantity must have at least 1 element.',
+            'quantity.*.required' => 'Each quantity element is required.',
+            'quantity.*.integer' => 'Each quantity element must be an integer.',
+            'quantity.*.min' => 'Each quantity element must have a minimum value of 1.',
+            'sizes.required' => 'Size product is required',
+            'sizes.*.required' => 'Each size element is required.',
             'image.mines' => 'Image format must be jpeg, jpg, png, gif',
             'image.max' => 'The maximum size of a photo is 20MB',
         ];
