@@ -84,7 +84,10 @@ class ProductService extends BaseService
                 DB::raw('GROUP_CONCAT(product_size_quantities.quantity) as quantities')
             )
                 ->join('categories', 'products.category_id', '=', 'categories.id')
-                ->join('product_size_quantities', 'product_size_quantities.product_id', '=', 'products.id')
+                ->join('product_size_quantities', function ($join) {
+                    $join->on('products.id', '=', 'product_size_quantities.product_id')
+                        ->where('product_size_quantities.quantity', '>', 0);
+                })
                 ->whereNull('products.deleted_at');
 
             if ($searchName != null && $searchName != '') {
