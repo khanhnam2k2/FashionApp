@@ -75,7 +75,7 @@ function handleImageUpload(input,image){
  * @param {Number} productId id of product
  * @param {Number} quantity 
  */
-function addToCart(productId,quantity,size){
+function addToCart(productId,quantity,size,btn){
     $.ajax({
         type: "POST",
         url: globalRouter.urlAddToCart,
@@ -109,5 +109,7 @@ function addToCart(productId,quantity,size){
         } else {
             notiError();
         }
-    }).always(function() {})
+    }).always(function() {
+        btn.prop('disabled', false);
+    })
 }

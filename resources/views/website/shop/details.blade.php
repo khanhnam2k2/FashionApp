@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Shop Details - Male Fashion')
 @section('content')
     <!-- Shop Details Section Begin -->
     <section class="shop-details">
@@ -51,7 +52,7 @@
                                     <input type="number" min="1" class="form-control" id="quantityProduct"
                                         value="1">
                                 </div>
-                                <button id="addToCart" class="primary-btn">add to cart</button>
+                                <button id="addToCart" class="btn primary-btn">add to cart</button>
                                 <div class="mt-3">
                                     <h5 class="d-none"><span id="product-available">0</span> products available</h5>
                                 </div>
@@ -220,11 +221,12 @@
         $(document).ready(function() {
             $('#addToCart').on('click', function(e) {
                 e.preventDefault();
+                $(this).prop('disabled', true)
                 const selectedSize = $('input[name="size"]:checked');
                 const sizeValue = selectedSize.val();
                 const productId = {{ $product->id }};
                 const quantity = $('#quantityProduct').val();
-                addToCart(productId, quantity, sizeValue);
+                addToCart(productId, quantity, sizeValue, $(this));
             });
 
             $('input[name="size"]').on('change', function(e) {

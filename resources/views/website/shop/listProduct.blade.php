@@ -7,9 +7,9 @@
                     background-size: cover;
                     background-position: top center;">
                     <ul class="product__hover">
-                        <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                        <li><a href="{{ route('shop.details', $item->id) }}"><img src="img/icon/search.png"
-                                    alt=""></a>
+                        <li><a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a></li>
+                        <li><a href="{{ route('shop.details', $item->id) }}"><img
+                                    src="{{ asset('img/icon/search.png') }}" alt=""></a>
                         </li>
                     </ul>
                 </div>

@@ -148,10 +148,11 @@
             });
 
             $(document).on('click', '.add-cart', function() {
+                $(this).prop('disabled', true);
                 const id = $(this).data('id');
                 const productId = $(this).data('product-id');
                 const sizeValue = $(`#size-group-${id}`).find(".active input[type='radio']").val();
-                addToCart(productId, 1, sizeValue);
+                addToCart(productId, 1, sizeValue, $(this));
                 searchProductShop();
             })
         })
