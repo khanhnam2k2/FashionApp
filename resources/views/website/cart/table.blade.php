@@ -30,33 +30,26 @@
                                         <td class="size__item">
                                             <div class="size">
                                                 <div class="pro-size-2">
-                                                    @php
-                                                        $sizes = ['S', 'M', 'L', 'XL'];
-                                                    @endphp
-                                                    <select name="size" class="sizeProductCart" style="border:none">
-                                                        @foreach ($sizes as $size)
-                                                            <option {{ $item->size == $size ? 'selected' : '' }}
-                                                                value="{{ $size }}">{{ $size }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    <span>{{ $item->size }}</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="quantity__item">
                                             <div class="quantity">
-                                                <div class="pro-qty-2">
+                                                <div
+                                                    class="pro-qty-2 d-flex align-items-center justify-content-between w-100 border border-dark">
+                                                    <button class="decrement btn rounded-0">-</button>
                                                     <input type="number" data-product-id="{{ $item->productId }}"
                                                         class="qtyProductCart" data-size="{{ $item->size }}"
-                                                        value="{{ $item->quantity }}">
+                                                        value="{{ $item->quantity }}" onkeydown="return false;">
+                                                    <button class="increment btn rounded-0">+</button>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="cart__price">$ {{ $item->total }}</td>
                                         <td class="cart__close"><span class="remove-from-cart"
-                                                data-product-id="{{ $item->productId }}"
-                                                data-size="{{ $item->size }}" style="cursor: pointer"><i
-                                                    class="fa fa-close"></i></span></td>
+                                                data-product-id="{{ $item->productId }}" data-size="{{ $item->size }}"
+                                                style="cursor: pointer"><i class="fa fa-close"></i></span></td>
                                     </tr>
                                 @endforeach
                             </tbody>

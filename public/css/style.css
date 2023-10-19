@@ -2325,6 +2325,19 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+.quantity__item .decrement,.quantity__item .increment{
+	color: #000!important;
+	font-weight: bold !important;
+	font-size: 20px !important;
+}
+
+.quantity__item .decrement{
+	border-right: 1px solid #000 !important;
+}
+
+.quantity__item .increment{
+	border-left: 1px solid #000 !important;
+}
 
 .shopping__cart__table {
 	margin-bottom: 30px;

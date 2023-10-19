@@ -8,12 +8,14 @@ use App\Models\Product;
 use App\Models\ProductSizeQuantity;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CartService
 {
     public function handleAddToCart($request)
     {
+        DB::beginTransaction();
         try {
             $product = Product::find($request->productId);
 
@@ -33,9 +35,10 @@ class CartService
 
             $productSizeQuantity = ProductSizeQuantity::where('product_id', $product->id)
                 ->where('size', $request->size)
+                ->where('quantity', '>', 0)
                 ->first();
             if (!$productSizeQuantity) {
-                return response()->json(['error' => 'Product size not found']);
+                return response()->json(['error' => 'This size is out of stock']);
             }
 
             $existingCartItem = CartItem::where('cart_id', $cart->id)
@@ -67,8 +70,10 @@ class CartService
             $productSizeQuantity->quantity -= $request->quantity;
             $productSizeQuantity->save();
 
-            return response()->json(['success' => 'Product added successfully', 'quantityAvailable' => $product->quantity]);
+            DB::commit();
+            return response()->json(['success' => 'Product added successfully', 'quantityAvailable' => $productSizeQuantity->quantity]);
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e);
             return response()->json($e, 500);
         }
@@ -87,7 +92,7 @@ class CartService
             }
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
-                ->select('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id as productId', 'products.name as productName', 'products.price as productPrice', 'products.image as productImage',)
+                ->select('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id as productId', 'products.name as productName', 'products.price as productPrice', 'products.image as productImage')
                 ->selectRaw('SUM(cart_items.quantity * products.price) as total')
                 ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.image')
                 ->get();
@@ -108,6 +113,7 @@ class CartService
 
     public function removeProductFromCart($request)
     {
+        DB::beginTransaction();
         try {
             $user  = Auth::user();
             $cart = Cart::where('user_id', $user->id)->first();
@@ -136,8 +142,10 @@ class CartService
             $productSizeQuantity->quantity += $cartItem->quantity;
             $productSizeQuantity->save();
 
+            DB::commit();
             return response()->json(['success' => 'Successfully removed the product from the cart']);
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e);
             return response()->json($e, 500);
         }
@@ -145,6 +153,7 @@ class CartService
 
     public function updateCart($request)
     {
+        DB::beginTransaction();
         try {
             $newQuantity = $request->quantity;
             $user  = Auth::user();
@@ -160,12 +169,16 @@ class CartService
                 ->first();
 
             if ($cartItem) {
-                $product = Product::findOrFail($request->productId);
-                if ($newQuantity <= $product->quantity) {
-                    $product->quantity += $cartItem->quantity - $newQuantity;
-                    $product->save();
+                $productSizeQuantity = ProductSizeQuantity::where('product_id', $request->productId)
+                    ->where('size', $request->size)
+                    ->first();
+                if ($newQuantity - $cartItem->quantity <= $productSizeQuantity->quantity) {
 
-                    // update size and quantity for cart
+                    // Update quantity in product_size_quantities
+                    $productSizeQuantity->quantity = $productSizeQuantity->quantity - ($newQuantity - $cartItem->quantity);
+                    $productSizeQuantity->save();
+
+                    // Update size and quantity for cart
                     $cartItem->size = $request->size;
                     $cartItem->quantity = $newQuantity;
                     $cartItem->save();
@@ -175,7 +188,9 @@ class CartService
                     return response()->json(['error' => 'New quantity exceeds available quantity']);
                 }
             }
+            DB::commit();
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e);
             return response()->json($e, 500);
         }

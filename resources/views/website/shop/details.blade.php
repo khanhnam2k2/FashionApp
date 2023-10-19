@@ -35,18 +35,15 @@
                             <div class="product__details__option">
                                 <div class="product__details__option__size">
                                     <span>Size:</span>
-                                    <label for="s">s
-                                        <input type="radio" id="s" name="size" value="S">
-                                    </label>
-                                    <label class="active" for="m">m
-                                        <input type="radio" id="m" name="size" value="M" checked>
-                                    </label>
-                                    <label for="l">l
-                                        <input type="radio" id="l" name="size" value="L">
-                                    </label>
-                                    <label for="xl">xl
-                                        <input type="radio" id="xl" name="size" value="XL">
-                                    </label>
+                                    @php
+                                        $sizes = explode(',', $product->sizes);
+                                    @endphp
+                                    @foreach ($sizes as $k => $size)
+                                        <label for="size_{{ $k }}">{{ $size }}
+                                            <input type="radio" id="size_{{ $k }}" name="size"
+                                                value="{{ $size }}">
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="product__details__cart__option">
@@ -56,7 +53,7 @@
                                 </div>
                                 <button id="addToCart" class="primary-btn">add to cart</button>
                                 <div class="mt-3">
-                                    <h5><span id="product-available">{{ $product->quantity }}</span> products available</h5>
+                                    <h5 class="d-none"><span id="product-available">0</span> products available</h5>
                                 </div>
                             </div>
 
@@ -203,6 +200,23 @@
 @endsection
 @section('web-script')
     <script>
+        const urlGetQuantityOfSize = "{{ route('shop.getQuantityOfSize', ['size' => ':size']) }}";
+
+        function getQuantityOfSize(size, productId) {
+            $.ajax({
+                type: "GET",
+                url: urlGetQuantityOfSize.replace(':size', size),
+                data: {
+                    productId: productId
+                }
+            }).done(function(res) {
+                const totalQuantityOfSize = res.data;
+                $('#product-available').parent().removeClass('d-none');
+                $('#product-available').text(totalQuantityOfSize ?? '0');
+            }).fail(function() {
+                notiError();
+            })
+        }
         $(document).ready(function() {
             $('#addToCart').on('click', function(e) {
                 e.preventDefault();
@@ -211,6 +225,12 @@
                 const productId = {{ $product->id }};
                 const quantity = $('#quantityProduct').val();
                 addToCart(productId, quantity, sizeValue);
+            });
+
+            $('input[name="size"]').on('change', function(e) {
+                const size = $(this).val();
+                const productId = {{ $product->id }};
+                getQuantityOfSize(size, productId);
             })
         })
     </script>

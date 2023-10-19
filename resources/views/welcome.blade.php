@@ -132,11 +132,11 @@
                                         @endphp
                                         <div class="size-group btn-group btn-group-toggle"
                                             id="size-group-{{ $key }}" data-toggle="buttons">
-                                            @foreach ($sizes as $size)
-                                                <label class="btn {{ $size == 'M' ? 'active' : '' }} ">
-                                                    <input type="radio" {{ $size == 'M' ? 'checked' : '' }}
-                                                        name="size" id="{{ $size }}"
-                                                        value="{{ $size }}"> {{ $size }}
+                                            @foreach ($sizes as $k => $size)
+                                                <label class="btn {{ $k == 0 ? 'active' : '' }} ">
+                                                    <input type="radio" {{ $k == 0 ? 'checked' : '' }} name="size"
+                                                        id="{{ $size }}" value="{{ $size }}">
+                                                    {{ $size }}
                                                 </label>
                                             @endforeach
                                         </div>

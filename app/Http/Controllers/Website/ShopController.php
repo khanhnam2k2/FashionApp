@@ -31,4 +31,10 @@ class ShopController extends Controller
         $product = $this->productService->getProductById($id);
         return view('website.shop.details', compact('product'));
     }
+
+    public function getQuantityOfSize($size, Request $request)
+    {
+        $data = $this->productService->getQuantityOfSize($size, $request);
+        return response()->json(['data' => $data]);
+    }
 }

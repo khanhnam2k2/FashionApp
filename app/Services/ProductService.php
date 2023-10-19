@@ -14,10 +14,37 @@ class ProductService extends BaseService
     public function getProductById($id)
     {
         try {
-            $product = Product::select('products.*', 'categories.name as categoryName', 'categories.id as categoryId')
+            $product = Product::select(
+                'products.id',
+                'products.name',
+                'products.price',
+                'products.description',
+                'products.sku',
+                'products.image',
+                'products.status',
+                'categories.name as categoryName',
+                DB::raw('GROUP_CONCAT(product_size_quantities.size) as sizes'),
+                'categories.name as categoryName',
+                'categories.id as categoryId',
+            )
                 ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('product_size_quantities', function ($join) {
+                    $join->on('products.id', '=', 'product_size_quantities.product_id')
+                        ->where('product_size_quantities.quantity', '>', 0);
+                })
                 ->where('products.id', $id)
                 ->where('products.status', Status::ON)
+                ->groupBy(
+                    'products.id',
+                    'products.name',
+                    'products.price',
+                    'products.description',
+                    'products.sku',
+                    'products.image',
+                    'products.status',
+                    'categories.id',
+                    'categories.name'
+                )
                 ->first();
             return $product;
         } catch (Exception $e) {
@@ -94,6 +121,7 @@ class ProductService extends BaseService
 
     public function createProduct($request)
     {
+        DB::beginTransaction();
         try {
             $uploadImage = $this->uploadFile($request->file('image'), 'products');
             $product = [
@@ -117,9 +145,10 @@ class ProductService extends BaseService
                     $productSizeQuantity->save();
                 }
             }
-
+            DB::commit();
             return true;
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e);
             return response()->json($e, 500);
         }
@@ -176,6 +205,19 @@ class ProductService extends BaseService
             $data = Product::findOrFail($id);
             $this->deleteFile($data->image);
             $data->delete();
+            return $data;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    public function getQuantityOfSize($size, $request)
+    {
+        try {
+            $data = ProductSizeQuantity::where('size', $size)
+                ->where('product_id', $request->productId)
+                ->pluck('quantity')->first();
             return $data;
         } catch (Exception $e) {
             Log::error($e);

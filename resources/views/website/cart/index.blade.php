@@ -23,10 +23,12 @@
     <!-- Shopping Cart Section Begin -->
     <div id="cart_table"></div>
     <!-- Shopping Cart Section End -->
-
 @endsection
 @section('web-script')
     <script>
+        /**
+         * Load cart
+         */
         function searchCart() {
             $.ajax({
                 url: "{{ route('cart.search') }}",
@@ -41,6 +43,10 @@
             });
         }
 
+        /**
+         * Update cart
+         * @param data
+         */
         function updateCart(data) {
             $.ajax({
                 type: "POST",
@@ -53,18 +59,27 @@
                 const data = res.data.original;
                 if (data.success) {
                     notiSuccess(data.success, 'center');
-                    searchCart();
                 } else if (data.error) {
                     notiError(data.error);
                 }
-            }).fail(function() {
-                notiError();
+            }).fail(function(xhr) {
+                if (xhr.status === 400 && xhr.responseJSON.errors) {
+                    const errorMessages = xhr.responseJSON.errors;
+                    for (let fieldName in errorMessages) {
+                        notiError(errorMessages[fieldName][0]);
+                    }
+                } else {
+                    notiError();
+                }
+            }).always(function() {
+                searchCart();
             })
         }
+
         $(document).ready(function() {
             searchCart();
 
-            // remove product from cart
+            // Remove product from cart
             $(document).on('click', '.remove-from-cart', function() {
                 const productId = $(this).data('product-id');
                 const size = $(this).data('size');
@@ -97,10 +112,18 @@
                 });
             });
 
-            $(document).on('change', '.qtyProductCart', function() {
-                const productId = $(this).data('product-id');
-                const size = $(this).data('size');
-                const newQuantity = parseInt($(this).val());
+            // Increment quantity product from cart
+            $(document).on('click', '.increment', function() {
+                let input = $(this).siblings(".qtyProductCart");
+                let btnDecrement = $(this).siblings(".decrement");
+                let currentValue = parseInt(input.val());
+                $(this).prop('disabled', true);
+                btnDecrement.prop('disabled', true);
+                input.prop('disabled', true);
+                input.val(currentValue + 1);
+                const productId = input.data('product-id');
+                const size = input.data('size');
+                const newQuantity = parseInt(input.val());
                 const data = {
                     productId: productId,
                     size: size,
@@ -109,6 +132,30 @@
                 updateCart(data);
             })
 
+            // Decrement quantity product from cart
+            $(document).on('click', '.decrement', function() {
+                let input = $(this).siblings(".qtyProductCart");
+                let btnIncrement = $(this).siblings(".increment");
+                let currentValue = parseInt(input.val());
+                if (currentValue > 1) {
+                    $(this).prop('disabled', true);
+                    btnIncrement.prop('disabled', true);
+                    input.prop('disabled', true);
+                    input.val(currentValue - 1);
+                    const productId = input.data('product-id');
+                    const size = input.data('size');
+                    const newQuantity = parseInt(input.val());
+                    const data = {
+                        productId: productId,
+                        size: size,
+                        quantity: newQuantity,
+                    }
+                    updateCart(data);
+                } else {
+                    notiError('Minimum quantity is 1');
+                }
+
+            })
         })
     </script>
 @endsection
