@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Log;
 class PostService extends BaseService
 {
 
+    public function getLimitPost()
+    {
+        try {
+            $posts = Post::where('status', Status::ON)->take(3)->latest()->get();
+            return $posts;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
     public function searchPost($searchName)
     {
         try {
