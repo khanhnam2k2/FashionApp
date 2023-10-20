@@ -165,6 +165,7 @@ class ProductService extends BaseService
             $product = Product::findOrFail($request->productId);
 
             if (!empty($request->file('image'))) {
+                $this->deleteFile($product->image);
                 $uploadImage = $this->uploadFile($request->file('image'), 'products');
             }
 
