@@ -45,6 +45,14 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('post.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="fa-solid fa-blog"></i>
+                        </span>
+                        <span class="hide-menu">Posts</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('contact.index') }}" aria-expanded="false">
                         <span>
                             <i class="fa-solid fa-address-book"></i>

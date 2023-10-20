@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Website\CartController;
@@ -53,6 +54,14 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/create', [AdminProductController::class, 'create'])->name('product.create');
         Route::post('/update', [AdminProductController::class, 'update'])->name('product.update');
         Route::delete('/delete/{id}', [AdminProductController::class, 'delete'])->name('product.delete');
+    });
+
+    Route::prefix('posts')->group(function () {
+        Route::get('/', [AdminPostController::class, 'index'])->name('post.index');
+        Route::post('/search', [AdminPostController::class, 'search'])->name('post.search');
+        Route::post('/create', [AdminPostController::class, 'create'])->name('post.create');
+        Route::post('/update', [AdminPostController::class, 'update'])->name('post.update');
+        Route::delete('/delete/{id}', [AdminPostController::class, 'delete'])->name('post.delete');
     });
 
     Route::prefix('contacts')->group(function () {
