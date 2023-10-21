@@ -183,13 +183,12 @@ class CartService
                     $cartItem->size = $request->size;
                     $cartItem->quantity = $newQuantity;
                     $cartItem->save();
-
+                    DB::commit();
                     return response()->json(['success' => 'Cart updated successfully']);
                 } else {
                     return response()->json(['error' => 'New quantity exceeds available quantity']);
                 }
             }
-            DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
