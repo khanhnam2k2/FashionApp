@@ -124,7 +124,7 @@
     function createProduct(data) {
         $.ajax({
             type: "POST",
-            url: "{{ route('product.create') }}",
+            url: "{{ route('admin.product.create') }}",
             contentType: false,
             processData: false,
             headers: {
@@ -157,7 +157,7 @@
     function updateProduct(data) {
         $.ajax({
             type: "POST",
-            url: "{{ route('product.update') }}",
+            url: "{{ route('admin.product.update') }}",
             contentType: false,
             processData: false,
             headers: {

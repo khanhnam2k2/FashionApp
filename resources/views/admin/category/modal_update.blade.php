@@ -59,7 +59,7 @@
     function createCategory(data) {
         $.ajax({
             type: "POST",
-            url: "{{ route('category.create') }}",
+            url: "{{ route('admin.category.create') }}",
             contentType: false,
             processData: false,
             headers: {
@@ -93,7 +93,7 @@
     function updateCategory(data) {
         $.ajax({
             type: "POST",
-            url: "{{ route('category.update') }}",
+            url: "{{ route('admin.category.update') }}",
             contentType: false,
             processData: false,
             headers: {

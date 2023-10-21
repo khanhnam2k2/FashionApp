@@ -29,7 +29,7 @@
                     <span class="hide-menu">Menu</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('category.index') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('admin.category.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-article"></i>
                         </span>
@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('product.index') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('admin.product.index') }}" aria-expanded="false">
                         <span>
                             <i class="fa-solid fa-shirt"></i>
                         </span>
@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('post.index') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('admin.post.index') }}" aria-expanded="false">
                         <span>
                             <i class="fa-solid fa-blog"></i>
                         </span>
@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('contact.index') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('admin.contact.index') }}" aria-expanded="false">
                         <span>
                             <i class="fa-solid fa-address-book"></i>
                         </span>

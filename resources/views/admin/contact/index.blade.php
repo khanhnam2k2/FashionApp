@@ -21,14 +21,14 @@
 @endsection
 @section('web-script')
     <script>
-        const urlDeleteContact = "{{ route('contact.delete', ['id' => ':id']) }}";
+        const urlDeleteContact = "{{ route('admin.contact.delete', ['id' => ':id']) }}";
 
         /**
          * Load contact list
          */
         function searchContact(page = 1) {
             $.ajax({
-                url: '<?= route('contact.search') ?>?page=' + page,
+                url: '<?= route('admin.contact.search') ?>?page=' + page,
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

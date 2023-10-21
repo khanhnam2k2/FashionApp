@@ -36,14 +36,14 @@
                 console.error(error);
             });
 
-        const urlDeletePost = "{{ route('post.delete', ['id' => ':id']) }}";
+        const urlDeletePost = "{{ route('admin.post.delete', ['id' => ':id']) }}";
 
         /**
          * Load cagtegory list
          */
         function searchPost(page = 1) {
             $.ajax({
-                url: '<?= route('post.search') ?>?page=' + page,
+                url: '<?= route('admin.post.search') ?>?page=' + page,
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -25,14 +25,14 @@
 @endsection
 @section('web-script')
     <script>
-        const urlDeleteCategory = "{{ route('category.delete', ['id' => ':id']) }}";
+        const urlDeleteCategory = "{{ route('admin.category.delete', ['id' => ':id']) }}";
 
         /**
          * Load cagtegory list
          */
         function searchCategory(page = 1) {
             $.ajax({
-                url: '<?= route('category.search') ?>?page=' + page,
+                url: '<?= route('admin.category.search') ?>?page=' + page,
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

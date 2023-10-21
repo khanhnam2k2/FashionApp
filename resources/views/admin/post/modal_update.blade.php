@@ -88,7 +88,7 @@
     function createPost(data) {
         $.ajax({
             type: "POST",
-            url: "{{ route('post.create') }}",
+            url: "{{ route('admin.post.create') }}",
             contentType: false,
             processData: false,
             headers: {
@@ -121,7 +121,7 @@
     function updatePost(data) {
         $.ajax({
             type: "POST",
-            url: "{{ route('post.update') }}",
+            url: "{{ route('admin.post.update') }}",
             contentType: false,
             processData: false,
             headers: {

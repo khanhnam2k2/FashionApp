@@ -13,7 +13,7 @@
                     data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New
                     Product</button>
             @else
-                <a href="{{ route('category.index') }}">Please create a new category to add products</a>
+                <a href="{{ route('admin.category.index') }}">Please create a new category to add products</a>
             @endif
         </div>
         <div class="mt-3">
@@ -28,14 +28,14 @@
 @endsection
 @section('web-script')
     <script>
-        const urlDeleteProduct = "{{ route('product.delete', ['id' => ':id']) }}";
+        const urlDeleteProduct = "{{ route('admin.product.delete', ['id' => ':id']) }}";
 
         /**
          * Load cagtegory list
          */
         function searchProduct(page = 1) {
             $.ajax({
-                url: '<?= route('product.search') ?>?page=' + page,
+                url: '<?= route('admin.product.search') ?>?page=' + page,
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
