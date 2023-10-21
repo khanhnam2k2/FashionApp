@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Website\CartController;
+use App\Http\Controllers\Website\CheckoutController;
 use App\Http\Controllers\Website\ContactController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\PostController;
@@ -76,6 +77,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/search', [AdminContactController::class, 'search'])->name('admin.contact.search');
         Route::delete('/delete/{id}', [AdminContactController::class, 'delete'])->name('admin.contact.delete');
     });
+
+
     Route::post('ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 });
 Route::middleware('auth')->group(function () {
@@ -87,7 +90,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/update_cart', [CartController::class, 'updateCart'])->name('cart.update');
         Route::delete('/remove', [CartController::class, 'removeProduct'])->name('cart.remove');
     });
-
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
