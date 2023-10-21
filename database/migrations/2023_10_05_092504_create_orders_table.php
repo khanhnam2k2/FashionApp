@@ -14,7 +14,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->float('total_price');
+            $table->string('full_name');
+            $table->string('email');
+            $table->string('phone');
+            $table->text('address');
+            $table->text('message')->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->float('total_price')->nullable();
             $table->timestamps();
         });
     }
