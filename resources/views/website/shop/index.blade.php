@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@php
+    use App\Enums\Status;
+@endphp
 @section('title', 'Shop - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
@@ -86,7 +89,9 @@
 
 @section('web-script')
     <script>
-        function searchProductShop(page = 1, searchName = null, sortByPrice = null, categoryId = null) {
+        var statusON = {{ Status::ON }};
+
+        function searchProductShop(page = 1, searchName = null, sortByPrice = null, categoryId = null, status) {
             $.ajax({
                 url: '<?= route('shop.search') ?>?page=' + page,
                 type: "POST",
@@ -97,6 +102,7 @@
                     searchName: $('#txtSearchProduct').val(),
                     sortByPrice: sortByPrice,
                     categoryId: categoryId,
+                    status: status ?? statusON
                 }
             }).done(function(data) {
                 $('#listProduct').html(data);

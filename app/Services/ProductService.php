@@ -67,7 +67,7 @@ class ProductService extends BaseService
         }
     }
 
-    public function searchProduct($searchName = null, $sortByPrice = null, $categoryId = null)
+    public function searchProduct($searchName = null, $sortByPrice = null, $categoryId = null, $status = null)
     {
         try {
             $products = Product::select(
@@ -89,7 +89,9 @@ class ProductService extends BaseService
                         ->where('product_size_quantities.quantity', '>', 0);
                 })
                 ->whereNull('products.deleted_at');
-
+            if ($status != null && $status != '') {
+                $products->where('products.status', '=', $status);
+            }
             if ($searchName != null && $searchName != '') {
                 $products->where('products.name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('products.price', 'LIKE', '%' . $searchName . '%')

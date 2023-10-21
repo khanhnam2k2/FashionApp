@@ -23,7 +23,7 @@ class ShopController extends Controller
     }
     public function search(Request $request)
     {
-        $data = $this->productService->searchProduct($request->searchName, $request->sortByPrice, $request->categoryId);
+        $data = $this->productService->searchProduct($request->searchName, $request->sortByPrice, $request->categoryId, $request->status);
         return view('website.shop.listProduct', compact('data'));
     }
     public function details($id)
