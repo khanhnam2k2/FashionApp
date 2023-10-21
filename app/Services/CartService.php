@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductSizeQuantity;
 use Exception;
@@ -189,6 +191,50 @@ class CartService
                     return response()->json(['error' => 'New quantity exceeds available quantity']);
                 }
             }
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    public function placeOrder($request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user  = Auth::user();
+
+            $orderData = [
+                'full_name' => $request->full_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'message' => $request->message,
+                'user_id' => $user->id,
+            ];
+            $order = Order::create($orderData);
+
+            $cart = Cart::where('user_id', $user->id)->first();
+
+            $cartItems = CartItem::select('cart_items.*', 'products.price as productPrice')
+                ->where('cart_id', $cart->id)
+                ->join('products', 'cart_items.product_id', '=', 'products.id')
+                ->get();
+            $orderItemData = [];
+            foreach ($cartItems as  $item) {
+                $orderItemData[] = [
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'price' => $item->productPrice,
+                    'size' => $item->size,
+                    'quantity' => $item->quantity
+                ];
+            }
+            DB::table('order_items')->insert($orderItemData);
+            CartItem::where('cart_id', $cart->id)->delete();;
+            DB::commit();
+            return true;
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);

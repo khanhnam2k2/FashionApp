@@ -25,7 +25,7 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form action="#">
+                <form id="form_order">
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
                             <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a
@@ -36,7 +36,7 @@
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
                                         <p>Full Name<span>*</span></p>
-                                        <input type="text" name="fullname">
+                                        <input type="text" name="full_name">
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+                                <button type="button" id="btn-order" class="site-btn">PLACE ORDER</button>
                             </div>
                         </div>
                     </div>
@@ -126,4 +126,49 @@
         </div>
     </section>
     <!-- Checkout Section End -->
+@endsection
+
+@section('web-script')
+    <script>
+        $(document).ready(function() {
+            function createOrder(data, btn) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('checkout.placeOrder') }}",
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: data,
+                }).done(function(res) {
+                    if (res == 'ok') {
+                        notiSuccess('Order Success! Please check your purchase', 'center', function() {
+                            window.location.href = "{{ route('home') }}";
+                        });
+                    }
+                }).fail(function(xhr) {
+                    if (xhr.status === 400 && xhr.responseJSON.errors) {
+                        const errorMessages = xhr.responseJSON.errors;
+                        for (let fieldName in errorMessages) {
+                            notiError(errorMessages[fieldName][0]);
+                        }
+                    } else {
+                        notiError();
+                    }
+                }).always(function() {
+                    btn.prop('disabled', false);
+                })
+            }
+            $('#btn-order').click(function(e) {
+                e.preventDefault();
+                const btnOrder = $(this);
+                btnOrder.prop('disabled', true);
+                let formData = new FormData($('form#form_order')[0]);
+                showConfirmDialog('Are you sure you want to dat hang?', function() {
+                    createOrder(formData, btnOrder);
+                });
+            })
+        })
+    </script>
 @endsection
