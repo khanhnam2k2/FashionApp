@@ -57,7 +57,8 @@
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Blog</a></li>
+                        <li class="{{ request()->is('post') ? 'active' : '' }}"><a
+                                href="{{ route('post.index') }}">Blog</a></li>
                         <li class="{{ request()->is('contacts') ? 'active' : '' }}"><a
                                 href="{{ route('contact.show') }}">Contacts</a></li>
                     </ul>

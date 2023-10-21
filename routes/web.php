@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Website\CartController;
 use App\Http\Controllers\Website\ContactController;
 use App\Http\Controllers\Website\HomeController;
+use App\Http\Controllers\Website\PostController;
 use App\Http\Controllers\Website\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::prefix('post')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('post.index');
+    Route::post('/search', [PostController::class, 'search'])->name('post.search');
+    Route::delete('/details/{id}', [PostController::class, 'details'])->name('post.details');
+});
 Route::prefix('shop')->group(function () {
     Route::get('/', [ShopController::class, 'index'])->name('shop.index');
     Route::get('/{size}', [ShopController::class, 'getQuantityOfSize'])->name('shop.getQuantityOfSize');

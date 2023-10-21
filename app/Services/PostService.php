@@ -21,14 +21,14 @@ class PostService extends BaseService
             return response()->json($e, 500);
         }
     }
-    public function searchPost($searchName)
+    public function searchPost($searchName = null, $paginate = 4)
     {
         try {
             $posts = Post::select('posts.*');
             if ($searchName != null && $searchName != '') {
                 $posts->where('posts.title', 'LIKE', '%' . $searchName . '%');
             }
-            $posts = $posts->latest()->paginate(6);
+            $posts = $posts->latest()->paginate($paginate);
             return $posts;
         } catch (Exception $e) {
             Log::error($e);

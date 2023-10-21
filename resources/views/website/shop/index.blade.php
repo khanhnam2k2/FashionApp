@@ -83,28 +83,6 @@
     </section>
     <!-- Shop Section End -->
 @endsection
-<style>
-    .product-pagination .pagination {
-        border: none;
-    }
-
-    .product-pagination .pagination .page-item .page-link {
-        border: none;
-        background-color: #fff;
-        color: #000;
-    }
-
-    .product-pagination .pagination .active>.page-link,
-    .page-link.active {
-        border: 1px solid #000;
-        border-radius: 50%;
-    }
-
-    .product-pagination .pagination .disabled>.page-link,
-    .page-link.disabled {
-        opacity: 0.7;
-    }
-</style>
 
 @section('web-script')
     <script>
