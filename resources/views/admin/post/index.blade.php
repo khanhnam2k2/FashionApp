@@ -23,6 +23,19 @@
 @endsection
 @section('web-script')
     <script>
+        var myEditor;
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                ckfinder: {
+                    uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}"
+                }
+            }).then(editor => {
+                myEditor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
         const urlDeletePost = "{{ route('post.delete', ['id' => ':id']) }}";
 
         /**
@@ -46,7 +59,9 @@
         }
 
         $(document).ready(function() {
+
             searchPost();
+
 
 
             // Delete product

@@ -43,7 +43,7 @@ class PostService extends BaseService
             $post = [
                 'title' => $request->title,
                 'image' => $uploadImage,
-                'content' => $request->content,
+                'content' => $request->contentPost,
                 'user_id' => Auth::user()->id,
                 'status' => $request->statusPost,
             ];
@@ -66,7 +66,7 @@ class PostService extends BaseService
             $post = [
                 'title' => $request->title,
                 'image' => $uploadImage ?? $data->image,
-                'content' => $request->content,
+                'content' => $request->contentPost,
                 'user_id' => Auth::user()->id,
                 'status' => $request->statusPost,
             ];

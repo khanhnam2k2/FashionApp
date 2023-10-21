@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 
@@ -24,13 +26,13 @@ class PostController extends Controller
         return view('admin.post.table', ['data' => $data]);
     }
 
-    public function create(Request $request)
+    public function create(StorePostRequest $request)
     {
         $this->postService->createPost($request);
         return response()->json('ok');
     }
 
-    public function update(Request $request)
+    public function update(UpdatePostRequest $request)
     {
         $this->postService->updatePost($request);
         return response()->json('ok');

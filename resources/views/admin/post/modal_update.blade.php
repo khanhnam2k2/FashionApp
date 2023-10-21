@@ -1,6 +1,6 @@
 <!-- Modal Create/Update Post -->
 <div class="modal fade" id="updatePostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="titlePostModal">Create new post</h5>
@@ -23,8 +23,9 @@
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-12">
-                            <label for="content" class="form-label">Content</label>
-                            <textarea class="form-control" id="content" name="content"></textarea>
+                            <label for="contentPost" class="form-label">Content</label>
+                            {{-- <textarea class="ckeditor form-control" id="contentPost" name="contentPost"></textarea> --}}
+                            <textarea name="content" id="editor"></textarea>
                         </div>
                     </div>
                     <div class="mb-4 d-flex align-items-center">
@@ -47,20 +48,29 @@
     </div>
 </div>
 <style>
+    .ck-editor__editable_inline {
+        height: 350px;
+    }
+
+    #updatePostModal {
+        --bs-modal-width: 1000px !important;
+    }
+
     #imagePostPreview {
-        width: 200px;
-        height: 100px;
+        width: 400px;
+        height: 200px;
         object-fit: cover;
         border-radius: 10px;
     }
 </style>
-<script>
+<script type="text/javascript">
     /**
      * Submit form post
      */
     function doSubmitPost() {
         let formData = new FormData($('form#form_post')[0]);
-        formData.append('statusPost', $('#cbStatusPost').is(':checked') ? 1 : 0)
+        formData.append('statusPost', $('#cbStatusPost').is(':checked') ? 1 : 0);
+        formData.append('contentPost', myEditor.getData());
         if ($('#postId').val() == '') {
             showConfirmDialog('Are you sure you want to create this post?', function() {
                 createPost(formData);
@@ -152,7 +162,7 @@
                 imagePreviewHtml = `<img src="/storage/${data.image}" id="imagePostPreview" />`
                 $("#postId").val(data.id);
                 $("#title").val(data.title);
-                $("#content").val(data.content);
+                myEditor.setData(data.content);
                 $('#imagePostPreviewContainer').html(imagePreviewHtml);
                 $('#cbStatusPost').prop('checked', data.status == 1);
                 $('#titlePostModal').html('Update Post');
@@ -161,7 +171,7 @@
                     `<img src="{{ asset('img/default-img.png') }}" id="imagePostPreview" />`;
                 $("#postId").val('');
                 $("#title").val('');
-                $("#content").val('');
+                myEditor.setData('');
                 $("#postImage").val('');
                 $('#imagePostPreviewContainer').html(imagePreviewHtml);
                 $('#cbStatusPost').prop('checked', true);
