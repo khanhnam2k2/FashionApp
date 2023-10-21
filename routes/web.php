@@ -31,7 +31,7 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::prefix('post')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('post.index');
     Route::post('/search', [PostController::class, 'search'])->name('post.search');
-    Route::delete('/details/{id}', [PostController::class, 'details'])->name('post.details');
+    Route::get('/details/{id}', [PostController::class, 'details'])->name('post.details');
 });
 Route::prefix('shop')->group(function () {
     Route::get('/', [ShopController::class, 'index'])->name('shop.index');

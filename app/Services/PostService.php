@@ -21,12 +21,15 @@ class PostService extends BaseService
             return response()->json($e, 500);
         }
     }
-    public function searchPost($searchName = null, $paginate = 4)
+    public function searchPost($searchName = null, $paginate = 4, $status = null)
     {
         try {
             $posts = Post::select('posts.*');
             if ($searchName != null && $searchName != '') {
                 $posts->where('posts.title', 'LIKE', '%' . $searchName . '%');
+            }
+            if ($status != null && $status != '') {
+                $posts->where('posts.status', Status::ON);
             }
             $posts = $posts->latest()->paginate($paginate);
             return $posts;
@@ -86,6 +89,19 @@ class PostService extends BaseService
             $this->deleteFile($data->image);
             $data->delete();
             return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    public function getPostById($id)
+    {
+        try {
+            $data = Post::select('posts.*', 'users.name as author')
+                ->join('users', 'users.id', '=', 'posts.user_id')
+                ->where('status', Status::ON)->where('posts.id', $id)->first();
+            return $data;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);

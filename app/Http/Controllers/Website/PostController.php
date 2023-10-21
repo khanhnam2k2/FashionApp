@@ -20,7 +20,13 @@ class PostController extends Controller
 
     public function search(Request $request)
     {
-        $data = $this->postService->searchPost($request->searchName, $request->paginate);
+        $data = $this->postService->searchPost($request->searchName, $request->paginate, $request->status);
         return view('website.post.listPost', compact('data'));
+    }
+
+    public function details($id)
+    {
+        $data = $this->postService->getPostById($id);
+        return view('website.post.details', ['post' => $data]);
     }
 }

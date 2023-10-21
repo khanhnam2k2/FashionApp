@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@php
+    use App\Enums\Status;
+@endphp
 @section('title', 'Post - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
@@ -44,6 +47,7 @@
                 data: {
                     searchName: $('#txtSearchPostWeb').val(),
                     paginate: 3,
+                    status: {{ Status::ON }}
                 },
             }).done(function(data) {
                 $('#post_list').html(data);
