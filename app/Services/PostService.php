@@ -42,7 +42,7 @@ class PostService extends BaseService
     public function createPost($request)
     {
         try {
-            $uploadImage = $this->uploadFile($request->file('image'), 'posts');
+            $uploadImage = $this->uploadImage($request->file('image'), 'posts');
             $post = [
                 'title' => $request->title,
                 'image' => $uploadImage,
@@ -64,7 +64,7 @@ class PostService extends BaseService
             $data = Post::findOrFail($request->postId);
             if (!empty($request->file('image'))) {
                 $this->deleteFile($data->image);
-                $uploadImage = $this->uploadFile($request->file('image'), 'posts');
+                $uploadImage = $this->uploadImage($request->file('image'), 'posts');
             }
             $post = [
                 'title' => $request->title,

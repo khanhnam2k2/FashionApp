@@ -128,7 +128,7 @@ class ProductService extends BaseService
     {
         DB::beginTransaction();
         try {
-            $uploadImage = $this->uploadFile($request->file('image'), 'products');
+            $uploadImage = $this->uploadImage($request->file('image'), 'products');
             $product = [
                 'name' => $request->name,
                 'price' => $request->price,
@@ -168,7 +168,7 @@ class ProductService extends BaseService
 
             if (!empty($request->file('image'))) {
                 $this->deleteFile($product->image);
-                $uploadImage = $this->uploadFile($request->file('image'), 'products');
+                $uploadImage = $this->uploadImage($request->file('image'), 'products');
             }
 
             $productArr = [
