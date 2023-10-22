@@ -24,12 +24,12 @@
                         </div>
                         <ul>
                             <li>
-                                <h4>America</h4>
-                                <p>195 E Parker Square Dr, Parker, CO 801 <br />+43 982-314-0958</p>
+                                <h4>Nghệ An</h4>
+                                <p>182 Lê Duẩn - TP Vinh <br />+84 982-314-0958</p>
                             </li>
                             <li>
-                                <h4>France</h4>
-                                <p>109 Avenue Léon, 63 Clermont-Ferrand <br />+12 345-423-9893</p>
+                                <h4>Hà Tĩnh</h4>
+                                <p>10 Lý Tự Trọng - TP Hà Tĩnh <br />+84 945-423-9893</p>
                             </li>
                         </ul>
                     </div>
@@ -39,10 +39,12 @@
                         <form id="form_contact">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="text" name="name" placeholder="Name">
+                                    <input type="text" name="name" placeholder="Name"
+                                        value="{{ Auth::user()->name ?? '' }}">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="email" name="email" placeholder="Email">
+                                    <input type="email" name="email" placeholder="Email"
+                                        value="{{ Auth::user()->email ?? '' }}">
                                 </div>
                                 <div class="col-lg-12">
                                     <textarea name="message" placeholder="Message"></textarea>
