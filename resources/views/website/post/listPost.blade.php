@@ -25,6 +25,6 @@
 </div>
 <div class="row">
     <div class="product-pagination d-flex justify-content-center" style="padding: 10px 15px  0px 0px;width:100%">
-        {{ $data->links('website.post.paging') }}
+        {{ $data->links('website.post.pagingPost') }}
     </div>
 </div>

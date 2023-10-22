@@ -9,6 +9,7 @@ use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Website\CartController;
 use App\Http\Controllers\Website\CheckoutController;
+use App\Http\Controllers\Website\CommentController;
 use App\Http\Controllers\Website\ContactController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\PostController;
@@ -92,6 +93,13 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/placeOrder', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+
+    Route::prefix('comment')->group(function () {
+        Route::post('/create', [CommentController::class, 'create'])->name('comment.create');
+        Route::post('/search', [CommentController::class, 'searchCommentPost'])->name('comment.searchCommentPost');
+    });
+
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

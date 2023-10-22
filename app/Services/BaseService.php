@@ -14,9 +14,9 @@ class BaseService
      * Upload files to storage
      *
      * @param $files
-     * @return path files
+     * @return path image
      */
-    public function uploadFile($files, $newFolder = null)
+    public function uploadImage($files, $newFolder = null)
     {
         try {
             $imagePath = $files;
@@ -27,6 +27,32 @@ class BaseService
             $folder = $newFolder ? 'uploads/' . $newFolder : 'uploads';
             $path = $files->storeAs($folder, $picName, 'public');
             return $path;
+        } catch (Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
+    }
+
+    /**
+     * Upload files to storage
+     * @param $files
+     * @return path files 
+     */
+    public function uploadFile($files, $newFolder = null)
+    {
+        try {
+            $imagePath = $files;
+            $imageName = $imagePath->getClientOriginalName();
+            $typeFile = $imagePath->getMimeType();
+            $filename = explode('.', $imageName)[0];
+            $extension = $imagePath->getClientOriginalExtension();
+            $picName =  Str::slug(time() . "_" . $filename, "_") . "." . $extension;
+            $folder = $newFolder ? 'uploads/' . $newFolder : 'uploads';
+            $path = $files->storeAs($folder, $picName, 'public');
+            return [
+                "path" => $path,
+                "type" => $typeFile,
+            ];
         } catch (Exception $e) {
             Log::error($e);
             throw $e;

@@ -49,22 +49,29 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="comment-container" id="commentPostList">
+
+                        </div>
                         <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
-                            <form action="#">
+                            <form id="form_comment">
+                                @csrf
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name">
+                                    <input type="hidden" name="commentType" value="post">
+                                    <input type="hidden" name="postId" value="{{ $post->id }}">
+                                    <div class="col-lg-12 border">
+                                        <textarea name="content" placeholder="Comment"></textarea>
+                                        <label for="file">📸</label>
+                                        <input type="file" class="form-control d-none" id="file" name="file">
                                     </div>
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Email">
+                                    <div class="position-relative mt-2">
+                                        <div id="previewFileComment">
+                                        </div>
+                                        <span id="deleteFileComment" style="display: none;cursor:pointer"><i
+                                                class="fa fa-close"></i></span>
                                     </div>
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Phone">
-                                    </div>
-                                    <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment"></textarea>
-                                        <button type="submit" class="site-btn">Post Comment</button>
+                                    <div class="col-lg-12 text-center mt-3">
+                                        <button id="btn-comment-post" class="site-btn">Post Comment</button>
                                     </div>
                                 </div>
                             </form>
@@ -75,4 +82,94 @@
         </div>
     </section>
     <!-- Blog Details Section End -->
+@endsection
+
+@section('web-script')
+    <script>
+        function showFile(input) {
+            if (input.files && input.files[0]) {
+                let file = input.files[0];
+                let fileCommentHtml = '';
+                if (file.type.startsWith("image/")) {
+                    fileCommentHtml = `<img src="${URL.createObjectURL(file)}"  alt="Image Comment" />`;
+                } else if (file.type.startsWith("video/")) {
+                    fileCommentHtml = `<video src="${URL.createObjectURL(file)}" controls></video>`;
+                }
+                $('#previewFileComment').html(fileCommentHtml);
+                $('#deleteFileComment').show();
+            }
+        }
+
+        function deleteFileComment(btn) {
+            $('#file').val('');
+            $('#previewFileComment').empty();
+            btn.hide();
+        }
+
+        function searchCommentPost(page = 1) {
+            $.ajax({
+                url: '<?= route('comment.searchCommentPost') ?>?page=' + page,
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done(function(data) {
+                $('#commentPostList').html(data);
+            }).fail(function() {
+                notiError();
+            });
+        }
+
+        function createComment(data, btn, form) {
+            $.ajax({
+                type: "POST",
+                url: "{{ route('comment.create') }}",
+                contentType: false,
+                processData: false,
+                data: data,
+            }).done(function(res) {
+                if (res.data == null) {
+                    notiError('Please enter comment content');
+                    return;
+                }
+                notiSuccess('comment successfully', 'center');
+                form[0].reset();
+                deleteFileComment($('#deleteFileComment'));
+                searchCommentPost();
+            }).fail(function(xhr) {
+                if (xhr.status === 400 && xhr.responseJSON.errors) {
+                    const errorMessages = xhr.responseJSON.errors;
+                    for (let fieldName in errorMessages) {
+                        notiError(errorMessages[fieldName][0]);
+                    }
+                } else {
+                    notiError();
+                }
+            }).always(function() {
+                btn.prop('disabled', false);
+            })
+        }
+
+        $(document).ready(function() {
+            searchCommentPost();
+
+            $('#btn-comment-post').click(function(e) {
+                e.preventDefault();
+                $(this).prop('disabled', true);
+                const form = $('form#form_comment');
+                let formData = new FormData(form[0]);
+                createComment(formData, $(this), form);
+            });
+
+            $('#file').change(function() {
+                showFile(this);
+            });
+
+            $('#deleteFileComment').click(function() {
+                deleteFileComment($(this))
+            });
+
+
+        })
+    </script>
 @endsection
