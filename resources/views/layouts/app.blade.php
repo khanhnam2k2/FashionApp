@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="{{ asset('css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/sweetalert.css') }}" type="text/css">
-   
+
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/jquery.nice-select.min.js') }}"></script>
@@ -76,7 +76,6 @@
             <a href="#" class="search-switch"><img src="{{ asset('img/icon/search.png') }}" alt=""></a>
             <a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a>
             <a href="#"><img src="{{ asset('img/icon/cart.png') }}" alt=""> <span>0</span></a>
-            <div class="price">$0.00</div>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">

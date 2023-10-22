@@ -49,14 +49,6 @@
                                 href="{{ route('shop.index') }}">Shop</a></li>
                         <li class="{{ request()->is('about') ? 'active' : '' }}"><a
                                 href="{{ route('about') }}">About</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
                         <li class="{{ request()->is('post') ? 'active' : '' }}"><a
                                 href="{{ route('post.index') }}">Blog</a></li>
                         <li class="{{ request()->is('contacts') ? 'active' : '' }}"><a

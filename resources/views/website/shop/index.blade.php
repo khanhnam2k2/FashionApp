@@ -63,8 +63,8 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__left">
-                                    <button class="btn" style="background: #f3f2ee" onclick="location.reload();">Refresh
-                                        Shop </button>
+                                    <a class="btn" style="background: #f3f2ee" href="{{ route('cart.index') }}">My cart
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
