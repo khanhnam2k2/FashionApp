@@ -1,4 +1,4 @@
-# Project Matching
+# Project FashionApp
 ## Technology
 1. Laravel 10x (PHP v8.1.17)
     - Documentation: https://laravel.com/docs/9.x
@@ -74,17 +74,16 @@
         php artisan optimize
         php artisan optimize:clear
     ```
-    php artisan tinker
 
     - Account admin:
         ```
-        Username: danghanam2k2@gmail.com
-        Password: sktt1nam
+        Username: admin@gmail.com
+        Password: 12345678
         ```
 
 ## Visual studio code Extensions
 - GitLens
 - EditorConfig
-- vscode-icon
 - Laravel Blade Snippets
 - Laravel Snippets
+- Laravel Format
