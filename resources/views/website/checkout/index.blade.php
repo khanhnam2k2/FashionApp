@@ -21,108 +21,116 @@
     </section>
     <!-- Breadcrumb Section End -->
 
+
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
-            <div class="checkout__form">
-                <form id="form_order">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6">
-                            <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a
-                                    href="#">Click
-                                    here</a> to enter your code</h6>
-                            <h6 class="checkout__title">Billing Details</h6>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="checkout__input">
-                                        <p>Full Name<span>*</span></p>
-                                        <input type="text" name="full_name">
+            @if (count($cartItems) > 0)
+                <div class="checkout__form">
+                    <form id="form_order">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a
+                                        href="#">Click
+                                        here</a> to enter your code</h6>
+                                <h6 class="checkout__title">Billing Details</h6>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="checkout__input">
+                                            <p>Full Name<span>*</span></p>
+                                            <input type="text" name="full_name" value="{{ Auth::user()->name ?? '' }}">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Phone<span>*</span></p>
-                                        <input type="text" name="phone">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>Phone<span>*</span></p>
+                                            <input type="text" name="phone">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>Email<span>*</span></p>
+                                            <input type="email" name="email" value="{{ Auth::user()->email ?? '' }}">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Email<span>*</span></p>
-                                        <input type="email" name="email">
-                                    </div>
+                                <div class="checkout__input mb-2">
+                                    <p>Address<span>*</span></p>
+                                    <textarea name="address" placeholder="Street Address" class="form-control"></textarea>
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Message</p>
+                                    <textarea class="form-control" name="message" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                                 </div>
                             </div>
-                            <div class="checkout__input mb-2">
-                                <p>Address<span>*</span></p>
-                                <textarea name="address" placeholder="Street Address" class="form-control"></textarea>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Message</p>
-                                <textarea class="form-control" name="message" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="checkout__order">
-                                <h4 class="order__title">Your order</h4>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Size</th>
-                                            <th>Quantity</th>
-                                            <th>Price</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($cartItems as $item)
+                            <div class="col-lg-6 col-md-6">
+                                <div class="checkout__order">
+                                    <h4 class="order__title">Your order</h4>
+                                    <table class="table">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    {{ $item->productName }}
-                                                </td>
-                                                <td>
-                                                    {{ $item->size }}
-                                                </td>
-                                                <td>
-                                                    {{ $item->quantity }}
-                                                </td>
-                                                <td>
-                                                    ${{ $item->productPrice }}
-                                                </td>
-                                                <td>
-                                                    ${{ $item->total }}
-                                                </td>
+                                                <th>Product</th>
+                                                <th>Size</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th>Total</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <ul class="checkout__total__all">
-                                    <li>Total <span>${{ $totalCarts }}</span></li>
-                                </ul>
-                                <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                    ut labore et dolore magna aliqua.</p>
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($cartItems as $item)
+                                                <tr>
+                                                    <td>
+                                                        {{ $item->productName }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->size }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->quantity }}
+                                                    </td>
+                                                    <td>
+                                                        ${{ $item->productPrice }}
+                                                    </td>
+                                                    <td>
+                                                        ${{ $item->total }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <ul class="checkout__total__all">
+                                        <li>Total <span>${{ $totalCarts }}</span></li>
+                                    </ul>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
+                                        ut labore et dolore magna aliqua.</p>
+                                    <div class="checkout__input__checkbox">
+                                        <label for="payment">
+                                            Check Payment
+                                            <input type="checkbox" id="payment">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="checkout__input__checkbox">
+                                        <label for="paypal">
+                                            Paypal
+                                            <input type="checkbox" id="paypal">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <button type="button" id="btn-order" class="site-btn">PLACE ORDER</button>
                                 </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <button type="button" id="btn-order" class="site-btn">PLACE ORDER</button>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                </div>
+            @else
+                <div class="text-center">
+                    <h2>Your shopping cart is empty! Please check your cart again.</h2>
+                </div>
+            @endif
+
         </div>
     </section>
     <!-- Checkout Section End -->
