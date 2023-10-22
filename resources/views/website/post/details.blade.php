@@ -10,7 +10,7 @@
                         <h2>{{ $post->title }}</h2>
                         <ul>
                             <li>By {{ $post->author }}</li>
-                            <li>February 21, 2019</li>
+                            <li>{{ $post->created_at->format('d F Y') }}</li>
                             <li>8 Comments</li>
                         </ul>
                     </div>

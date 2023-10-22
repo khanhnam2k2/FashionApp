@@ -3019,6 +3019,12 @@ input[type=number] {
 .blog__details__content {
 	position: relative;
 }
+.blog__details__content .image img {
+	width: 100%!important;
+	height: 400px!important;
+	object-fit: cover!important;
+	border-radius: 10px!important;
+}
 
 .blog__details__pic {
 	margin-bottom: 60px;

@@ -8,7 +8,9 @@
                     background-position: top center;">
                 </div>
                 <div class="blog__item__text">
-                    <span><img src="img/icon/calendar.png" alt=""> 16 February 2020</span>
+                    <span><img src="{{ asset('img/icon/calendar.png') }}" alt="">
+                        {{ $item->created_at->format('d F Y') }}
+                    </span>
                     <h5>{{ $item->title }}</h5>
                     <a href="{{ route('post.details', $item->id) }}">Read More</a>
                 </div>
@@ -16,8 +18,8 @@
         </div>
     @endforeach
     @if (count($data) == 0)
-        <div style="position:absolute;top:50%;left:50%;transform: translateX(-50%);font-size:25px">
-            There is no data to display
+        <div class="col-12 text-center my-4">
+            <h2>There are no posts to display!</h2>
         </div>
     @endif
 </div>
