@@ -54,7 +54,7 @@
                         </div>
                         <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
-                            <form id="form_comment">
+                            <form id="form_comment_post">
                                 @csrf
                                 <div class="row">
                                     <input type="hidden" name="commentType" value="post">
@@ -65,9 +65,9 @@
                                         <input type="file" class="form-control d-none" id="file" name="file">
                                     </div>
                                     <div class="position-relative mt-2">
-                                        <div id="previewFileComment">
+                                        <div id="previewFileCommentPost">
                                         </div>
-                                        <span id="deleteFileComment" style="display: none;cursor:pointer"><i
+                                        <span id="deleteFileCommentPost" style="display: none;cursor:pointer"><i
                                                 class="fa fa-close"></i></span>
                                     </div>
                                     <div class="col-lg-12 text-center mt-3">
@@ -95,14 +95,14 @@
                 } else if (file.type.startsWith("video/")) {
                     fileCommentHtml = `<video src="${URL.createObjectURL(file)}" controls></video>`;
                 }
-                $('#previewFileComment').html(fileCommentHtml);
-                $('#deleteFileComment').show();
+                $('#previewFileCommentPost').html(fileCommentHtml);
+                $('#deleteFileCommentPost').show();
             }
         }
 
         function deleteFileComment(btn) {
             $('#file').val('');
-            $('#previewFileComment').empty();
+            $('#previewFileCommentPost').empty();
             btn.hide();
         }
 
@@ -113,6 +113,9 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
+                data: {
+                    typeComment: 'post',
+                }
             }).done(function(data) {
                 $('#commentPostList').html(data);
             }).fail(function() {
@@ -132,9 +135,9 @@
                     notiError('Please enter comment content');
                     return;
                 }
-                notiSuccess('comment successfully', 'center');
+                notiSuccess('Comment successfully', 'center');
                 form[0].reset();
-                deleteFileComment($('#deleteFileComment'));
+                deleteFileComment($('#deleteFileCommentPost'));
                 searchCommentPost();
             }).fail(function(xhr) {
                 if (xhr.status === 400 && xhr.responseJSON.errors) {
@@ -153,19 +156,23 @@
         $(document).ready(function() {
             searchCommentPost();
 
+
+            // create comment post
             $('#btn-comment-post').click(function(e) {
                 e.preventDefault();
                 $(this).prop('disabled', true);
-                const form = $('form#form_comment');
+                const form = $('form#form_comment_post');
                 let formData = new FormData(form[0]);
                 createComment(formData, $(this), form);
             });
 
+            // chang file comment post
             $('#file').change(function() {
                 showFile(this);
             });
 
-            $('#deleteFileComment').click(function() {
+            // delete file comment post
+            $('#deleteFileCommentPost').click(function() {
                 deleteFileComment($(this))
             });
 
