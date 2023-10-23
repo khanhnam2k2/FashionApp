@@ -10,11 +10,16 @@ use Illuminate\Support\Facades\Log;
 class CommentService extends BaseService
 {
 
-    public function searchComment()
+    public function searchComment($typeComment)
     {
         try {
             $comments = Comment::select('comments.*', 'users.name as author')
                 ->join('users', 'users.id', '=', 'comments.user_id');
+            if ($typeComment == 'post') {
+                $comments->whereNotNull('post_id');
+            } elseif ($typeComment == 'product') {
+                $comments->whereNotNull('product_id');
+            }
             $comments = $comments->latest()->paginate(2);
             return $comments;
         } catch (Exception $e) {
