@@ -50,7 +50,7 @@
     // maxHeight: 600,
     positionFromTop: 50,
     resizeDuration: 700,
-    showImageNumberLabel: true,
+    // showImageNumberLabel: true,
     wrapAround: false,
     disableScrolling: false,
     /*
@@ -154,7 +154,7 @@
       }
       return false;
     });
-
+    this.$lightbox.find('.lb-prev').hide();
     this.$lightbox.find('.lb-prev').on('click', function() {
       if (self.currentImageIndex === 0) {
         self.changeImage(self.album.length - 1);
@@ -454,27 +454,27 @@
 
     this.$lightbox.find('.lb-nav').show();
 
-    if (this.album.length > 1) {
-      if (this.options.wrapAround) {
-        if (alwaysShowNav) {
-          this.$lightbox.find('.lb-prev, .lb-next').css('opacity', '1');
-        }
-        this.$lightbox.find('.lb-prev, .lb-next').show();
-      } else {
-        if (this.currentImageIndex > 0) {
-          this.$lightbox.find('.lb-prev').show();
-          if (alwaysShowNav) {
-            this.$lightbox.find('.lb-prev').css('opacity', '1');
-          }
-        }
-        if (this.currentImageIndex < this.album.length - 1) {
-          this.$lightbox.find('.lb-next').show();
-          if (alwaysShowNav) {
-            this.$lightbox.find('.lb-next').css('opacity', '1');
-          }
-        }
-      }
-    }
+    // if (this.album.length > 1) {
+    //   if (this.options.wrapAround) {
+    //     if (alwaysShowNav) {
+    //       this.$lightbox.find('.lb-prev, .lb-next').css('opacity', '1');
+    //     }
+    //     this.$lightbox.find('.lb-prev, .lb-next').show();
+    //   } else {
+    //     if (this.currentImageIndex > 0) {
+    //       this.$lightbox.find('.lb-prev').show();
+    //       if (alwaysShowNav) {
+    //         this.$lightbox.find('.lb-prev').css('opacity', '1');
+    //       }
+    //     }
+    //     if (this.currentImageIndex < this.album.length - 1) {
+    //       this.$lightbox.find('.lb-next').show();
+    //       if (alwaysShowNav) {
+    //         this.$lightbox.find('.lb-next').css('opacity', '1');
+    //       }
+    //     }
+    //   }
+    // }
   };
 
   // Display caption, image number, and closing button.
@@ -540,19 +540,8 @@
       // Prevent bubbling so as to not affect other components on the page.
       event.stopPropagation();
       this.end();
-    } else if (keycode === KEYCODE_LEFTARROW) {
-      if (this.currentImageIndex !== 0) {
-        this.changeImage(this.currentImageIndex - 1);
-      } else if (this.options.wrapAround && this.album.length > 1) {
-        this.changeImage(this.album.length - 1);
-      }
-    } else if (keycode === KEYCODE_RIGHTARROW) {
-      if (this.currentImageIndex !== this.album.length - 1) {
-        this.changeImage(this.currentImageIndex + 1);
-      } else if (this.options.wrapAround && this.album.length > 1) {
-        this.changeImage(0);
-      }
-    }
+    } 
+    
   };
 
   // Closing time. :-(
