@@ -53,35 +53,17 @@
 
                         </div>
                         <div class="blog__details__comment">
-                            <h4>Leave A Comment</h4>
-                            <form id="form_comment_post">
-                                @csrf
-                                <div class="row">
-                                    <input type="hidden" name="commentType" value="post">
-                                    <input type="hidden" name="postId" value="{{ $post->id }}">
-                                    <div class="col-lg-12 border">
-                                        <textarea name="content" placeholder="Comment"></textarea>
-                                        <label for="file">📸</label>
-                                        <input type="file" class="form-control d-none" id="file" name="file">
-                                    </div>
-                                    <div class="position-relative mt-2">
-                                        <div id="previewFileCommentPost">
-                                        </div>
-                                        <span id="deleteFileCommentPost" style="display: none;cursor:pointer"><i
-                                                class="fa fa-close"></i></span>
-                                    </div>
-                                    <div class="col-lg-12 text-center mt-3">
-                                        <button id="btn-comment-post" class="site-btn">Post Comment</button>
-                                    </div>
-                                </div>
-                            </form>
+                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalCommentPost">
+                                Leave A Comment
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Blog Details Section End -->
+
+    @include('website.post.modelComment')
 @endsection
 
 @section('web-script')
@@ -103,6 +85,7 @@
         function deleteFileComment(btn) {
             $('#file').val('');
             $('#previewFileCommentPost').empty();
+            $('input[name="fileOld"]').val('');
             btn.hide();
         }
 
@@ -138,6 +121,44 @@
                 notiSuccess('Comment successfully', 'center');
                 form[0].reset();
                 deleteFileComment($('#deleteFileCommentPost'));
+                $('#modalCommentPost').modal('toggle');
+                searchCommentPost();
+            }).fail(function(xhr) {
+                if (xhr.status === 400 && xhr.responseJSON.errors) {
+                    const errorMessages = xhr.responseJSON.errors;
+                    for (let fieldName in errorMessages) {
+                        notiError(errorMessages[fieldName][0]);
+                    }
+                } else {
+                    notiError();
+                }
+            }).always(function() {
+                btn.prop('disabled', false);
+            })
+        }
+
+        function updateComment(data, btn, form) {
+            $.ajax({
+                type: "POST",
+                url: "{{ route('comment.update') }}",
+                contentType: false,
+                processData: false,
+                data: data,
+            }).done(function(res) {
+                if (res.data == null) {
+                    notiError('Please enter comment content');
+                    return;
+                } else {
+                    const data = res.data.original;
+                    if (data.error) {
+                        notiError(data.error);
+                        return;
+                    }
+                }
+                notiSuccess('Comment successfully', 'center');
+                form[0].reset();
+                deleteFileComment($('#deleteFileCommentPost'));
+                $('#modalCommentPost').modal('toggle');
                 searchCommentPost();
             }).fail(function(xhr) {
                 if (xhr.status === 400 && xhr.responseJSON.errors) {
@@ -163,7 +184,12 @@
                 $(this).prop('disabled', true);
                 const form = $('form#form_comment_post');
                 let formData = new FormData(form[0]);
-                createComment(formData, $(this), form);
+                const commentId = $('#commentId').val();
+                if (commentId == '') {
+                    createComment(formData, $(this), form);
+                } else {
+                    updateComment(formData, $(this), form);
+                }
             });
 
             // chang file comment post
@@ -175,6 +201,35 @@
             $('#deleteFileCommentPost').click(function() {
                 deleteFileComment($(this))
             });
+
+            $('#modalCommentPost').on('shown.bs.modal', function(e) {
+                const data = $(e.relatedTarget).data('item');
+                let filePreviewHtml = '';
+                if (data) {
+                    const fileData = JSON.parse(data.file);
+                    $("input[name='commentId']").val(data.id);
+                    $("textarea[name='content']").val(data.content);
+                    $("input[name='fileOld']").val(data.file);
+                    if (fileData) {
+                        $('#deleteFileCommentPost').show();
+                        if (fileData.type.startsWith('image/'))
+                            filePreviewHtml = `<img src="/storage/${fileData.path}" />`;
+                        else if (fileData.type.startsWith('video/')) {
+                            filePreviewHtml =
+                                `<video src="/storage/${fileData.path}" controls />`;
+                        }
+                    }
+                    $('#previewFileCommentPost').html(filePreviewHtml);
+                    $('#titleComment').html('Edit Comment');
+                } else {
+                    $("input[name='commentId']").val('');
+                    $("textarea[name='content']").val('');
+                    $('#previewFileCommentPost').empty();
+                    $("input[name='fileOld']").val('');
+                    $('#deleteFileCommentPost').hide();
+                    $('#titleComment').html('Leave A Comment');
+                }
+            })
 
 
         })

@@ -130,7 +130,7 @@
                                     <div class="comment-container" id="commentProductList">
 
                                     </div>
-                                    <div class="blog__details__comment">
+                                    <div class="blog__details__comment mb-5">
                                         <h4>Leave A Review</h4>
                                         <form id="form_comment_product">
                                             @csrf

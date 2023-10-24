@@ -96,6 +96,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('comment')->group(function () {
         Route::post('/create', [CommentController::class, 'create'])->name('comment.create');
+        Route::post('/update', [CommentController::class, 'update'])->name('comment.update');
         Route::post('/searchPost', [CommentController::class, 'searchCommentPost'])->name('comment.searchCommentPost');
         Route::post('/searchProduct', [CommentController::class, 'searchCommentProduct'])->name('comment.searchCommentProduct');
     });

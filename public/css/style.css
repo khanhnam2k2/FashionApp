@@ -3210,11 +3210,10 @@ input[type=number] {
 	font-weight: 700;
 }
 
-.blog__details__comment h4 {
-	color: #333333;
-	font-weight: 700;
-	margin-bottom: 35px;
-	text-align: center;
+.blog__details__comment {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .blog__details__comment form input {
@@ -3925,15 +3924,18 @@ input[type=number] {
 }
 
 #previewFileCommentPost img, #previewFileCommentPost video{
-	width: 320px;
-	height: 240px;
+	width: 200px;
+	height: 150px;
 	object-fit: cover;
 	border-radius: 10px;
+	margin-left: 20px;
 }
 
 #previewFileCommentProduct img, #previewFileCommentProduct video{
-	width: 320px;
-	height: 240px;
+	width: 200px;
+	height: 150px;
 	object-fit: cover;
 	border-radius: 10px;
+	margin-left: 20px;
+
 }

@@ -32,4 +32,10 @@ class CommentController extends Controller
         $data = $this->commentService->createComment($request);
         return response()->json(['data' => $data]);
     }
+
+    public function update(Request $request)
+    {
+        $data = $this->commentService->updateComment($request);
+        return response()->json(['data' => $data]);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\UserRole;
 use App\Models\Comment;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +61,32 @@ class CommentService extends BaseService
                 }
             } else {
                 return null;
+            }
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    public function updateComment($request)
+    {
+        try {
+            $comment = Comment::findOrFail($request->commentId);
+
+            $currentUser = Auth::user();
+            if ($currentUser->id !== $comment->user_id && !$currentUser->role == UserRole::ADMIN) {
+                return response()->json(['error' => 'You do not have permission to update this comment!']);
+            }
+            if (!empty($request->file('file')) || !empty($request->content)) {
+                if (!empty($request->file())) {
+                    $uploadFile = $this->uploadFile($request->file('file'), 'comments');
+                    $comment->file = json_encode($uploadFile);
+                } else {
+                    $comment->file = $request->fileOld ?? null;
+                }
+                $comment->content = $request->content;
+                $comment->save();
+                return response()->json(['success' => 'Updated comment successfully']);
             }
         } catch (Exception $e) {
             Log::error($e);

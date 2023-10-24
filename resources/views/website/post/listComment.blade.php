@@ -1,7 +1,15 @@
+@php
+    use App\Enums\UserRole;
+@endphp
 @foreach ($data as $item)
     <div class="blog__details__quote">
-        <i class="fa fa-quote-left"></i>
+        @if (Auth::user()->role == UserRole::ADMIN || Auth::user()->id == $item->user_id)
+            <span data-toggle="modal" data-item="{{ json_encode($item) }}" data-target="#modalCommentPost"
+                data-backdrop="static" data-keyboard="false" style="cursor: pointer"><i
+                    class="fa fa-pencil-square"></i></span>
+        @endif
         <p>“{{ $item->content }}”</p>
+
         @php
             $fileInfo = json_decode($item->file);
         @endphp
@@ -9,8 +17,11 @@
             <video src="{{ Storage::url($fileInfo->path) }}" controls width="320" height="240">
             </video>
         @elseif ($fileInfo && $fileInfo->type === 'image/jpeg')
-            <img src="{{ Storage::url($fileInfo->path) }}"
-                style="width: 320px;height:240px;object-fit:cover;border-radius:10px" class="mb-2" alt="Image">
+            <a href="{{ Storage::url($fileInfo->path) }}" data-lightbox="image">
+                <img src="{{ Storage::url($fileInfo->path) }}"
+                    style="width: 320px; height: 200px; object-fit: cover; border-radius: 10px;"class="mb-2"
+                    alt="ImageComment">
+            </a>
         @endif
         <div class="d-flex justify-content-between align-items-center">
             <h6>_ {{ $item->author }} _</h6>

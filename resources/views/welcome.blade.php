@@ -198,7 +198,7 @@
                                 <span><img src="{{ asset('img/icon/calendar.png') }}" alt=""> 16 February
                                     2020</span>
                                 <h5>{{ $post->title }}</h5>
-                                <a href="#">Read More</a>
+                                <a href="{{ route('post.details', $post->id) }}">Read More</a>
                             </div>
                         </div>
                     </div>
