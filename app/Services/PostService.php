@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Models\Post;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PostService extends BaseService
@@ -98,9 +99,20 @@ class PostService extends BaseService
     public function getPostById($id)
     {
         try {
-            $data = Post::select('posts.*', 'users.name as author')
+            $data = Post::select(
+                'posts.id',
+                'posts.title',
+                'posts.content',
+                'posts.image',
+                'posts.created_at',
+                'users.name as author',
+                DB::raw('COUNT(comments.post_id) as commentCount')
+            )
                 ->join('users', 'users.id', '=', 'posts.user_id')
-                ->where('status', Status::ON)->where('posts.id', $id)->first();
+                ->join('comments', 'comments.post_id', '=', 'posts.id')
+                ->where('status', Status::ON)->where('posts.id', $id)
+                ->groupBy('posts.id', 'posts.title', 'posts.content', 'posts.image', 'posts.created_at', 'users.name')
+                ->first();
             return $data;
         } catch (Exception $e) {
             Log::error($e);

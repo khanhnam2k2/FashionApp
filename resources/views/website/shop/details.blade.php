@@ -84,7 +84,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Customer
-                                        Previews(5)</a>
+                                        Previews</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Additional
@@ -127,34 +127,13 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tabs-6" role="tabpanel">
-                                    <div class="comment-container" id="commentProductList">
-
-                                    </div>
+                                    <div class="comment-container" id="commentProductList"></div>
                                     <div class="blog__details__comment mb-5">
-                                        <h4>Leave A Review</h4>
-                                        <form id="form_comment_product">
-                                            @csrf
-                                            <div class="row">
-                                                <input type="hidden" name="commentType" value="product">
-                                                <input type="hidden" name="productId" value="{{ $product->id }}">
-                                                <div class="col-lg-12 border">
-                                                    <textarea name="content" placeholder="Comment"></textarea>
-                                                    <label for="file">📸</label>
-                                                    <input type="file" class="form-control d-none" id="file"
-                                                        name="file">
-                                                </div>
-                                                <div class="position-relative mt-2">
-                                                    <div id="previewFileCommentProduct">
-                                                    </div>
-                                                    <span id="deleteFileCommentProduct"
-                                                        style="display: none;cursor:pointer"><i
-                                                            class="fa fa-close"></i></span>
-                                                </div>
-                                                <div class="col-lg-12 text-center mt-3">
-                                                    <button id="btn-comment-product" class="site-btn">Post Review</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        <button type="button" class="btn btn-dark" data-toggle="modal"
+                                            data-target="#modalCommentProduct">
+                                            Leave A Comment
+                                        </button>
+
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tabs-7" role="tabpanel">
@@ -198,11 +177,13 @@
             </div>
         </div>
     </section>
+    @include('website.shop.modelComment')
     <!-- Shop Details Section End -->
 @endsection
 @section('web-script')
     <script>
         const urlGetQuantityOfSize = "{{ route('shop.getQuantityOfSize', ['size' => ':size']) }}";
+        const urlDeleteComment = "{{ route('comment.delete', ['id' => ':id']) }}";
 
         function getQuantityOfSize(size, productId) {
             $.ajax({
@@ -237,6 +218,7 @@
         function deleteFileComment(btn) {
             $('#file').val('');
             $('#previewFileCommentProduct').empty();
+            $('input[name="fileOld"]').val('');
             btn.hide();
         }
 
@@ -272,6 +254,46 @@
                 notiSuccess('Review successfully', 'center');
                 form[0].reset();
                 deleteFileComment($('#deleteFileCommentProduct'));
+                $('#modalCommentProduct').modal('toggle');
+                searchCommentProduct();
+            }).fail(function(xhr) {
+                if (xhr.status === 401) {
+                    window.location.href = "/login";
+                } else if (xhr.status === 400 && xhr.responseJSON.errors) {
+                    const errorMessages = xhr.responseJSON.errors;
+                    for (let fieldName in errorMessages) {
+                        notiError(errorMessages[fieldName][0]);
+                    }
+                } else {
+                    notiError();
+                }
+            }).always(function() {
+                btn.prop('disabled', false);
+            })
+        }
+
+        function updateComment(data, btn, form) {
+            $.ajax({
+                type: "POST",
+                url: "{{ route('comment.update') }}",
+                contentType: false,
+                processData: false,
+                data: data,
+            }).done(function(res) {
+                if (res.data == null) {
+                    notiError('Please enter review content');
+                    return;
+                } else {
+                    const data = res.data.original;
+                    if (data.error) {
+                        notiError(data.error);
+                        return;
+                    }
+                }
+                notiSuccess('Review successfully', 'center');
+                form[0].reset();
+                deleteFileComment($('#deleteFileCommentProduct'));
+                $('#modalCommentProduct').modal('toggle');
                 searchCommentProduct();
             }).fail(function(xhr) {
                 if (xhr.status === 400 && xhr.responseJSON.errors) {
@@ -296,7 +318,12 @@
                 $(this).prop('disabled', true);
                 const form = $('form#form_comment_product');
                 let formData = new FormData(form[0]);
-                createComment(formData, $(this), form);
+                const commentId = $('#commentId').val();
+                if (commentId == '') {
+                    createComment(formData, $(this), form);
+                } else {
+                    updateComment(formData, $(this), form);
+                }
             });
 
             // chang file review product in shop
@@ -323,6 +350,68 @@
                 const size = $(this).val();
                 const productId = {{ $product->id }};
                 getQuantityOfSize(size, productId);
+            });
+
+
+            $('#modalCommentProduct').on('shown.bs.modal', function(e) {
+                const data = $(e.relatedTarget).data('item');
+                let filePreviewHtml = '';
+                if (data) {
+                    const fileData = JSON.parse(data.file);
+                    $("input[name='commentId']").val(data.id);
+                    $("textarea[name='content']").val(data.content);
+                    $("input[name='fileOld']").val(data.file);
+                    if (fileData) {
+                        $('#deleteFileCommentProduct').show();
+                        if (fileData.type.startsWith('image/'))
+                            filePreviewHtml = `<img src="/storage/${fileData.path}" />`;
+                        else if (fileData.type.startsWith('video/')) {
+                            filePreviewHtml =
+                                `<video src="/storage/${fileData.path}" controls />`;
+                        }
+                    }
+                    $('#previewFileCommentProduct').html(filePreviewHtml);
+                    $('#titleComment').html('Edit Comment');
+                } else {
+                    $("input[name='commentId']").val('');
+                    $("textarea[name='content']").val('');
+                    $('#previewFileCommentProduct').empty();
+                    $("input[name='fileOld']").val('');
+                    $('#deleteFileCommentProduct').hide();
+                    $('#titleComment').html('Leave A Comment');
+                }
+            });
+
+            // delete comment
+            $(document).on('click', '.delete-comment-product', function() {
+                let commentId = $(this).data('id');
+                showConfirmDialog('Are you sure you want to delete this review?', function() {
+                    $.ajax({
+                        url: urlDeleteComment.replace(':id', commentId),
+                        type: "DELETE",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    }).done(function(res) {
+                        const data = res.data.original;
+                        if (data.success) {
+                            notiSuccess(data.success);
+                            searchCommentProduct();
+                        } else {
+                            notiError(data.error);
+                            return;
+                        }
+                    }).fail(function(xhr) {
+                        if (xhr.status === 400 && xhr.responseJSON.errors) {
+                            const errorMessages = xhr.responseJSON.errors;
+                            for (let fieldName in errorMessages) {
+                                notiError(errorMessages[fieldName][0]);
+                            }
+                        } else {
+                            notiError();
+                        }
+                    })
+                })
             })
 
         })

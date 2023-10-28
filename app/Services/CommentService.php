@@ -70,11 +70,12 @@ class CommentService extends BaseService
 
     public function updateComment($request)
     {
+        // dd($request->all());
         try {
             $comment = Comment::findOrFail($request->commentId);
 
             $currentUser = Auth::user();
-            if ($currentUser->id !== $comment->user_id && !$currentUser->role == UserRole::ADMIN) {
+            if ($currentUser->id !== $comment->user_id) {
                 return response()->json(['error' => 'You do not have permission to update this comment!']);
             }
             if (!empty($request->file('file')) || !empty($request->content)) {
@@ -88,6 +89,25 @@ class CommentService extends BaseService
                 $comment->save();
                 return response()->json(['success' => 'Updated comment successfully']);
             }
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    public function deleteComment($id)
+    {
+        try {
+            $comment = Comment::findOrFail($id);
+            $currentUser = Auth::user();
+            if ($currentUser->id !== $comment->user_id && !$currentUser->role == UserRole::ADMIN) {
+                return response()->json(['error' => 'You do not have permission to delete this comment!']);
+            }
+            if ($comment->image) {
+                $this->deleteFile($comment->image);
+            }
+            $comment->delete();
+            return response()->json(['success' => 'Delete comment successfully']);
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);

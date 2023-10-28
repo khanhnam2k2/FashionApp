@@ -1,14 +1,26 @@
 @php
     use App\Enums\UserRole;
 @endphp
+<div class="my-3">
+    <h3>Comment ({{ $data->total() }})</h3>
+</div>
 @foreach ($data as $item)
-    <div class="blog__details__quote">
-        @if (Auth::user()->role == UserRole::ADMIN || Auth::user()->id == $item->user_id)
-            <span data-toggle="modal" data-item="{{ json_encode($item) }}" data-target="#modalCommentPost"
-                data-backdrop="static" data-keyboard="false" style="cursor: pointer"><i
-                    class="fa fa-pencil-square"></i></span>
-        @endif
-        <p>“{{ $item->content }}”</p>
+    <div class="blog__details__quote mt-4">
+        @auth
+            @if (Auth::user()->id == $item->user_id)
+                <span data-toggle="modal" data-item="{{ json_encode($item) }}" data-target="#modalCommentPost"
+                    data-backdrop="static" data-keyboard="false" style="cursor: pointer"><i
+                        class="fa fa-pencil-square"></i></span>
+            @endif
+        @endauth
+        <div class="d-flex justify-content-between align-items-center">
+            <p>“{{ $item->content }}”</p>
+            @auth
+                @if (Auth::user()->role == UserRole::ADMIN || Auth::user()->id == $item->user_id)
+                    <span data-id="{{ $item->id }}" class="delete-comment-post btn btn-danger mb-4">X</span>
+                @endif
+            @endauth
+        </div>
 
         @php
             $fileInfo = json_decode($item->file);

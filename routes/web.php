@@ -45,6 +45,15 @@ Route::prefix('contacts')->group(function () {
     Route::get('/', [ContactController::class, 'showContact'])->name('contact.show');
     Route::post('/create', [ContactController::class, 'create'])->name('contact.create');
 });
+
+Route::prefix('comment')->group(function () {
+    Route::post('/searchPost', [CommentController::class, 'searchCommentPost'])->name('comment.searchCommentPost');
+    Route::post('/searchProduct', [CommentController::class, 'searchCommentProduct'])->name('comment.searchCommentProduct');
+});
+
+
+
+
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
@@ -97,8 +106,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('comment')->group(function () {
         Route::post('/create', [CommentController::class, 'create'])->name('comment.create');
         Route::post('/update', [CommentController::class, 'update'])->name('comment.update');
-        Route::post('/searchPost', [CommentController::class, 'searchCommentPost'])->name('comment.searchCommentPost');
-        Route::post('/searchProduct', [CommentController::class, 'searchCommentProduct'])->name('comment.searchCommentProduct');
+        Route::delete('/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
     });
 
 

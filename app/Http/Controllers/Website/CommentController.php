@@ -38,4 +38,9 @@ class CommentController extends Controller
         $data = $this->commentService->updateComment($request);
         return response()->json(['data' => $data]);
     }
+    public function delete($id)
+    {
+        $data = $this->commentService->deleteComment($id);
+        return response()->json(['data' => $data]);
+    }
 }

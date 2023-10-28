@@ -11,7 +11,7 @@
                         <ul>
                             <li>By {{ $post->author }}</li>
                             <li>{{ $post->created_at->format('d F Y') }}</li>
-                            <li>8 Comments</li>
+                            <li><span id="totalComment">{{ $post->commentCount }}</span> Comments</li>
                         </ul>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                             {!! $post->content !!}
                         </div>
 
-                        <div class="blog__details__option">
+                        <div class="blog__details__option mb-3">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__details__author">
@@ -49,8 +49,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="comment-container" id="commentPostList">
+                        <div class="">
+                            <div class="comment-container" id="commentPostList">
 
+                            </div>
                         </div>
                         <div class="blog__details__comment">
                             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalCommentPost">
@@ -68,6 +70,8 @@
 
 @section('web-script')
     <script>
+        const urlDeleteComment = "{{ route('comment.delete', ['id' => ':id']) }}";
+
         function showFile(input) {
             if (input.files && input.files[0]) {
                 let file = input.files[0];
@@ -101,7 +105,7 @@
                 }
             }).done(function(data) {
                 $('#commentPostList').html(data);
-            }).fail(function() {
+            }).fail(function(xhr) {
                 notiError();
             });
         }
@@ -124,7 +128,9 @@
                 $('#modalCommentPost').modal('toggle');
                 searchCommentPost();
             }).fail(function(xhr) {
-                if (xhr.status === 400 && xhr.responseJSON.errors) {
+                if (xhr.status === 401) {
+                    window.location.href = "/login";
+                } else if (xhr.status === 400 && xhr.responseJSON.errors) {
                     const errorMessages = xhr.responseJSON.errors;
                     for (let fieldName in errorMessages) {
                         notiError(errorMessages[fieldName][0]);
@@ -229,9 +235,39 @@
                     $('#deleteFileCommentPost').hide();
                     $('#titleComment').html('Leave A Comment');
                 }
+            });
+
+            // delete comment
+            $(document).on('click', '.delete-comment-post', function() {
+                let commentId = $(this).data('id');
+                showConfirmDialog('Are you sure you want to delete this comment?', function() {
+                    $.ajax({
+                        url: urlDeleteComment.replace(':id', commentId),
+                        type: "DELETE",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    }).done(function(res) {
+                        const data = res.data.original;
+                        if (data.success) {
+                            notiSuccess(data.success);
+                            searchCommentPost();
+                        } else {
+                            notiError(data.error);
+                            return;
+                        }
+                    }).fail(function(xhr) {
+                        if (xhr.status === 400 && xhr.responseJSON.errors) {
+                            const errorMessages = xhr.responseJSON.errors;
+                            for (let fieldName in errorMessages) {
+                                notiError(errorMessages[fieldName][0]);
+                            }
+                        } else {
+                            notiError();
+                        }
+                    })
+                })
             })
-
-
         })
     </script>
 @endsection
