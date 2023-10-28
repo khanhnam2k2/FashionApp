@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titleCategoryModal">Add Product</h5>
+                <h5 class="modal-title" id="titleCategoryModal">Create new product</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -20,10 +20,18 @@
                         </div>
                     </div>
                     <div class="">
-                        <label for="productImage" class="form-label">Image</label>
-                        <input type="file" class="form-control" id="productImage" name="image">
+                        <div class="d-flex items-center justify-content-between">
+                            <div class="d-flex items-center gap-4">
+                                <h5 id="titleImage">Choose Image (max 4 images)</h5>
+                                <label for="productImage" class="form-label"><i
+                                        class="fa-solid fa-file-image"></i></label>
+                            </div>
+                            <span id="btn-delete-images" style="display: none" class="btn"><i
+                                    class="fa-solid fa-circle-xmark"></i></span>
+                        </div>
+                        <input type="file" class="form-control d-none" id="productImage" multiple name="images">
                     </div>
-                    <div class="w-100 d-flex justify-content-center my-2" id="imageProductPreviewContainer">
+                    <div class="w-100 my-2 mb-5" id="imageProductPreviewContainer">
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-8">
@@ -99,204 +107,20 @@
         object-fit: cover;
         border-radius: 10px;
     }
+
+    #updateProductModal {
+        --bs-modal-width: 1000px !important;
+    }
+
+    .fa-file-image {
+        cursor: pointer;
+        font-size: 20px;
+        color: rgb(76, 76, 228);
+    }
+
+    .fa-circle-xmark {
+        cursor: pointer;
+        font-size: 20px;
+        color: red;
+    }
 </style>
-<script>
-    /**
-     * Submit form cateogry
-     */
-    function doSubmitProduct() {
-        let formData = new FormData($('form#form_product')[0]);
-        formData.append('statusProduct', $('#cbStatusProduct').is(':checked') ? 1 : 0)
-        if ($('#productId').val() == '') {
-            showConfirmDialog('Are you sure you want to create this product?', function() {
-                createProduct(formData);
-            });
-        } else {
-            showConfirmDialog('Are you sure you want to update this product?', function() {
-                updateProduct(formData);
-            });
-        }
-    }
-
-    /**
-     * Create form product
-     */
-    function createProduct(data) {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('admin.product.create') }}",
-            contentType: false,
-            processData: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: data,
-
-        }).done(function(res) {
-            if (res == 'ok') {
-                notiSuccess('Product created successfully');
-                searchProduct();
-                $('#updateProductModal').modal('toggle');
-            }
-        }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
-            } else {
-                notiError();
-            }
-        })
-
-    }
-
-    /**
-     * Update form product
-     */
-    function updateProduct(data) {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('admin.product.update') }}",
-            contentType: false,
-            processData: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: data,
-
-        }).done(function(res) {
-            if (res == 'ok') {
-                notiSuccess('Product updated successfully');
-                searchProduct();
-                $('#updateProductModal').modal('toggle');
-
-            }
-        }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
-            } else {
-                notiError();
-            }
-        })
-    }
-
-    $(document).ready(function() {
-
-        $('#addSize').click(function(e) {
-            e.preventDefault();
-            let newField = `
-            <div class="row ">
-                <span class="removeSize text-end mt-2" style="cursor:pointer;color:red"><i class="fa-solid fa-circle-xmark"></i></span>
-                <div class="col-md-6">
-                    <label for="productSize" class="form-label">Size<span
-                            class="text-danger">*</span></label>
-                    <select name="sizes[]" class="form-select" id="productSize">
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label for="productQuantity" class="form-label">Quantity<span
-                            class="text-danger">*</span></label>
-                    <input class="form-control" type="number" value="1" name="quantity[]">
-                </div>
-            </div>`;
-            $('#sizeAndQuantityFields').append(newField);
-        });
-
-        $('#sizeAndQuantityFields').on('click', '.removeSize', function() {
-            $(this).parent().remove();
-        });
-
-        // add/change image for product
-        $('#productImage').on('change', function() {
-            handleImageUpload(this, $('#imageProductPreview'));
-        });
-        // event show product modal
-        $('#updateProductModal').on('shown.bs.modal', function(e) {
-            const data = $(e.relatedTarget).data('item');
-            let imagePreviewHtml = '';
-            if (data) {
-                const sizes = data.sizes.split(",");
-                const quantities = data.quantities.split(",");
-                let rowSizeQuantityContainer = $('<div></div>');
-                imagePreviewHtml = `<img src="/storage/${data.image}" id="imageProductPreview" />`
-                $("#productId").val(data.id);
-                $("#productName").val(data.name);
-                $("#productPrice").val(data.price);
-                $('#imageProductPreviewContainer').html(imagePreviewHtml);
-                sizes.forEach(function(size, index) {
-                    let html = `
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="productSize" class="form-label">Size<span
-                                    class="text-danger">*</span></label>
-                            <select name="sizes[]" class="form-select" id="productSize">
-                                <option ${size == 'S' ? 'selected' : ''} value="S">S</option>
-                                <option ${size == 'M' ? 'selected' : ''} value="M">M</option>
-                                <option ${size == 'L' ? 'selected' : ''} value="L">L</option>
-                                <option ${size == 'XL' ? 'selected' : ''} value="XL">XL</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="productQuantity" class="form-label">Quantity<span
-                                    class="text-danger">*</span></label>
-                            <input class="form-control" type="number" value="${quantities[index]}" name="quantity[]">
-                        </div>
-                    </div>
-                    `;
-                    rowSizeQuantityContainer.append(html);
-                });
-                $('#sizeAndQuantityFields').html(rowSizeQuantityContainer);
-                $("#productDescription").val(data.description);
-                $("#productSku").val(data.sku);
-                $('#category').val(data.category_id);
-                $('#cbStatusProduct').prop('checked', data.status == 1);
-                $('#titleCategoryModal').html('Update product');
-            } else {
-                imagePreviewHtml =
-                    `<img src="{{ asset('img/default-img.png') }}" id="imageProductPreview" />`;
-                $("#productId").val('');
-                $("#productName").val('');
-                $("#productPrice").val('');
-                $("#productQuantity").val('');
-                $("#productImage").val('');
-                $('#sizeAndQuantityFields').html(
-                    `
-                    <div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="productSize" class="form-label">Size<span
-                                        class="text-danger">*</span></label>
-                                <select name="sizes[]" class="form-select" id="productSize">
-                                    <option  value="S">S</option>
-                                    <option  value="M">M</option>
-                                    <option  value="L">L</option>
-                                    <option  value="XL">XL</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="productQuantity" class="form-label">Quantity<span
-                                        class="text-danger">*</span></label>
-                                <input class="form-control" type="number" value="1" name="quantity[]">
-                            </div>
-                        </div>
-                    </div>
-                    `
-                );
-                $("#productDescription").val('');
-                $("#productSku").val('');
-                $('#sizes').val('');
-                $('#imageProductPreviewContainer').html(imagePreviewHtml);
-                $('#cbStatusProduct').prop('checked', true);
-                $('#titleCategoryModal').html('Create new product');
-            }
-        });
-    })
-</script>

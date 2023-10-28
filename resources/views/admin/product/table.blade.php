@@ -20,10 +20,21 @@
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $item->name }}</td>
                 <td>
-                    <a href="{{ Storage::url($item->image) }}" data-lightbox="image">
-                        <img src="{{ Storage::url($item->image) }}"
-                            style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;" alt="">
-                    </a>
+                    @php
+                        $images = json_decode($item->images);
+                    @endphp
+                    <div class="row">
+                        @foreach ($images as $image)
+                            <div class="col-md-6 mb-2">
+                                <a href="{{ Storage::url($image) }}" data-lightbox="image">
+                                    <img src="{{ Storage::url($image) }}"
+                                        style="width: 100%; height: 100px; object-fit: cover; border-radius: 10px;"
+                                        alt="">
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+
                 </td>
                 <td>{{ $item->price }} $</td>
                 <td>

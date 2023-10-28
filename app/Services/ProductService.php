@@ -77,7 +77,7 @@ class ProductService extends BaseService
                 'products.category_id',
                 'products.description',
                 'products.sku',
-                'products.image',
+                'products.images',
                 'products.status',
                 'categories.name as categoryName',
                 DB::raw('GROUP_CONCAT(product_size_quantities.size) as sizes'),
@@ -111,7 +111,7 @@ class ProductService extends BaseService
                 'products.category_id',
                 'products.description',
                 'products.sku',
-                'products.image',
+                'products.images',
                 'products.status',
                 'categories.name'
             )
@@ -128,28 +128,31 @@ class ProductService extends BaseService
     {
         DB::beginTransaction();
         try {
-            $uploadImage = $this->uploadImage($request->file('image'), 'products');
+            $images = [];
+            foreach ($request->file('images') as $file) {
+                $uploadImage = $this->uploadImage($file, 'products');
+                array_push($images, $uploadImage);
+            }
             $product = [
                 'name' => $request->name,
                 'price' => $request->price,
                 'category_id' => $request->category_id,
                 'description' => $request->description,
                 'sku' => $request->sku,
-                'image' => $uploadImage,
+                'images' => json_encode($images),
                 'status' => $request->statusProduct
             ];
-            $product = Product::create($product);
-            if ($product) {
-                $sizes = $request->sizes;
-                $quantities = $request->quantity;
-                foreach ($sizes as $key => $size) {
-                    $productSizeQuantity = new ProductSizeQuantity();
-                    $productSizeQuantity->product_id = $product->id;
-                    $productSizeQuantity->size = $size;
-                    $productSizeQuantity->quantity = $quantities[$key];
-                    $productSizeQuantity->save();
-                }
+            $data = Product::create($product);
+            $sizes = $request->sizes;
+            $quantities = $request->quantity;
+            foreach ($sizes as $key => $size) {
+                $productSizeQuantity = new ProductSizeQuantity();
+                $productSizeQuantity->product_id = $data->id;
+                $productSizeQuantity->size = $size;
+                $productSizeQuantity->quantity = $quantities[$key];
+                $productSizeQuantity->save();
             }
+
             DB::commit();
             return true;
         } catch (Exception $e) {
@@ -165,10 +168,16 @@ class ProductService extends BaseService
             DB::beginTransaction();
 
             $product = Product::findOrFail($request->productId);
-
-            if (!empty($request->file('image'))) {
-                $this->deleteFile($product->image);
-                $uploadImage = $this->uploadImage($request->file('image'), 'products');
+            $images = [];
+            if (!empty($request->file('images'))) {
+                foreach ($request->file('images') as $file) {
+                    $uploadImage = $this->uploadImage($file, 'products');
+                    array_push($images, $uploadImage);
+                }
+                $arrayOldImages = json_decode($product->images);
+                foreach ($arrayOldImages as $fileOld) {
+                    $this->deleteFile($fileOld);
+                }
             }
 
             $productArr = [
@@ -177,10 +186,9 @@ class ProductService extends BaseService
                 'category_id' => $request->category_id,
                 'description' => $request->description,
                 'sku' => $request->sku,
-                'image' => $uploadImage ?? $product->image,
+                'images' => json_encode($images) ?? $product->images,
                 'status' => $request->statusProduct
             ];
-
             $product->update($productArr);
 
             ProductSizeQuantity::where('product_id', $product->id)->delete();

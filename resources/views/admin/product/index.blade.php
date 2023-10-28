@@ -28,62 +28,12 @@
 @endsection
 @section('web-script')
     <script>
-        const urlDeleteProduct = "{{ route('admin.product.delete', ['id' => ':id']) }}";
-
-        /**
-         * Load cagtegory list
-         */
-        function searchProduct(page = 1) {
-            $.ajax({
-                url: '<?= route('admin.product.search') ?>?page=' + page,
-                type: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    searchName: $('#txtSearchProduct').val(),
-                },
-            }).done(function(data) {
-                $('#product_table').html(data);
-            }).fail(function() {
-                notiError();
-            });
+        var globalRouter = {
+            urlSearchPost: "{{ route('admin.product.search', ['page' => ':page']) }}",
+            urlDeleteProduct: "{{ route('admin.product.delete', ['id' => ':id']) }}",
+            urlCreateProduct: "{{ route('admin.product.create') }}",
+            urlUpdateProduct: "{{ route('admin.product.update') }}",
         }
-
-        $(document).ready(function() {
-            searchProduct();
-
-
-            // Delete product
-            $(document).on('click', '#btnDeleteProduct', function() {
-                let productId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this product?', function() {
-                    $.ajax({
-                        url: urlDeleteProduct.replace(':id', productId),
-                        type: "DELETE",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                    }).done(function(res) {
-                        if (res == 'ok') {
-                            notiSuccess("Deleted product successfully");
-                            searchProduct();
-                        }
-                    }).fail(function(xhr) {
-                        if (xhr.status === 400 && xhr.responseJSON.errors) {
-                            const errorMessages = xhr.responseJSON.errors;
-                            for (let fieldName in errorMessages) {
-                                notiError(errorMessages[fieldName][0]);
-                            }
-                        } else {
-                            notiError();
-                        }
-                    })
-                })
-            });
-
-
-
-        });
     </script>
+    <script src="{{ asset('js/productWeb.js') }}"></script>
 @endsection

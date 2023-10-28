@@ -26,7 +26,8 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'required|image|mimes:jpeg,jpg,png,gif|max:20000',
+            'images' => 'required|array|min:1|max:4',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif',
             'price' => 'required',
             'quantity' => 'required|array|min:1',
             'quantity.*' => 'required|integer|min:1',
@@ -48,9 +49,11 @@ class StoreProductRequest extends FormRequest
             'quantity.*.min' => 'Each quantity element must have a minimum value of 1.',
             'sizes.required' => 'Size product is required',
             'sizes.*.required' => 'Each size element is required.',
-            'image.required' => 'Image product is required',
-            'image.mines' => 'Image format must be jpeg, jpg, png, gif',
-            'image.max' => 'The maximum size of a photo is 20MB',
+            'images.required' => 'The images field is required.',
+            'images.min' => 'At least one image is required.',
+            'images.max' => 'Maximum 4 images',
+            'images.*.image' => 'Each image must be a valid image file.',
+            'images.*.mimes' => 'Each image must be in one of the following formats: jpeg, png, jpg, gif.',
         ];
     }
     /**
