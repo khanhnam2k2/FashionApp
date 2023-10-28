@@ -19,7 +19,10 @@
                                     <tr>
                                         <td class="product__cart__item">
                                             <div class="product__cart__item__pic">
-                                                <img src="{{ Storage::url($item->productImage) }}"
+                                                @php
+                                                    $imagesArray = json_decode($item->productImage, true);
+                                                @endphp
+                                                <img src="{{ Storage::url($imagesArray[0]) }}"
                                                     style="width: 90px;height:90px;object-fit:cover" alt="">
                                             </div>
                                             <div class="product__cart__item__text">

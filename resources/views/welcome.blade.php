@@ -109,7 +109,10 @@
                     @foreach ($products as $key => $item)
                         <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix {{ Str::slug($item->categoryName) }}">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="{{ Storage::url($item->image) }}">
+                                @php
+                                    $imagesArray = json_decode($item->images, true);
+                                @endphp
+                                <div class="product__item__pic set-bg" data-setbg="{{ Storage::url($imagesArray[0]) }}">
                                     {{-- <span class="label">New</span> --}}
                                     <ul class="product__hover">
                                         <li><a href="#"><img src="{{ asset('img/icon/heart.png') }}"

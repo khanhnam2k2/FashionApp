@@ -94,9 +94,9 @@ class CartService
             }
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
-                ->select('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id as productId', 'products.name as productName', 'products.price as productPrice', 'products.image as productImage')
+                ->select('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id as productId', 'products.name as productName', 'products.price as productPrice', 'products.images as productImage')
                 ->selectRaw('SUM(cart_items.quantity * products.price) as total')
-                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.image')
+                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images')
                 ->orderBy('cart_items.created_at', 'desc')
                 ->get();
 

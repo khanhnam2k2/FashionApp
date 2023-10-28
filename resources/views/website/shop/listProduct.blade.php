@@ -2,17 +2,22 @@
     @foreach ($data as $key => $item)
         <div class="col-lg-4 col-md-6 col-sm-6">
             <div class="product__item">
-                <div class="product__item__pic"
-                    style="background-image: url({{ Storage::url($item->image) }});background-repeat: no-repeat;
-                    background-size: cover;
-                    background-position: top center;">
-                    <ul class="product__hover">
-                        <li><a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a></li>
-                        <li><a href="{{ route('shop.details', $item->id) }}"><img
-                                    src="{{ asset('img/icon/search.png') }}" alt=""></a>
-                        </li>
-                    </ul>
-                </div>
+                @php
+                    $imagesArray = json_decode($item->images, true);
+                @endphp
+                @if (!empty($imagesArray))
+                    <div class="product__item__pic"
+                        style="background-image: url({{ Storage::url($imagesArray[0]) }});background-repeat: no-repeat;
+                background-size: cover;
+                background-position: top center;">
+                        <ul class="product__hover">
+                            <li><a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a></li>
+                            <li><a href="{{ route('shop.details', $item->id) }}"><img
+                                        src="{{ asset('img/icon/search.png') }}" alt=""></a>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
                 <div class="product__item__text">
                     <h6>{{ $item->name }}</h6>
                     <button data-id="{{ $key }}" data-product-id="{{ $item->id }}" class="add-cart btn">+

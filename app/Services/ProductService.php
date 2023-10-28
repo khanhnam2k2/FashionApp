@@ -20,7 +20,7 @@ class ProductService extends BaseService
                 'products.price',
                 'products.description',
                 'products.sku',
-                'products.image',
+                'products.images',
                 'products.status',
                 'categories.name as categoryName',
                 DB::raw('GROUP_CONCAT(product_size_quantities.size) as sizes'),
@@ -40,7 +40,7 @@ class ProductService extends BaseService
                     'products.price',
                     'products.description',
                     'products.sku',
-                    'products.image',
+                    'products.images',
                     'products.status',
                     'categories.id',
                     'categories.name'

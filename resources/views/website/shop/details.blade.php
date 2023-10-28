@@ -15,13 +15,34 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-lg-8 col-md-9 col-xs-12">
-                        <div class="image__product">
-                            <img src="{{ Storage::url($product->image) }}" style="border-radius: 10px" alt="">
+                    <div class="col-lg-3 col-md-3">
+                        <ul class="nav nav-tabs" role="tablist">
+                            @php
+                                $imagesArray = json_decode($product->images, true);
+                            @endphp
+                            @foreach ($imagesArray as $key => $image)
+                                <li class="nav-item">
+                                    <a class="nav-link {{ $key == 0 ? 'active' : '' }}" data-toggle="tab"
+                                        href="#tabs-{{ $key }}" role="tab">
+                                        <div class="product__thumb__pic set-bg" data-setbg="{{ Storage::url($image) }}">
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 col-md-9">
+                        <div class="tab-content">
+                            @foreach ($imagesArray as $k => $image)
+                                <div class="tab-pane {{ $k == 0 ? 'active' : '' }}" id="tabs-{{ $k }}"
+                                    role="tabpanel">
+                                    <div class="product__details__pic__item">
+                                        <img src="{{ Storage::url($image) }}" alt="">
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
-                    <div class="col-md-2"></div>
                 </div>
             </div>
         </div>
