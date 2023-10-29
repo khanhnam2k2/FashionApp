@@ -29,6 +29,13 @@
                     <span class="hide-menu">Menu</span>
                 </li>
                 <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('admin.order.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </span>
+                        <span class="hide-menu">Order</span>
+                    </a>
+                <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('admin.category.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-article"></i>

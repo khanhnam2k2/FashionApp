@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CKEditorController;
@@ -88,6 +89,11 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::delete('/delete/{id}', [AdminContactController::class, 'delete'])->name('admin.contact.delete');
     });
 
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('admin.order.index');
+        Route::post('/search', [AdminOrderController::class, 'search'])->name('admin.order.search');
+        Route::post('/updateStatus', [AdminOrderController::class, 'updateStatus'])->name('admin.order.updateStatus');
+    });
 
     Route::post('ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 });
