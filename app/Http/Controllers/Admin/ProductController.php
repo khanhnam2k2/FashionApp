@@ -24,7 +24,7 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        $data = $this->productService->searchProduct($request->searchName);
+        $data = $this->productService->searchProduct($request->searchName, null, $request->categoryId);
         return view('admin.product.table', ['data' => $data]);
     }
 

@@ -9,7 +9,6 @@
             <th>Image</th>
             <th>Price</th>
             <th>Size - Quantity</th>
-            <th>Category</th>
             <th>Status</th>
             <th>Option</th>
         </tr>
@@ -46,7 +45,6 @@
                         <div class="btn btn-primary mb-2">{{ $size }} - {{ $quantities[$key] }} </div>
                     @endforeach
                 </td>
-                <td>{{ $item->categoryName }} </td>
                 <td><button style="cursor: unset"
                         class="btn btn-{{ $item->status == Status::ON ? 'primary' : 'danger' }}">{{ $item->status == Status::ON ? 'ON' : 'OFF' }}</button>
                 </td>
