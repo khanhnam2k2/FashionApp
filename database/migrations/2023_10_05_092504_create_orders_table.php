@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('address');
             $table->text('message')->nullable();
             $table->tinyInteger('status')->default(0);
-            $table->float('total_price')->nullable();
+            $table->float('total_order')->nullable();
             $table->timestamps();
         });
     }

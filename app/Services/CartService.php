@@ -212,6 +212,7 @@ class CartService
                 'address' => $request->address,
                 'message' => $request->message,
                 'user_id' => $user->id,
+                'total_order' => $request->total_order
             ];
             $order = Order::create($orderData);
 

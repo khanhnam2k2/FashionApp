@@ -94,7 +94,7 @@
                                                         ${{ $item->productPrice }}
                                                     </td>
                                                     <td>
-                                                        ${{ $item->total }}
+                                                        $<span id="total_order">{{ $item->total }}</span>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -173,7 +173,8 @@
                 const btnOrder = $(this);
                 btnOrder.prop('disabled', true);
                 let formData = new FormData($('form#form_order')[0]);
-                showConfirmDialog('Are you sure you want to dat hang?', function() {
+                formData.append('total_order', parseFloat($('#total_order').text()));
+                showConfirmDialog('Are you sure you want to place this order?', function() {
                     createOrder(formData, btnOrder);
                 });
             })
