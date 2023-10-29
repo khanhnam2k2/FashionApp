@@ -70,7 +70,6 @@ class CommentService extends BaseService
 
     public function updateComment($request)
     {
-        // dd($request->all());
         try {
             $comment = Comment::findOrFail($request->commentId);
 
@@ -80,6 +79,7 @@ class CommentService extends BaseService
             }
             if (!empty($request->file('file')) || !empty($request->content)) {
                 if (!empty($request->file())) {
+                    $this->deleteFile($comment->image);
                     $uploadFile = $this->uploadFile($request->file('file'), 'comments');
                     $comment->file = json_encode($uploadFile);
                 } else {
