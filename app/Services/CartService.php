@@ -47,30 +47,28 @@ class CartService
                 ->where('product_id', $product->id)
                 ->where('size', $request->size)
                 ->first();
-
+            $newQuantity = $request->quantity;
             if ($existingCartItem) {
-                $newQuantity = $existingCartItem->quantity + $request->quantity;
-
-                if ($request->quantity > $productSizeQuantity->quantity) {
+                if ($existingCartItem->quantity >= $productSizeQuantity->quantity) {
                     return response()->json(['error' => 'The number of products in the shopping cart exceeds the quantity in stock']);
                 }
-                $existingCartItem->quantity = $newQuantity;
+                $existingCartItem->quantity += $newQuantity;
                 $existingCartItem->save();
             } else {
-                if ($request->quantity > $productSizeQuantity->quantity) {
+                if ($newQuantity > $productSizeQuantity->quantity) {
                     return response()->json(['error' => 'The number of products in the shopping cart exceeds the quantity in stock']);
                 }
                 $cartItem = new CartItem();
                 $cartItem->cart_id = $cart->id;
                 $cartItem->product_id = $product->id;
                 $cartItem->size = $request->size;
-                $cartItem->quantity = $request->quantity;
+                $cartItem->quantity = $newQuantity;
                 $cartItem->save();
             }
 
-            //Subtract the number of products in the Product_Size_quantities
-            $productSizeQuantity->quantity -= $request->quantity;
-            $productSizeQuantity->save();
+            // //Subtract the number of products in the Product_Size_quantities
+            // $productSizeQuantity->quantity -= $request->quantity;
+            // $productSizeQuantity->save();
 
             DB::commit();
             return response()->json(['success' => 'Product added successfully', 'quantityAvailable' => $productSizeQuantity->quantity]);
@@ -94,9 +92,22 @@ class CartService
             }
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
-                ->select('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id as productId', 'products.name as productName', 'products.price as productPrice', 'products.images as productImage')
+                ->join('product_size_quantities', function ($join) {
+                    $join->on('products.id', '=', 'product_size_quantities.product_id');
+                    $join->on('cart_items.size', '=', 'product_size_quantities.size');
+                })
+                ->select(
+                    'cart_items.cart_id',
+                    'cart_items.size',
+                    'cart_items.quantity',
+                    'products.id as productId',
+                    'products.name as productName',
+                    'products.price as productPrice',
+                    'products.images as productImage',
+                    'product_size_quantities.quantity as quantityAvailable'
+                )
                 ->selectRaw('SUM(cart_items.quantity * products.price) as total')
-                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images')
+                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images', 'product_size_quantities.quantity')
                 ->orderBy('cart_items.created_at', 'desc')
                 ->get();
 
@@ -113,7 +124,60 @@ class CartService
             return response()->json($e, 500);
         }
     }
+    public function showCartCheckout()
+    {
+        try {
+            $user  = Auth::user();
+            $cart = Cart::where('user_id', $user->id)->first();
 
+            if (!$cart) {
+                $cart = new Cart();
+                $cart->user_id = $user->id;
+                $cart->save();
+            }
+            $cartItems = CartItem::where('cart_id', $cart->id)
+                ->join('products', 'cart_items.product_id', '=', 'products.id')
+                ->join('product_size_quantities', function ($join) {
+                    $join->on('products.id', '=', 'product_size_quantities.product_id');
+                    $join->on('cart_items.size', '=', 'product_size_quantities.size');
+                })
+                ->select(
+                    'cart_items.cart_id',
+                    'cart_items.size',
+                    'cart_items.quantity',
+                    'products.id as productId',
+                    'products.name as productName',
+                    'products.price as productPrice',
+                    'products.images as productImage',
+                    'product_size_quantities.quantity as quantityAvailable'
+                )
+                ->selectRaw('SUM(cart_items.quantity * products.price) as total')
+                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images', 'product_size_quantities.quantity')
+                ->orderBy('cart_items.created_at', 'desc')
+                ->get();
+            foreach ($cartItems as $key => $item) {
+                if ($item->quantity > $item->quantityAvailable) {
+                    CartItem::where('cart_id', $cart->id)
+                        ->where('product_id', $item->productId)
+                        ->where('size', $item->size)
+                        ->delete();
+
+                    unset($cartItems[$key]);
+                }
+            }
+            $totalCarts = 0;
+            foreach ($cartItems as $item) {
+                $totalCarts += $item->total;
+            }
+            return [
+                'cartItems' => $cartItems,
+                'totalCarts' => $totalCarts
+            ];
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
     public function removeProductFromCart($request)
     {
         DB::beginTransaction();
@@ -133,17 +197,6 @@ class CartService
 
             // delete cart item
             $cartItem->delete();
-
-            $productSizeQuantity = ProductSizeQuantity::where('product_id', $request->productId)
-                ->where('size', $request->size)
-                ->first();
-
-            if (!$productSizeQuantity) {
-                return response()->json(['error' => 'Product size not found']);
-            }
-
-            $productSizeQuantity->quantity += $cartItem->quantity;
-            $productSizeQuantity->save();
 
             DB::commit();
             return response()->json(['success' => 'Successfully removed the product from the cart']);
@@ -175,12 +228,7 @@ class CartService
                 $productSizeQuantity = ProductSizeQuantity::where('product_id', $request->productId)
                     ->where('size', $request->size)
                     ->first();
-                if ($newQuantity - $cartItem->quantity <= $productSizeQuantity->quantity) {
-
-                    // Update quantity in product_size_quantities
-                    $productSizeQuantity->quantity = $productSizeQuantity->quantity - ($newQuantity - $cartItem->quantity);
-                    $productSizeQuantity->save();
-
+                if ($newQuantity <= $productSizeQuantity->quantity) {
                     // Update size and quantity for cart
                     $cartItem->size = $request->size;
                     $cartItem->quantity = $newQuantity;
@@ -224,6 +272,14 @@ class CartService
                 ->get();
             $orderItemData = [];
             foreach ($cartItems as  $item) {
+                $productSizeQuantity = ProductSizeQuantity::where('product_id', $item->product_id)
+                    ->where('size', $item->size)
+                    ->first();
+                if (!$productSizeQuantity || $productSizeQuantity->quantity < $item->quantity) {
+                    DB::rollBack();
+                    return response()->json(['error' => 'Not enough quantity in stock for some items']);
+                }
+
                 $orderItemData[] = [
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
@@ -231,11 +287,14 @@ class CartService
                     'size' => $item->size,
                     'quantity' => $item->quantity
                 ];
+
+                $productSizeQuantity->quantity -= $item->quantity;
+                $productSizeQuantity->save();
             }
             DB::table('order_items')->insert($orderItemData);
             CartItem::where('cart_id', $cart->id)->delete();;
             DB::commit();
-            return true;
+            return response()->json(['success' => 'Order Success! Please check your purchase']);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);

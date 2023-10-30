@@ -150,10 +150,13 @@
                     },
                     data: data,
                 }).done(function(res) {
-                    if (res == 'ok') {
-                        notiSuccess('Order Success! Please check your purchase', 'center', function() {
+                    const data = res.data.original;
+                    if (data.success) {
+                        notiSuccess(data.success, 'center', function() {
                             window.location.href = "{{ route('home') }}";
                         });
+                    } else {
+                        notiError(data.error);
                     }
                 }).fail(function(xhr) {
                     if (xhr.status === 400 && xhr.responseJSON.errors) {

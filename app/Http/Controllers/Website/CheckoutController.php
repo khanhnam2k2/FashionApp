@@ -17,7 +17,7 @@ class CheckoutController extends Controller
 
     public function index()
     {
-        $data = $this->cartService->showCart();
+        $data = $this->cartService->showCartCheckout();
         return view('website.checkout.index', [
             'cartItems' => $data['cartItems'],
             'totalCarts' => $data['totalCarts'],
@@ -26,7 +26,7 @@ class CheckoutController extends Controller
 
     public function placeOrder(OrderRequest $request)
     {
-        $this->cartService->placeOrder($request);
-        return response()->json('ok');
+        $data = $this->cartService->placeOrder($request);
+        return response()->json(['data' => $data]);
     }
 }

@@ -39,14 +39,18 @@
                                         </td>
                                         <td class="quantity__item">
                                             <div class="quantity">
-                                                <div
-                                                    class="pro-qty-2 d-flex align-items-center justify-content-between w-100 border border-dark">
-                                                    <button class="decrement btn rounded-0">-</button>
-                                                    <input type="number" data-product-id="{{ $item->productId }}"
-                                                        class="qtyProductCart" data-size="{{ $item->size }}"
-                                                        value="{{ $item->quantity }}" onkeydown="return false;">
-                                                    <button class="increment btn rounded-0">+</button>
-                                                </div>
+                                                @if ($item->quantity > $item->quantityAvailable)
+                                                    <span class="btn btn-danger">Out Of Stock</span>
+                                                @else
+                                                    <div
+                                                        class="pro-qty-2 d-flex align-items-center justify-content-between w-100 border border-dark">
+                                                        <button class="decrement btn rounded-0">-</button>
+                                                        <input type="number" data-product-id="{{ $item->productId }}"
+                                                            class="qtyProductCart" data-size="{{ $item->size }}"
+                                                            value="{{ $item->quantity }}" onkeydown="return false;">
+                                                        <button class="increment btn rounded-0">+</button>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="cart__price">$ {{ $item->total }}</td>
