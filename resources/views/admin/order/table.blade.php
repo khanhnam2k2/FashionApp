@@ -2,7 +2,7 @@
     use App\Enums\Status;
     use App\Enums\StatusOrder;
 @endphp
-<table class="table">
+<table class="table text-nowrap mb-0 align-middle">
     <thead>
         <tr>
             <th>#</th>
@@ -23,23 +23,32 @@
                 <td>
                     @switch($item->status)
                         @case(StatusOrder::orderPlaced)
-                            <span>Wait for confirmation</span>
+                            <div class="status-order d-flex flex-column align-items-center gap-2 border border-dark">
+                                <i class="fa-solid fa-receipt text-dark"></i>
+                                <span class="text-start">Wait for confirmation</span>
+                            </div>
                         @break
 
                         @case(StatusOrder::confirmInformation)
-                            <span>Confirmed successfully</span>
+                            <div class="status-order d-flex flex-column align-items-center gap-2 border border-primary">
+                                <i class="fa-solid fa-circle-dollar-to-slot text-primary"></i>
+                                <span class="text-start">Confirmed successfully</span>
+                            </div>
                         @break
 
                         @case(StatusOrder::delivering)
-                            <span>Delivering</span>
+                            <div class="status-order d-flex flex-column align-items-center gap-2 border border-warning">
+                                <i class="fa-solid fa-truck text-warning"></i>
+                                <span class="text-start">Delivering</span>
+                            </div>
                         @break
 
                         @case(StatusOrder::successfulDelivery)
-                            <span>Successful delivery</span>
+                            <div class="status-order d-flex flex-column align-items-center gap-2 border border-success">
+                                <i class="fa-solid fa-circle-check text-success"></i>
+                                <span class="text-start">Successful delivery</span>
+                            </div>
                         @break
-
-                        @default
-                            <span>Wait for confirmation</span>
                     @endswitch
 
                 </td>
@@ -65,3 +74,14 @@
         {{ $data->links('admin.order.paging') }}
     </div>
 </div>
+<style>
+    td i {
+        font-size: 20px;
+    }
+
+    .status-order {
+        /* border: 1px solid blue; */
+        padding: 5px 2px;
+        border-radius: 10px;
+    }
+</style>

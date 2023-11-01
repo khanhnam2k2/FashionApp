@@ -94,14 +94,14 @@
                                                         ${{ $item->productPrice }}
                                                     </td>
                                                     <td>
-                                                        $<span id="total_order">{{ $item->total }}</span>
+                                                        $<span>{{ $item->total }}</span>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                     <ul class="checkout__total__all">
-                                        <li>Total <span>${{ $totalCarts }}</span></li>
+                                        <li>Total $<span id="total_order">{{ $totalCarts }}</span></li>
                                     </ul>
                                     <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
                                         ut labore et dolore magna aliqua.</p>
@@ -176,6 +176,8 @@
                 const btnOrder = $(this);
                 btnOrder.prop('disabled', true);
                 let formData = new FormData($('form#form_order')[0]);
+                const de = $('#total_order').text();
+                console.log(de);
                 formData.append('total_order', parseFloat($('#total_order').text()));
                 showConfirmDialog('Are you sure you want to place this order?', function() {
                     createOrder(formData, btnOrder);
