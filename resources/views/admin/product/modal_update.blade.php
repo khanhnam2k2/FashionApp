@@ -29,7 +29,8 @@
                             <span id="btn-delete-images" style="display: none" class="btn"><i
                                     class="fa-solid fa-circle-xmark"></i></span>
                         </div>
-                        <input type="file" class="form-control d-none" id="productImage" multiple name="images">
+                        <input type="file" accept="image/*" class="form-control d-none" id="productImage" multiple
+                            name="images">
                     </div>
                     <div class="w-100 my-2 mb-5" id="imageProductPreviewContainer">
                     </div>

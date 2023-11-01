@@ -164,12 +164,11 @@ class ProductService extends BaseService
 
     public function updateProduct($request)
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
-
             $product = Product::findOrFail($request->productId);
-            $images = [];
             if (!empty($request->file('images'))) {
+                $images = [];
                 foreach ($request->file('images') as $file) {
                     $uploadImage = $this->uploadImage($file, 'products');
                     array_push($images, $uploadImage);
@@ -178,18 +177,17 @@ class ProductService extends BaseService
                 foreach ($arrayOldImages as $fileOld) {
                     $this->deleteFile($fileOld);
                 }
+                $product->images = json_encode($images);
+            } else {
+                $product->images = $product->images;
             }
-
-            $productArr = [
-                'name' => $request->name,
-                'price' => $request->price,
-                'category_id' => $request->category_id,
-                'description' => $request->description,
-                'sku' => $request->sku,
-                'images' => json_encode($images) ?? $product->images,
-                'status' => $request->statusProduct
-            ];
-            $product->update($productArr);
+            $product->name = $request->name;
+            $product->price = $request->price;
+            $product->category_id = $request->category_id;
+            $product->description = $request->description;
+            $product->sku = $request->sku;
+            $product->status = $request->statusProduct;
+            $product->save();
 
             ProductSizeQuantity::where('product_id', $product->id)->delete();
 

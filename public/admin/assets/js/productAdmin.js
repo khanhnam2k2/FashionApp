@@ -248,6 +248,8 @@ $(document).ready(function () {
                 rowImages.append(htmlImage);
             });
             $('#imageProductPreviewContainer').html(rowImages);
+            $('#productImage').val('');
+
             $('#titleImage').text('Change Image (max 4 images)');
 
             sizes.forEach(function (size, index) {

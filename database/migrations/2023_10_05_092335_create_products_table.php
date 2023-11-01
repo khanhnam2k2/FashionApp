@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->float('price');
             $table->unsignedBigInteger('category_id');
-            $table->jsonb('images');
+            $table->jsonb('images')->nullable();
             $table->string('sku')->nullable();
             $table->unsignedInteger('status')->default(1);
             $table->softDeletes();
