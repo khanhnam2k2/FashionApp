@@ -24,7 +24,7 @@
 @endsection
 @section('web-script')
     <script>
-        const urlDeleteCategory = "{{ route('admin.category.delete', ['id' => ':id']) }}";
+        const urlDeleteOrder = "{{ route('admin.order.delete', ['id' => ':id']) }}";
 
         /**
          * Load cagtegory list
@@ -51,18 +51,18 @@
 
 
             // delete category
-            $(document).on('click', '#btnDeleteCate', function() {
-                let categoryId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this category?', function() {
+            $(document).on('click', '#btnDeleteOrder', function() {
+                let orderId = $(this).data('id');
+                showConfirmDialog('Are you sure you want to delete this order?', function() {
                     $.ajax({
-                        url: urlDeleteCategory.replace(':id', categoryId),
+                        url: urlDeleteOrder.replace(':id', orderId),
                         type: "DELETE",
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                     }).done(function(res) {
                         if (res == 'ok') {
-                            notiSuccess("Deleted category successfully");
+                            notiSuccess("Deleted order successfully");
                             searchOrderAdmin();
                         }
                     }).fail(function(xhr) {

@@ -30,4 +30,9 @@ class OrderController extends Controller
         $data = $this->orderService->updateStatusOrder($request);
         return response()->json(['data' => $data]);
     }
+    public function delete($id)
+    {
+        $this->orderService->deleteOrder($id);
+        return response()->json('ok');
+    }
 }

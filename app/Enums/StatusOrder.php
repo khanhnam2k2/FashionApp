@@ -13,8 +13,9 @@ use BenSampo\Enum\Enum;
  */
 final class StatusOrder extends Enum
 {
-    const orderPlaced = 0;
-    const confirmInformation = 1;
-    const delivering = 2;
-    const successfulDelivery = 3;
+    const cancelOrder = 0;
+    const orderPlaced = 1;
+    const confirmInformation = 2;
+    const delivering = 3;
+    const successfulDelivery = 4;
 }

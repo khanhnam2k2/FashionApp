@@ -24,10 +24,11 @@
                             <label for="statusOrder" class="form-label">Status Order<span
                                     class="text-danger">*</span></label>
                             <select name="status" class="form-select" id="statusOrder">
-                                <option value="0">Wait for confirmation</option>
-                                <option value="1">Confirmed successfully</option>
-                                <option value="2">Delivering</option>
-                                <option value="3">Successful delivery</option>
+                                <option value="1">Wait for confirmation</option>
+                                <option value="2">Confirmed successfully</option>
+                                <option value="3">Delivering</option>
+                                <option value="4">Successful delivery</option>
+                                <option value="0">Cancel Order</option>
                             </select>
                         </div>
                     </div>

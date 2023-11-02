@@ -22,6 +22,13 @@
                 <td>${{ $item->total_order }}</td>
                 <td>
                     @switch($item->status)
+                        @case(StatusOrder::cancelOrder)
+                            <div class="status-order d-flex flex-column align-items-center gap-2 border border-danger">
+                                <i class="fa-solid fa-ban text-danger"></i>
+                                <span class="text-start">Cancel Order</span>
+                            </div>
+                        @break
+
                         @case(StatusOrder::orderPlaced)
                             <div class="status-order d-flex flex-column align-items-center gap-2 border border-dark">
                                 <i class="fa-solid fa-receipt text-dark"></i>
@@ -57,7 +64,7 @@
                         data-bs-target="#updateStatusOrderModal" data-bs-backdrop="static" data-bs-keyboard="false"
                         class="btn btn-success m-1 me-4"><i class="fa-solid fa-pen-to-square me-2"></i>Update
                         Status</button>
-                    <button id="btnDeleteCate" data-id="{{ $item->id }}" class="btn btn-danger"><i
+                    <button id="btnDeleteOrder" data-id="{{ $item->id }}" class="btn btn-danger"><i
                             class="fa-solid fa-trash-can me-2"></i>Delete</button>
                 </td>
             </tr>

@@ -93,6 +93,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('admin.order.index');
         Route::post('/search', [AdminOrderController::class, 'search'])->name('admin.order.search');
         Route::post('/updateStatus', [AdminOrderController::class, 'updateStatus'])->name('admin.order.updateStatus');
+        Route::delete('/delete/{id}', [AdminOrderController::class, 'delete'])->name('admin.order.delete');
     });
 
     Route::post('ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
