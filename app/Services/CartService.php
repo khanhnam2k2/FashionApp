@@ -13,8 +13,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class CartService
+class CartService extends BaseService
 {
+    protected $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
     public function handleAddToCart($request)
     {
         DB::beginTransaction();
@@ -260,10 +267,10 @@ class CartService
                 'address' => $request->address,
                 'message' => $request->message,
                 'user_id' => $user->id,
+                'code' => $this->generateRandomCode(),
                 'total_order' => $request->total_order
             ];
             $order = Order::create($orderData);
-
             $cart = Cart::where('user_id', $user->id)->first();
 
             $cartItems = CartItem::select('cart_items.*', 'products.price as productPrice')
@@ -292,7 +299,7 @@ class CartService
                 $productSizeQuantity->save();
             }
             DB::table('order_items')->insert($orderItemData);
-            CartItem::where('cart_id', $cart->id)->delete();;
+            CartItem::where('cart_id', $cart->id)->delete();
             DB::commit();
             return response()->json(['success' => 'Order Success! Please check your purchase']);
         } catch (Exception $e) {

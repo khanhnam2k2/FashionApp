@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone');
             $table->text('address');
             $table->text('message')->nullable();
+            $table->string('code')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->float('total_order')->nullable();
             $table->timestamps();
