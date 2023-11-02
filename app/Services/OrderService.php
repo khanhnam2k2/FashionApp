@@ -64,4 +64,26 @@ class OrderService
             return response()->json($e, 500);
         }
     }
+
+    public function searchDetailsOrder($orderId, $searchName = null)
+    {
+        try {
+            $order = Order::findOrFail($orderId);
+
+            $orderDetail = OrderItem::select('order_items.*', 'products.name as productName', 'products.images as productImages')
+                ->join('products', 'products.id', '=', 'order_items.product_id')
+                ->where('order_id', $order->id);
+
+            if ($searchName != null && $searchName != '') {
+                $orderDetail->where('products.name', 'LIKE', '%' . $searchName . '%');
+            }
+
+            $orderDetail = $orderDetail->paginate(3);
+
+            return $orderDetail;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
 }

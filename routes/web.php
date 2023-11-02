@@ -96,6 +96,11 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::delete('/delete/{id}', [AdminOrderController::class, 'delete'])->name('admin.order.delete');
     });
 
+    Route::prefix('orders/details')->group(function () {
+        Route::get('/{id}', [AdminOrderController::class, 'details'])->name('admin.order.details');
+        Route::post('/search', [AdminOrderController::class, 'searchDetails'])->name('admin.order.searchDetails');
+    });
+
     Route::post('ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 });
 Route::middleware('auth')->group(function () {

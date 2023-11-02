@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 
@@ -34,5 +33,16 @@ class OrderController extends Controller
     {
         $this->orderService->deleteOrder($id);
         return response()->json('ok');
+    }
+
+    public function details($id)
+    {
+        return view('admin.orderDetails.details', compact('id'));
+    }
+
+    public function searchDetails(Request $request)
+    {
+        $data = $this->orderService->searchDetailsOrder($request->orderId, $request->searchName);
+        return view('admin.orderDetails.table', ['data' => $data]);
     }
 }
