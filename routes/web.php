@@ -58,6 +58,7 @@ Route::prefix('comment')->group(function () {
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::post('/getTotalOrderInMonth', [DashboardController::class, 'getTotalOrderInMonth'])->name('admin.getTotalOrderInMonth');
     });
     Route::prefix('category')->group(function () {
         Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.category.index');

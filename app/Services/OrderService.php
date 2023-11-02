@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Enums\StatusOrder;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderService
@@ -81,6 +83,32 @@ class OrderService
             $orderDetail = $orderDetail->paginate(3);
 
             return $orderDetail;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    public function getTotalOrderInMonth($year = null)
+    {
+        try {
+            $currentYear = Carbon::now()->year;
+
+            $totalOrdersByMonth = DB::table('orders')
+                ->selectRaw('MONTH(created_at) as month, SUM(total_order) as total_order')
+                ->whereYear('created_at', $year ?? $currentYear)
+                ->where('status', '=', 4)
+                ->groupBy(DB::raw('MONTH(created_at)'))
+                ->pluck('total_order', 'month')
+                ->all();
+
+            $monthlyTotalOrders = array_fill(1, 12, 0);
+
+            foreach ($totalOrdersByMonth as $month => $totalOrder) {
+                $monthlyTotalOrders[$month] = $totalOrder;
+            }
+
+            return $monthlyTotalOrders;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);
