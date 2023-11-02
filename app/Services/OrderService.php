@@ -3,14 +3,16 @@
 namespace App\Services;
 
 use App\Enums\StatusOrder;
+use App\Mail\OrderSuccess;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
-class OrderService
+class OrderService extends BaseService
 {
 
     public function searchOrder($searchName = null)
@@ -41,7 +43,10 @@ class OrderService
             } elseif ($newStatus >= $currentStatus && $newStatus <= ($currentStatus + 1)) {
                 $order->status = $newStatus;
                 $order->save();
-
+                if ($newStatus == StatusOrder::successfulDelivery) {
+                    $orderItems = $this->getOrderDetails($order->id);
+                    Mail::to($order->email)->send(new OrderSuccess($order, $orderItems));
+                }
                 return response()->json(['success' => 'Update order status successfully']);
             } else {
                 return response()->json(['error' => 'Unable to update status']);
@@ -66,6 +71,7 @@ class OrderService
             return response()->json($e, 500);
         }
     }
+
 
     public function searchDetailsOrder($orderId, $searchName = null)
     {
