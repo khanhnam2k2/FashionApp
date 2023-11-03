@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', 'Checkout - Male Fashion')
-
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
@@ -21,7 +20,6 @@
     </section>
     <!-- Breadcrumb Section End -->
 
-
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
@@ -30,9 +28,6 @@
                     <form id="form_order">
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
-                                <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a
-                                        href="#">Click
-                                        here</a> to enter your code</h6>
                                 <h6 class="checkout__title">Billing Details</h6>
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -101,24 +96,10 @@
                                         </tbody>
                                     </table>
                                     <ul class="checkout__total__all">
-                                        <li>Total $<span id="total_order">{{ $totalCarts }}</span></li>
+                                        <li>Total amount <span>$<span id="total_order">{{ $totalCarts }}</span></span>
+                                        </li>
                                     </ul>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                        ut labore et dolore magna aliqua.</p>
-                                    <div class="checkout__input__checkbox">
-                                        <label for="payment">
-                                            Check Payment
-                                            <input type="checkbox" id="payment">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="checkout__input__checkbox">
-                                        <label for="paypal">
-                                            Paypal
-                                            <input type="checkbox" id="paypal">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
+                                    <p> <i class="fa-solid fa-truck-fast"></i> Free ship</p>
                                     <button type="button" id="btn-order" class="site-btn">PLACE ORDER</button>
                                 </div>
                             </div>
@@ -139,6 +120,11 @@
 @section('web-script')
     <script>
         $(document).ready(function() {
+            /**
+             * Create new orer
+             * @praram {formData} data - data to create new order
+             * @praram {Element} btn - button click create order
+             */
             function createOrder(data, btn) {
                 $.ajax({
                     type: "POST",
@@ -171,13 +157,13 @@
                     btn.prop('disabled', false);
                 })
             }
+
+            // click to order 
             $('#btn-order').click(function(e) {
                 e.preventDefault();
                 const btnOrder = $(this);
                 btnOrder.prop('disabled', true);
                 let formData = new FormData($('form#form_order')[0]);
-                const de = $('#total_order').text();
-                console.log(de);
                 formData.append('total_order', parseFloat($('#total_order').text()));
                 showConfirmDialog('Are you sure you want to place this order?', function() {
                     createOrder(formData, btnOrder);
