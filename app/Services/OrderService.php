@@ -19,7 +19,8 @@ class OrderService extends BaseService
     public function searchOrder($searchName = null)
     {
         try {
-            $orders = Order::select('orders.*');
+            $orders = Order::select('orders.*', 'users.name as username')
+                ->join('users', 'users.id', '=', 'orders.user_id');
             if ($searchName != null && $searchName != '') {
                 $orders->where('orders.full_name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('orders.code', 'LIKE', '%' . $searchName . '%');

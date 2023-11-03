@@ -6,6 +6,7 @@
         <tr>
             <th>#</th>
             <th>Code Order</th>
+            <th>User Name</th>
             <th>Full Name</th>
             <th>Order date</th>
             <th>Total Order</th>
@@ -18,6 +19,7 @@
             <tr>
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->code }}</td>
+                <td>{{ $item->username }}</td>
                 <td>{{ $item->full_name }}</td>
                 <td>{{ $item->created_at }}</td>
                 <td>${{ $item->total_order }}</td>
