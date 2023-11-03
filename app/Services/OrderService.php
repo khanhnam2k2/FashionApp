@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\StatusOrder;
+use App\Mail\OrderCancel;
 use App\Mail\OrderSuccess;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -35,16 +36,17 @@ class OrderService extends BaseService
         try {
             $newStatus = $request->status;
             $order = Order::findOrFail($request->orderId);
+            $orderItems = $this->getOrderDetails($order->id);
             $currentStatus = $order->status;
             if ($newStatus == StatusOrder::cancelOrder) {
                 $order->status = $newStatus;
                 $order->save();
+                Mail::to($order->email)->send(new OrderCancel($order, $orderItems));
                 return response()->json(['success' => 'Cancel order successfully']);
             } elseif ($newStatus >= $currentStatus && $newStatus <= ($currentStatus + 1)) {
                 $order->status = $newStatus;
                 $order->save();
                 if ($newStatus == StatusOrder::successfulDelivery) {
-                    $orderItems = $this->getOrderDetails($order->id);
                     Mail::to($order->email)->send(new OrderSuccess($order, $orderItems));
                 }
                 return response()->json(['success' => 'Update order status successfully']);
