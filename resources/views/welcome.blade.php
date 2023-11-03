@@ -13,7 +13,8 @@
                                 <h2>Fall - Winter Collections 2030</h2>
                                 <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                                     commitment to exceptional quality.</p>
-                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <a href="{{ route('shop.index') }}" class="primary-btn">Shop now <span
+                                        class="arrow_right"></span></a>
                                 <div class="hero__social">
                                     <a href="#"><i class="fa-brands fa-facebook"></i></i></a>
                                     <a href="#"><i class="fa-brands fa-twitter"></i></a>
@@ -34,7 +35,8 @@
                                 <h2>Fall - Winter Collections 2030</h2>
                                 <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                                     commitment to exceptional quality.</p>
-                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <a href="{{ route('shop.index') }}" class="primary-btn">Shop now <span
+                                        class="arrow_right"></span></a>
                                 <div class="hero__social">
                                     <a href="#"><i class="fa-brands fa-facebook"></i></i></a>
                                     <a href="#"><i class="fa-brands fa-twitter"></i></a>
@@ -60,7 +62,7 @@
                         </div>
                         <div class="banner__item__text">
                             <h2>Clothing Collections 2030</h2>
-                            <a href="#">Shop now</a>
+                            <a href="{{ route('shop.index') }}">Shop now</a>
                         </div>
                     </div>
                 </div>
@@ -71,7 +73,7 @@
                         </div>
                         <div class="banner__item__text">
                             <h2>Accessories</h2>
-                            <a href="#">Shop now</a>
+                            <a href="{{ route('shop.index') }}">Shop now</a>
                         </div>
                     </div>
                 </div>
@@ -82,7 +84,7 @@
                         </div>
                         <div class="banner__item__text">
                             <h2>Shoes Spring 2030</h2>
-                            <a href="#">Shop now</a>
+                            <a href="{{ route('shop.index') }}">Shop now</a>
                         </div>
                     </div>
                 </div>
