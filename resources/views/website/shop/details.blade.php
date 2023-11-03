@@ -82,16 +82,6 @@
                             <div class="product__details__btns__option">
                                 <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
                             </div>
-                            <div class="product__details__last__option">
-                                <h5><span>Guaranteed Safe Checkout</span></h5>
-                                <img src="{{ asset('img/shop-details/details-payment.png') }}" alt="">
-                                <ul>
-                                    @if ($product->sku)
-                                        <li><span>SKU:</span> {{ $product->sku }}</li>
-                                    @endif
-                                    <li><span>Categories:</span> {{ $product->categoryName }}</li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
