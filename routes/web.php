@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
@@ -17,31 +18,24 @@ use App\Http\Controllers\Website\PostController;
 use App\Http\Controllers\Website\ShopController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
+
 Route::prefix('post')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('post.index');
     Route::post('/search', [PostController::class, 'search'])->name('post.search');
     Route::get('/details/{id}', [PostController::class, 'details'])->name('post.details');
 });
+
 Route::prefix('shop')->group(function () {
     Route::get('/', [ShopController::class, 'index'])->name('shop.index');
     Route::get('/{size}', [ShopController::class, 'getQuantityOfSize'])->name('shop.getQuantityOfSize');
     Route::get('/details/{id}', [ShopController::class, 'details'])->name('shop.details');
     Route::post('/search', [ShopController::class, 'search'])->name('shop.search');
 });
+
 Route::prefix('contacts')->group(function () {
     Route::get('/', [ContactController::class, 'showContact'])->name('contact.show');
     Route::post('/create', [ContactController::class, 'create'])->name('contact.create');
@@ -54,12 +48,18 @@ Route::prefix('comment')->group(function () {
 
 
 
-
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::post('/getTotalOrderInMonth', [DashboardController::class, 'getTotalOrderInMonth'])->name('admin.getTotalOrderInMonth');
     });
+
+    Route::prefix('customer')->group(function () {
+        Route::get('/', [AdminCustomerController::class, 'index'])->name('admin.customer.index');
+        Route::post('/search', [AdminCustomerController::class, 'search'])->name('admin.customer.search');
+        Route::delete('/delete/{id}', [AdminCustomerController::class, 'delete'])->name('admin.customer.delete');
+    });
+
     Route::prefix('category')->group(function () {
         Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.category.index');
         Route::post('/search', [AdminCategoryController::class, 'search'])->name('admin.category.search');
@@ -113,6 +113,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/update_cart', [CartController::class, 'updateCart'])->name('cart.update');
         Route::delete('/remove', [CartController::class, 'removeProduct'])->name('cart.remove');
     });
+
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/placeOrder', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 
@@ -121,7 +122,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/update', [CommentController::class, 'update'])->name('comment.update');
         Route::delete('/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
     });
-
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
