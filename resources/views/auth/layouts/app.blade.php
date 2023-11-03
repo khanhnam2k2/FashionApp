@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Modernize Free</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('admin/assets/images/logos/favicon.png') }}" />
+    <title>Login</title>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logo.png') }}" />
     <link rel="stylesheet" href="{{ asset('admin/assets/css/styles.min.css') }}" />
     <script src="{{ asset('admin/assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
