@@ -1,10 +1,11 @@
 @php
     use App\Enums\StatusOrder;
 @endphp
-<table class="table text-nowrap mb-0 align-middle">
+<table class="table text-nowrap mb-0 align-middle table-resposive">
     <thead>
         <tr>
             <th>#</th>
+            <th>Code Order</th>
             <th>Full Name</th>
             <th>Order date</th>
             <th>Total Order</th>
@@ -16,6 +17,7 @@
         @foreach ($data as $key => $item)
             <tr>
                 <td>{{ $item->id }}</td>
+                <td>{{ $item->code }}</td>
                 <td>{{ $item->full_name }}</td>
                 <td>{{ $item->created_at }}</td>
                 <td>${{ $item->total_order }}</td>
@@ -58,14 +60,16 @@
                     @endswitch
                 </td>
                 <td>
-                    <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}"
-                        data-bs-target="#updateStatusOrderModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                        class="btn btn-success m-1 me-3"><i class="fa-solid fa-pen-to-square me-2"></i>Update
-                        Status</button>
-                    <a href="{{ route('admin.order.details', $item->id) }}" class="btn btn-info me-3"><i
-                            class="fa-solid fa-eye me-2"></i>View details</a>
-                    <button id="btnDeleteOrder" data-id="{{ $item->id }}" class="btn btn-danger"><i
-                            class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                    <div class="d-flex w-100 flex-column gap-3 justify-content-center">
+                        <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}"
+                            data-bs-target="#updateStatusOrderModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            class="btn btn-success m-1 me-3"><i class="fa-solid fa-pen-to-square me-2"></i>Update
+                            Status</button>
+                        <a href="{{ route('admin.order.details', $item->id) }}" class="btn btn-info me-3"><i
+                                class="fa-solid fa-eye me-2"></i>View details</a>
+                        <button id="btnDeleteOrder" data-id="{{ $item->id }}" class="btn btn-danger"><i
+                                class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                    </div>
                 </td>
             </tr>
         @endforeach

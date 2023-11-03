@@ -1,7 +1,7 @@
 <table class="table text-nowrap mb-0 align-middle">
     <thead>
         <tr>
-            <th>Order Id</th>
+            <th>#</th>
             <th>Product</th>
             <th>Size</th>
             <th>Quantity</th>
@@ -12,12 +12,12 @@
     <tbody>
         @foreach ($data as $key => $item)
             <tr>
-                <td>{{ $item->id }}</td>
+                <td>{{ $key + 1 }}</td>
                 <td>
                     @php
                         $imagesArray = json_decode($item->productImages, true);
                     @endphp
-                    <div class="w-100 d-flex flex-column">
+                    <div class="w-100 d-flex flex-column gap-3">
                         <span>{{ $item->productName }}</span>
                         <img src="{{ Storage::url($imagesArray[0]) }}"
                             style="width: 200px;height:200px;object-fit:cover;border-radius:10px" alt="">

@@ -21,7 +21,8 @@ class OrderService extends BaseService
         try {
             $orders = Order::select('orders.*');
             if ($searchName != null && $searchName != '') {
-                $orders->where('orders.full_name', 'LIKE', '%' . $searchName . '%');
+                $orders->where('orders.full_name', 'LIKE', '%' . $searchName . '%')
+                    ->orWhere('orders.code', 'LIKE', '%' . $searchName . '%');
             }
             $orders = $orders->latest()->paginate(6);
             return $orders;
@@ -73,7 +74,6 @@ class OrderService extends BaseService
             return response()->json($e, 500);
         }
     }
-
 
     public function searchDetailsOrder($orderId, $searchName = null)
     {
