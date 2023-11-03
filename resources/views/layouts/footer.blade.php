@@ -7,28 +7,24 @@
                         <a href="#"><img src="{{ asset('img/footer-logo.png') }}" alt=""></a>
                     </div>
                     <p>The customer is at the heart of our unique business model, which includes design.</p>
-                    <a href="#"><img src="{{ asset('img/payment.png') }}" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
                 <div class="footer__widget">
-                    <h6>Shopping</h6>
+                    <h6>Quick links</h6>
                     <ul>
-                        <li><a href="#">Clothing Store</a></li>
-                        <li><a href="#">Trending Shoes</a></li>
-                        <li><a href="#">Accessories</a></li>
-                        <li><a href="#">Sale</a></li>
+                        <li><a href="{{ route('shop.index') }}">Shop</a></li>
+                        <li><a href="{{ route('about') }}">About us</a></li>
+                        <li><a href="{{ route('post.index') }}">Post</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-6">
                 <div class="footer__widget">
-                    <h6>Shopping</h6>
+                    <h6>Contact Us</h6>
                     <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Payment Methods</a></li>
-                        <li><a href="#">Delivary</a></li>
-                        <li><a href="#">Return & Exchanges</a></li>
+                        <li><a href="#">📞+034398499</a></li>
+                        <li><a href="#">📧:Mailfahsion@gmail.com</a></li>
                     </ul>
                 </div>
             </div>
