@@ -26,7 +26,7 @@ class HomeController extends Controller
         $categories = $this->categoryService->getLimitCategories();
         $products = $this->productService->searchProduct();
         $postLimit = $this->postService->getLimitPost();
-        return view('welcome', compact('categories', 'products', 'postLimit'));
+        return view('website.welcome', compact('categories', 'products', 'postLimit'));
     }
 
     public function about()
