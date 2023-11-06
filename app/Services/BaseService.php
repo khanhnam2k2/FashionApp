@@ -14,9 +14,9 @@ class BaseService
 
     /**
      * Upload files to storage
-     *
-     * @param $files
-     * @return path image
+     * @param $files file image
+     * @param @newFolder folder store image
+     * @return String path image
      */
     public function uploadImage($files, $newFolder = null)
     {
@@ -37,8 +37,9 @@ class BaseService
 
     /**
      * Upload files to storage
-     * @param $files
-     * @return path files 
+     * @param $files file image
+     * @param @newFolder folder store image
+     * @return Array path and type file
      */
     public function uploadFile($files, $newFolder = null)
     {
@@ -61,11 +62,9 @@ class BaseService
         }
     }
 
-
     /**
      * Delete files to storage
-     *
-     * @param path files
+     * @param String $path path file
      * @return true
      */
     public function deleteFile($path)
@@ -82,7 +81,7 @@ class BaseService
     }
 
     /**
-     * generate a random code
+     * Generate a random code
      * @param number $length length of code
      * @return code random code
      */
@@ -99,7 +98,7 @@ class BaseService
     }
 
     /**
-     * get list order detail by order id
+     * Get list order detail by order id
      * @param number $orderId order id
      * @return array $orderDetail list order detail
      */
@@ -107,6 +106,7 @@ class BaseService
     {
         try {
             $order = Order::findOrFail($orderId);
+
             $orderDetail = OrderItem::select(
                 'order_items.*',
                 'products.name as productName',
@@ -114,6 +114,7 @@ class BaseService
             )
                 ->join('products', 'products.id', '=', 'order_items.product_id')
                 ->where('order_id', $order->id)->get();
+
             return $orderDetail;
         } catch (Exception $e) {
             Log::error($e);

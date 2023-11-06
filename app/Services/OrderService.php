@@ -16,16 +16,24 @@ use Illuminate\Support\Facades\Mail;
 class OrderService extends BaseService
 {
 
+    /**
+     * Get order list paginate
+     * @param String $searchName keyword search
+     * @return Array order list
+     */
     public function searchOrder($searchName = null)
     {
         try {
             $orders = Order::select('orders.*', 'users.name as username')
                 ->join('users', 'users.id', '=', 'orders.user_id');
+
             if ($searchName != null && $searchName != '') {
                 $orders->where('orders.full_name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('orders.code', 'LIKE', '%' . $searchName . '%');
             }
+
             $orders = $orders->latest()->paginate(6);
+
             return $orders;
         } catch (Exception $e) {
             Log::error($e);
@@ -33,6 +41,11 @@ class OrderService extends BaseService
         }
     }
 
+    /**
+     * Update status order
+     * @param @request
+     * @return response message
+     */
     public function updateStatusOrder($request)
     {
         try {
@@ -40,6 +53,7 @@ class OrderService extends BaseService
             $order = Order::findOrFail($request->orderId);
             $orderItems = $this->getOrderDetails($order->id);
             $currentStatus = $order->status;
+
             if ($newStatus == StatusOrder::cancelOrder) {
                 $order->status = $newStatus;
                 $order->save();
@@ -61,6 +75,11 @@ class OrderService extends BaseService
         }
     }
 
+    /**
+     * Delete order
+     * @param number $id id of order
+     * @return true
+     */
     public function deleteOrder($id)
     {
         try {
@@ -69,6 +88,7 @@ class OrderService extends BaseService
 
             $order->delete();
             $orderDetail->delete();
+
             return true;
         } catch (Exception $e) {
             Log::error($e);
@@ -76,6 +96,10 @@ class OrderService extends BaseService
         }
     }
 
+    /**
+     * Get order details list paginate
+     * @return Array order details list
+     */
     public function searchDetailsOrder($orderId, $searchName = null)
     {
         try {
@@ -98,6 +122,11 @@ class OrderService extends BaseService
         }
     }
 
+    /**
+     * get total order in year
+     * @param date year
+     * @return Array array total order in year
+     */
     public function getTotalOrderInYear($year = null)
     {
         try {

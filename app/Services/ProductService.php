@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class ProductService extends BaseService
 {
+    /**
+     * Get product by id
+     * @param number $id id of product
+     * @return Array product 
+     */
     public function getProductById($id)
     {
         try {
@@ -46,6 +51,7 @@ class ProductService extends BaseService
                     'categories.name'
                 )
                 ->first();
+
             return $product;
         } catch (Exception $e) {
             Log::error($e);
@@ -53,6 +59,10 @@ class ProductService extends BaseService
         }
     }
 
+    /**
+     * Get product list
+     * @return Array product list
+     */
     public function getProducts()
     {
         try {
@@ -60,6 +70,7 @@ class ProductService extends BaseService
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->where('products.status', Status::ON)
                 ->get();
+
             return $products;
         } catch (Exception $e) {
             Log::error($e);
@@ -67,6 +78,14 @@ class ProductService extends BaseService
         }
     }
 
+    /**
+     * Get product list paginate
+     * @param String $searchName keyword search
+     * @param String $sortByPrice 
+     * @param number $categoryId id of category
+     * @param number $status status product
+     * @return Array product list
+     */
     public function searchProduct($searchName = null, $sortByPrice = null, $categoryId = null, $status = null)
     {
         try {
@@ -89,17 +108,21 @@ class ProductService extends BaseService
                         ->where('product_size_quantities.quantity', '>', 0);
                 })
                 ->whereNull('products.deleted_at');
+
             if ($status != null && $status != '') {
                 $products->where('products.status', '=', $status);
             }
+
             if ($searchName != null && $searchName != '') {
                 $products->where('products.name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('products.price', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('categories.name', 'LIKE', '%' . $searchName . '%');
             }
+
             if ($sortByPrice != null && $sortByPrice != '') {
                 $products->orderBy('price', $sortByPrice);
             }
+
             if ($categoryId != null && $categoryId != '') {
                 $products->where('products.category_id', $categoryId);
             }
@@ -117,6 +140,7 @@ class ProductService extends BaseService
             )
                 ->orderBy('products.created_at', 'desc')
                 ->paginate(9);
+
             return $products;
         } catch (Exception $e) {
             Log::error($e);
@@ -124,9 +148,15 @@ class ProductService extends BaseService
         }
     }
 
+    /**
+     * Create product
+     * @param $request
+     * @return true
+     */
     public function createProduct($request)
     {
         DB::beginTransaction();
+
         try {
             $images = [];
             foreach ($request->file('images') as $file) {
@@ -142,9 +172,12 @@ class ProductService extends BaseService
                 'images' => json_encode($images),
                 'status' => $request->statusProduct
             ];
+
             $data = Product::create($product);
+
             $sizes = $request->sizes;
             $quantities = $request->quantity;
+
             foreach ($sizes as $key => $size) {
                 $productSizeQuantity = new ProductSizeQuantity();
                 $productSizeQuantity->product_id = $data->id;
@@ -154,6 +187,7 @@ class ProductService extends BaseService
             }
 
             DB::commit();
+
             return true;
         } catch (Exception $e) {
             DB::rollBack();
@@ -162,9 +196,15 @@ class ProductService extends BaseService
         }
     }
 
+    /**
+     * Update product
+     * @param $request
+     * @return true
+     */
     public function updateProduct($request)
     {
         DB::beginTransaction();
+
         try {
             $product = Product::findOrFail($request->productId);
             if (!empty($request->file('images'))) {
@@ -181,6 +221,7 @@ class ProductService extends BaseService
             } else {
                 $product->images = $product->images;
             }
+
             $product->name = $request->name;
             $product->price = $request->price;
             $product->category_id = $request->category_id;
@@ -193,6 +234,7 @@ class ProductService extends BaseService
 
             $sizes = $request->sizes;
             $quantities = $request->quantity;
+
             foreach ($sizes as $key => $size) {
                 $productSizeQuantity = new ProductSizeQuantity();
                 $productSizeQuantity->product_id = $product->id;
@@ -211,25 +253,37 @@ class ProductService extends BaseService
         }
     }
 
+    /**
+     * Delete product
+     * @param number $id id of product
+     * @return true
+     */
     public function deleteProduct($id)
     {
         try {
             $data = Product::findOrFail($id);
             $this->deleteFile($data->image);
             $data->delete();
-            return $data;
+
+            return true;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);
         }
     }
 
+    /**
+     * get quantity of size
+     * @param String $size size of product
+     * @param @request
+     */
     public function getQuantityOfSize($size, $request)
     {
         try {
             $data = ProductSizeQuantity::where('size', $size)
                 ->where('product_id', $request->productId)
                 ->pluck('quantity')->first();
+
             return $data;
         } catch (Exception $e) {
             Log::error($e);

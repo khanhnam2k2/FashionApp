@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Log;
 
 class CategoryService
 {
+    /**
+     * Get category list with status on
+     * @return Array category list
+     */
     public function getCategories()
     {
         try {
@@ -19,6 +23,11 @@ class CategoryService
             return response()->json($e, 500);
         }
     }
+
+    /**
+     * Get category list limit
+     * @return Array category list
+     */
     public function getLimitCategories()
     {
         try {
@@ -29,7 +38,13 @@ class CategoryService
             return response()->json($e, 500);
         }
     }
-    public function searchCategory($searchName)
+
+    /**
+     * Get category list paginate
+     * @param String $searchName keyword search
+     * @return Array category list
+     */
+    public function searchCategory($searchName = null)
     {
         try {
             $categories = Category::select('categories.*');
@@ -44,6 +59,11 @@ class CategoryService
         }
     }
 
+    /**
+     * Create category
+     * @param $request
+     * @return true
+     */
     public function createCategory($request)
     {
         try {
@@ -51,35 +71,52 @@ class CategoryService
                 'name' => $request->name,
                 'status' => $request->status,
             ];
-            $data = Category::create($category);
-            return $data;
+
+            Category::create($category);
+
+            return true;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);
         }
     }
 
+    /**
+     * Update category
+     * @param $request
+     * @return true
+     */
     public function updateCategory($request)
     {
         try {
             $data = Category::findOrFail($request->categoryId);
+
             $category = [
                 'name' => $request->name,
                 'status' => $request->status,
             ];
-            $data = $data->update($category);
-            return $data;
+
+            $data->update($category);
+
+            return true;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);
         }
     }
 
+    /**
+     * Delete category
+     * @param number $id id of category
+     * @return true
+     */
     public function deleteCategory($id)
     {
         try {
-            $data = Category::where('id', $id)->delete();
-            return $data;
+            $category = Category::findOrFail($id);
+            $category->delete();
+
+            return true;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);

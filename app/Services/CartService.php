@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductSizeQuantity;
 use Exception;
@@ -17,14 +16,23 @@ class CartService extends BaseService
 {
     protected $orderService;
 
+    /**
+     * This is the constructor declaration.
+     * @param OrderService $orderService
+     */
     public function __construct(OrderService $orderService)
     {
         $this->orderService = $orderService;
     }
 
+    /**
+     * Handle add product from cart
+     * @param $request
+     */
     public function handleAddToCart($request)
     {
         DB::beginTransaction();
+
         try {
             $product = Product::find($request->productId);
 
@@ -33,7 +41,6 @@ class CartService extends BaseService
             }
             $user = Auth::user();
             $cart = Cart::where('user_id', $user->id)->first();
-
 
             // check cart exists
             if (!$cart) {
@@ -46,6 +53,7 @@ class CartService extends BaseService
                 ->where('size', $request->size)
                 ->where('quantity', '>', 0)
                 ->first();
+
             if (!$productSizeQuantity) {
                 return response()->json(['error' => 'This size is out of stock']);
             }
@@ -65,6 +73,7 @@ class CartService extends BaseService
                 if ($newQuantity > $productSizeQuantity->quantity) {
                     return response()->json(['error' => 'The number of products in the shopping cart exceeds the quantity in stock']);
                 }
+
                 $cartItem = new CartItem();
                 $cartItem->cart_id = $cart->id;
                 $cartItem->product_id = $product->id;
@@ -73,11 +82,8 @@ class CartService extends BaseService
                 $cartItem->save();
             }
 
-            // //Subtract the number of products in the Product_Size_quantities
-            // $productSizeQuantity->quantity -= $request->quantity;
-            // $productSizeQuantity->save();
-
             DB::commit();
+
             return response()->json(['success' => 'Product added successfully', 'quantityAvailable' => $productSizeQuantity->quantity]);
         } catch (Exception $e) {
             DB::rollBack();
@@ -86,6 +92,10 @@ class CartService extends BaseService
         }
     }
 
+    /**
+     * Show cart 
+     * @return Array data cart
+     */
     public function showCart()
     {
         try {
@@ -122,6 +132,7 @@ class CartService extends BaseService
             foreach ($cartItems as $item) {
                 $totalCarts += $item->total;
             }
+
             return [
                 'cartItems' => $cartItems,
                 'totalCarts' => $totalCarts
@@ -131,6 +142,11 @@ class CartService extends BaseService
             return response()->json($e, 500);
         }
     }
+
+    /**
+     * Show cart in checkout page
+     * @return Array data cart
+     */
     public function showCartCheckout()
     {
         try {
@@ -142,6 +158,7 @@ class CartService extends BaseService
                 $cart->user_id = $user->id;
                 $cart->save();
             }
+
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
                 ->join('product_size_quantities', function ($join) {
@@ -159,9 +176,19 @@ class CartService extends BaseService
                     'product_size_quantities.quantity as quantityAvailable'
                 )
                 ->selectRaw('SUM(cart_items.quantity * products.price) as total')
-                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images', 'product_size_quantities.quantity')
+                ->groupBy(
+                    'cart_items.cart_id',
+                    'cart_items.size',
+                    'cart_items.quantity',
+                    'products.id',
+                    'products.name',
+                    'products.price',
+                    'products.images',
+                    'product_size_quantities.quantity'
+                )
                 ->orderBy('cart_items.created_at', 'desc')
                 ->get();
+
             foreach ($cartItems as $key => $item) {
                 if ($item->quantity > $item->quantityAvailable) {
                     CartItem::where('cart_id', $cart->id)
@@ -172,10 +199,12 @@ class CartService extends BaseService
                     unset($cartItems[$key]);
                 }
             }
+
             $totalCarts = 0;
             foreach ($cartItems as $item) {
                 $totalCarts += $item->total;
             }
+
             return [
                 'cartItems' => $cartItems,
                 'totalCarts' => $totalCarts
@@ -185,9 +214,16 @@ class CartService extends BaseService
             return response()->json($e, 500);
         }
     }
+
+    /**
+     * Remove products from cart
+     * @param @request
+     * @return response message 
+     */
     public function removeProductFromCart($request)
     {
         DB::beginTransaction();
+
         try {
             $user  = Auth::user();
             $cart = Cart::where('user_id', $user->id)->first();
@@ -206,6 +242,7 @@ class CartService extends BaseService
             $cartItem->delete();
 
             DB::commit();
+
             return response()->json(['success' => 'Successfully removed the product from the cart']);
         } catch (Exception $e) {
             DB::rollBack();
@@ -214,16 +251,22 @@ class CartService extends BaseService
         }
     }
 
+    /**
+     * Update cart
+     * @param @request
+     * @return response message
+     */
     public function updateCart($request)
     {
         DB::beginTransaction();
+
         try {
             $newQuantity = $request->quantity;
             $user  = Auth::user();
             $cart = Cart::where('user_id', $user->id)->first();
 
             if (!$cart) {
-                return false;
+                return response()->json(['error' => 'Cart not found']);
             }
             // cart item update
             $cartItem = CartItem::where('cart_id', $cart->id)
@@ -236,6 +279,7 @@ class CartService extends BaseService
                     ->where('size', $request->size)
                     ->first();
                 if ($newQuantity <= $productSizeQuantity->quantity) {
+
                     // Update size and quantity for cart
                     $cartItem->size = $request->size;
                     $cartItem->quantity = $newQuantity;
@@ -253,6 +297,10 @@ class CartService extends BaseService
         }
     }
 
+    /**
+     * Order
+     * @param $request
+     */
     public function placeOrder($request)
     {
         DB::beginTransaction();
@@ -270,6 +318,7 @@ class CartService extends BaseService
                 'code' => $this->generateRandomCode(),
                 'total_order' => $request->total_order
             ];
+
             $order = Order::create($orderData);
             $cart = Cart::where('user_id', $user->id)->first();
 
@@ -277,6 +326,7 @@ class CartService extends BaseService
                 ->where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
                 ->get();
+
             $orderItemData = [];
             foreach ($cartItems as  $item) {
                 $productSizeQuantity = ProductSizeQuantity::where('product_id', $item->product_id)
@@ -298,9 +348,12 @@ class CartService extends BaseService
                 $productSizeQuantity->quantity -= $item->quantity;
                 $productSizeQuantity->save();
             }
+
             DB::table('order_items')->insert($orderItemData);
             CartItem::where('cart_id', $cart->id)->delete();
+
             DB::commit();
+
             return response()->json(['success' => 'Order Success! Please check your purchase']);
         } catch (Exception $e) {
             DB::rollBack();

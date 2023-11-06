@@ -11,17 +11,25 @@ use Illuminate\Support\Facades\Log;
 class CommentService extends BaseService
 {
 
+    /**
+     * Get comment list paginate
+     * @param String $typeComment type of comment
+     * @return Array comment list
+     */
     public function searchComment($typeComment)
     {
         try {
             $comments = Comment::select('comments.*', 'users.name as author')
                 ->join('users', 'users.id', '=', 'comments.user_id');
+
             if ($typeComment == 'post') {
                 $comments->whereNotNull('post_id');
             } elseif ($typeComment == 'product') {
                 $comments->whereNotNull('product_id');
             }
+
             $comments = $comments->latest()->paginate(2);
+
             return $comments;
         } catch (Exception $e) {
             Log::error($e);
@@ -29,10 +37,16 @@ class CommentService extends BaseService
         }
     }
 
+    /**
+     * Create comment
+     * @param $request
+     * @return true
+     */
     public function createComment($request)
     {
         try {
             $commentType = $request->commentType;
+
             if ($commentType === 'post') {
                 if (!empty($request->file('file')) || !empty($request->content)) {
                     $comment = new Comment();
@@ -68,6 +82,11 @@ class CommentService extends BaseService
         }
     }
 
+    /**
+     * Update comment
+     * @param $request
+     * @return response message 
+     */
     public function updateComment($request)
     {
         try {
@@ -77,6 +96,7 @@ class CommentService extends BaseService
             if ($currentUser->id !== $comment->user_id) {
                 return response()->json(['error' => 'You do not have permission to update this comment!']);
             }
+
             if (!empty($request->file('file')) || !empty($request->content)) {
                 if (!empty($request->file())) {
                     $this->deleteFile($comment->image);
@@ -95,18 +115,26 @@ class CommentService extends BaseService
         }
     }
 
+    /**
+     * Delete comment
+     * @param number $id id of comment
+     * @return response message
+     */
     public function deleteComment($id)
     {
         try {
             $comment = Comment::findOrFail($id);
             $currentUser = Auth::user();
+
             if ($currentUser->id !== $comment->user_id && !$currentUser->role == UserRole::ADMIN) {
                 return response()->json(['error' => 'You do not have permission to delete this comment!']);
             }
             if ($comment->image) {
                 $this->deleteFile($comment->image);
             }
+
             $comment->delete();
+
             return response()->json(['success' => 'Delete comment successfully']);
         } catch (Exception $e) {
             Log::error($e);
