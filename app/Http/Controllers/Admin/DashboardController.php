@@ -28,6 +28,11 @@ class DashboardController extends Controller
         return view('admin.dashboard');
     }
 
+    /**
+     * Get total order in year
+     * @param Request $request
+     * @return response data total order in year
+     */
     public function getTotalOrderInYear(Request $request)
     {
         $data = $this->orderService->getTotalOrderInYear($request->year);

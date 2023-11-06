@@ -11,16 +11,29 @@ class CartController extends Controller
 {
     protected $cartService;
 
+    /**
+     * This is the constructor declaration.
+     * @param CartService $cartService
+     */
     public function __construct(CartService $cartService)
     {
         $this->cartService = $cartService;
     }
 
+    /**
+     * Show cart page in website
+     * @return view cart page
+     */
     public function index()
     {
         return view('website.cart.index');
     }
 
+    /**
+     * Show cart table in website
+     * @param Request $request
+     * @return view cart table
+     */
     public function search()
     {
         $data = $this->cartService->showCart();
@@ -29,17 +42,34 @@ class CartController extends Controller
             'totalCarts' => $data['totalCarts'],
         ]);
     }
+
+    /**
+     * Add product to cart
+     * @param CartRequest $request
+     * @return response data message status
+     */
     public function addToCart(CartRequest $request)
     {
         $data = $this->cartService->handleAddToCart($request);
         return response()->json(['data' => $data]);
     }
 
+    /**
+     * Remove product from cart
+     * @param Request $request
+     * @return response data message status
+     */
     public function removeProduct(Request $request)
     {
         $data = $this->cartService->removeProductFromCart($request);
         return response()->json(['data' => $data]);
     }
+
+    /**
+     * Update cart
+     * @param Request $request
+     * @return response data message status
+     */
     public function updateCart(CartRequest $request)
     {
         $data = $this->cartService->updateCart($request);

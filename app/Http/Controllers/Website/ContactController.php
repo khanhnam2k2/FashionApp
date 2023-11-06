@@ -10,15 +10,29 @@ class ContactController extends Controller
 {
     protected $contactService;
 
+    /**
+     * This is the constructor declaration.
+     * @param ContactService $contactService
+     */
     public function __construct(ContactService $contactService)
     {
         $this->contactService = $contactService;
     }
+
+    /**
+     * Show contact page 
+     * @return view contact page
+     */
     public function showContact()
     {
         return view('website.contact.index');
     }
 
+    /**
+     * Create new contact 
+     * @param StoreContactRequest $request 
+     * @return response ok
+     */
     public function create(StoreContactRequest $request)
     {
         $this->contactService->createContact($request);

@@ -5,16 +5,24 @@ namespace App\Http\Controllers\Website;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Services\CartService;
-use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
 {
     protected $cartService;
+
+    /**
+     * This is the constructor declaration.
+     * @param CartService $cartService
+     */
     public function __construct(CartService $cartService)
     {
         $this->cartService = $cartService;
     }
 
+    /**
+     * Show checkout page in website
+     * @return view checkout page
+     */
     public function index()
     {
         $data = $this->cartService->showCartCheckout();
@@ -24,6 +32,10 @@ class CheckoutController extends Controller
         ]);
     }
 
+    /**
+     * Order
+     * @return response data message status
+     */
     public function placeOrder(OrderRequest $request)
     {
         $data = $this->cartService->placeOrder($request);
