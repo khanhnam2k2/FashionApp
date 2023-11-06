@@ -7,6 +7,7 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
+ * Status show / hide
  * @method static OFF()
  * @method static ON()
  */

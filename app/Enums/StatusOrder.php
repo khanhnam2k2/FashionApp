@@ -7,9 +7,12 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * @method static static OptionOne()
- * @method static static OptionTwo()
- * @method static static OptionThree()
+ * Status order
+ * @method static static cancelOrder()
+ * @method static static orderPlaced()
+ * @method static static confirmInformation()
+ * @method static static delivering()
+ * @method static static successfulDelivery()
  */
 final class StatusOrder extends Enum
 {
