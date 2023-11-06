@@ -211,7 +211,7 @@
 @endsection
 @section('web-script')
     <script>
-        const urlGetTotalOrderInMoth = "{{ route('admin.getTotalOrderInMonth') }}";
+        const urlGetTotalOrderInYear = "{{ route('admin.getTotalOrderInYear') }}";
     </script>
     <script src="{{ asset('admin/assets/js/dashboard.js') }}"></script>
 @endsection

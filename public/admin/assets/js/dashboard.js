@@ -44,7 +44,7 @@ $(document).ready(function () {
     function getTotalOrderInYear(year) {
         $.ajax({
             type: "POST",
-            url: urlGetTotalOrderInMoth,
+            url: urlGetTotalOrderInYear,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
