@@ -98,7 +98,7 @@ class OrderService extends BaseService
         }
     }
 
-    public function getTotalOrderInMonth($year = null)
+    public function getTotalOrderInYear($year = null)
     {
         try {
             $currentYear = Carbon::now()->year;
