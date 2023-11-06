@@ -127,10 +127,11 @@ class CartService extends BaseService
                 ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images', 'product_size_quantities.quantity')
                 ->orderBy('cart_items.created_at', 'desc')
                 ->get();
-
             $totalCarts = 0;
             foreach ($cartItems as $item) {
-                $totalCarts += $item->total;
+                if ($item->quantity <= $item->quantityAvailable) {
+                    $totalCarts += $item->total;
+                }
             }
 
             return [
@@ -188,7 +189,6 @@ class CartService extends BaseService
                 )
                 ->orderBy('cart_items.created_at', 'desc')
                 ->get();
-
             foreach ($cartItems as $key => $item) {
                 if ($item->quantity > $item->quantityAvailable) {
                     CartItem::where('cart_id', $cart->id)
