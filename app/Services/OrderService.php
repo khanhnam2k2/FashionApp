@@ -39,7 +39,7 @@ class OrderService extends BaseService
             if ($statusOrder != null && $statusOrder != '') {
                 $userOrders->where('orders.status', '=', $statusOrder);
             }
-            $userOrders = $userOrders->orderBy('orders.created_at', 'desc')->get();
+            $userOrders = $userOrders->orderBy('orders.created_at', 'desc')->paginate(4);
 
             return $userOrders;
         } catch (Exception $e) {
