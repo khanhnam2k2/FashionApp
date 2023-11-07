@@ -14,6 +14,7 @@ use App\Http\Controllers\Website\CheckoutController;
 use App\Http\Controllers\Website\CommentController;
 use App\Http\Controllers\Website\ContactController;
 use App\Http\Controllers\Website\HomeController;
+use App\Http\Controllers\Website\OrderController;
 use App\Http\Controllers\Website\PostController;
 use App\Http\Controllers\Website\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -105,6 +106,11 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::post('ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 });
 Route::middleware('auth')->group(function () {
+
+    Route::prefix('order')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('order.index');
+        Route::post('/search', [OrderController::class, 'search'])->name('order.search');
+    });
 
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index');

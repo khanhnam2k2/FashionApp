@@ -18,6 +18,9 @@
                             <div class="header__top__hover">
                                 <span>{{ Auth::user()->name }} <i class="arrow_carrot-down"></i></span>
                                 <ul>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('order.index') }}">Purchase order</a>
+                                    </li>
                                     <li><a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
@@ -44,7 +47,8 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="{{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
+                        <li class="{{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a>
+                        </li>
                         <li class="{{ request()->is('shop') ? 'active' : '' }}"><a
                                 href="{{ route('shop.index') }}">Shop</a></li>
                         <li class="{{ request()->is('about') ? 'active' : '' }}"><a

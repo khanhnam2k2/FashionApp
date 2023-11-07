@@ -9,13 +9,44 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class OrderService extends BaseService
 {
+    /**
+     * Get order list by status order
+     * @param number $statusOrder status order
+     * @return Array order list
+     */
+    public function getOrderByStatus($statusOrder = null)
+    {
+        try {
+            $user = Auth::user();
 
+            $userOrders = Order::select(
+                'orders.*',
+                'order_items.*',
+                'products.name as productName',
+                'products.images as productImages'
+            )
+                ->join('order_items', 'orders.id', '=', 'order_items.order_id')
+                ->join('products', 'products.id', '=', 'order_items.product_id')
+                ->where('user_id', $user->id);
+
+            if ($statusOrder != null && $statusOrder != '') {
+                $userOrders->where('orders.status', '=', $statusOrder);
+            }
+            $userOrders = $userOrders->orderBy('orders.created_at', 'desc')->get();
+
+            return $userOrders;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
     /**
      * Get order list paginate
      * @param String $searchName keyword search
