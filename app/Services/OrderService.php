@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\StatusOrder;
+use App\Enums\UserRole;
 use App\Mail\OrderCancel;
 use App\Mail\OrderSuccess;
 use App\Models\Order;
@@ -50,9 +51,10 @@ class OrderService extends BaseService
     /**
      * Get order list paginate
      * @param String $searchName keyword search
+     * @param number $statusOrder status order
      * @return Array order list
      */
-    public function searchOrder($searchName = null)
+    public function searchOrder($searchName = null, $statusOrder = null)
     {
         try {
             $orders = Order::select('orders.*', 'users.name as username')
@@ -61,6 +63,10 @@ class OrderService extends BaseService
             if ($searchName != null && $searchName != '') {
                 $orders->where('orders.full_name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('orders.code', 'LIKE', '%' . $searchName . '%');
+            }
+
+            if ($statusOrder != null && $statusOrder != '') {
+                $orders->where('orders.status', '=', $statusOrder);
             }
 
             $orders = $orders->latest()->paginate(6);
@@ -80,16 +86,21 @@ class OrderService extends BaseService
     public function updateStatusOrder($request)
     {
         try {
+            $user = Auth::user();
             $newStatus = $request->status;
             $order = Order::findOrFail($request->orderId);
             $orderItems = $this->getOrderDetails($order->id);
             $currentStatus = $order->status;
 
             if ($newStatus == StatusOrder::cancelOrder) {
-                $order->status = $newStatus;
-                $order->save();
-                Mail::to($order->email)->send(new OrderCancel($order, $orderItems));
-                return response()->json(['success' => 'Cancel order successfully']);
+                if ($user->role == UserRole::ADMIN || $order->status == StatusOrder::orderPlaced) {
+                    $order->status = $newStatus;
+                    $order->save();
+                    Mail::to($order->email)->send(new OrderCancel($order, $orderItems));
+                    return response()->json(['success' => 'Cancel order successfully']);
+                } else {
+                    return response()->json(['error' => 'You do not have permission to update this order status']);
+                }
             } elseif ($newStatus >= $currentStatus && $newStatus <= ($currentStatus + 1)) {
                 $order->status = $newStatus;
                 $order->save();
@@ -98,7 +109,7 @@ class OrderService extends BaseService
                 }
                 return response()->json(['success' => 'Update order status successfully']);
             } else {
-                return response()->json(['error' => 'Unable to update status']);
+                return response()->json(['error' => 'Please update the status sequentially']);
             }
         } catch (Exception $e) {
             Log::error($e);

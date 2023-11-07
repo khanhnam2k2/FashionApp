@@ -6,64 +6,89 @@
         <div class="border-bottom mb-3">
             @switch($item->status)
                 @case(StatusOrder::cancelOrder)
-                    <div class="d-flex align-items-center justify-content-end mb-2 ">
-                        <i class="fa-solid fa-ban text-danger mr-2"></i>
-                        <span class="text-start">Cancel Order</span>
+                    <div class="d-flex align-items-center justify-content-between mb-2 ">
+                        <div class="d-flex flex-column">
+                            <p><span class="text-danger">Code order:</span> {{ $item->code }}</p>
+                            <p><span class="text-danger">Order date:</span> {{ $item->created_at }}</p>
+                            <p><span class="text-danger">Total amount:</span>: ${{ $item->total_order }}</p>
+                            <p><span class="text-danger">Canceled order on:</span>: {{ $item->updated_at }}</p>
+                        </div>
+                        <div class="">
+                            <i class="fa-solid fa-ban text-danger mr-2"></i>
+                            <span class="text-start">Cancel Order</span>
+                        </div>
                     </div>
                 @break
 
                 @case(StatusOrder::orderPlaced)
-                    <div class="d-flex align-items-center justify-content-end mb-2 ">
-                        <i class="fa-solid fa-receipt text-dark mr-2"></i>
-                        <span class="text-start">Wait for confirmation</span>
+                    <div class="d-flex align-items-center justify-content-between mb-2 ">
+                        <div class="d-flex flex-column">
+                            <p><span class="text-danger">Code order:</span> {{ $item->code }}</p>
+                            <p><span class="text-danger">Order date:</span> {{ $item->created_at }}</p>
+                            <p><span class="text-danger">Total amount:</span>: ${{ $item->total_order }}</p>
+                        </div>
+                        <div class="">
+                            <i class="fa-solid fa-receipt text-dark mr-2"></i>
+                            <span class="text-start">Wait for confirmation</span>
+                        </div>
                     </div>
                 @break
 
                 @case(StatusOrder::confirmInformation)
-                    <div class="d-flex align-items-center justify-content-end mb-2">
-                        <i class="fa-solid fa-circle-dollar-to-slot text-primary mr-2"></i>
-                        <span class="text-start">Confirmed successfully</span>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="d-flex flex-column">
+                            <p><span class="text-danger">Code order:</span> {{ $item->code }}</p>
+                            <p><span class="text-danger">Order date:</span> {{ $item->created_at }}</p>
+                            <p><span class="text-danger">Total amount:</span>: ${{ $item->total_order }}</p>
+                        </div>
+                        <div class="">
+                            <i class="fa-solid fa-circle-dollar-to-slot text-primary mr-2"></i>
+                            <span class="text-start">Confirmed successfully</span>
+                        </div>
                     </div>
                 @break
 
                 @case(StatusOrder::delivering)
-                    <div class="d-flex align-items-center justify-content-end mb-2 ">
-                        <i class="fa-solid fa-truck text-warning mr-2"></i>
-                        <span class="text-start">Delivering</span>
+                    <div class="d-flex align-items-center justify-content-between mb-2 ">
+                        <div class="d-flex flex-column">
+                            <p><span class="text-danger">Code order:</span> {{ $item->code }}</p>
+                            <p><span class="text-danger">Order date:</span> {{ $item->created_at }}</p>
+                            <p><span class="text-danger">Total amount:</span>: ${{ $item->total_order }}</p>
+                        </div>
+                        <div class="">
+                            <i class="fa-solid fa-truck text-warning mr-2"></i>
+                            <span class="text-start">Delivering</span>
+                        </div>
                     </div>
                 @break
 
                 @case(StatusOrder::successfulDelivery)
-                    <div class="d-flex align-items-center justify-content-end mb-2 ">
-                        <i class="fa-solid fa-circle-check text-success mr-2"></i>
-                        <span class="text-start">Successful delivery</span>
+                    <div class="d-flex align-items-center justify-content-between mb-2 ">
+                        <div class="d-flex flex-column">
+                            <p><span class="text-danger">Code order:</span> {{ $item->code }}</p>
+                            <p><span class="text-danger">Order date:</span> {{ $item->created_at }}</p>
+                            <p><span class="text-danger">Total amount:</span>: ${{ $item->total_order }}</p>
+                        </div>
+                        <div class="">
+                            <i class="fa-solid fa-circle-check text-success mr-2"></i>
+                            <span class="text-start">Successful delivery</span>
+                        </div>
                     </div>
                 @break
             @endswitch
         </div>
-        <div class="row border-bottom pb-2 mb-3">
-            <div class="col-md-8">
-                <div class="d-flex">
-                    <div class="">
-                        @php
-                            $imagesArray = json_decode($item->productImages, true);
-                        @endphp
-                        <img src="{{ Storage::url($imagesArray[0]) }}" style="width:100px;height:100px;object-fit:cover"
-                            alt="">
-                    </div>
-                    <div class="ml-2">
-                        <h5>{{ $item->productName }}</h5>
-                        <p>size: {{ $item->size }}</p>
-                        <p>x{{ $item->quantity }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" style="text-align: end">
-                <p class="p-3 text-danger">${{ $item->price }}</p>
-            </div>
+        <div class="" id="orderDetails_{{ $item->id }}">
+
         </div>
-        <div style="text-align: end">
-            <p>Total price: <span style="color:red;font-size:20px">${{ $item->price * $item->quantity }}</span></p>
+        <div class="d-flex align-items-center justify-content-end">
+            <button class="btn btn-info mr-3 btn-order-details" data-order-id="{{ $item->id }}">See
+                details</button>
+            @if ($item->status == StatusOrder::cancelOrder)
+                <button data-order-id="{{ $item->id }}" class="btn btn-danger btn-repurchase">Repurchase</button>
+            @elseif($item->status == StatusOrder::orderPlaced)
+                <button data-order-id="{{ $item->id }}" class="btn btn-danger btn-cancel-order">Cancel
+                    order</button>
+            @endif
         </div>
     </div>
 @endforeach

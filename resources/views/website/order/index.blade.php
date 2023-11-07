@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@php
+    use App\Enums\StatusOrder;
+@endphp
 @section('title', 'My Order - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
@@ -95,8 +98,13 @@
 </style>
 @section('web-script')
     <script>
+        var statusCancelOrder = {{ StatusOrder::cancelOrder }};
+        var statusWatingCofirm = {{ StatusOrder::orderPlaced }};
+
         /**
          * Load order list
+         * @param page - current page number
+         * @param statusOrder - status order
          */
         function searchOrder(page = 1, statusOrder = null) {
             $.ajax({
@@ -115,16 +123,112 @@
             });
         }
 
+        /**
+         * Load order details list
+         * @param page - current page number
+         * @param orderId - id of order
+         */
+        function searchOrderDetails(page = 1, orderId = null, btn) {
+            $.ajax({
+                url: '<?= route('order.searchDetails') ?>?page=' + page,
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    orderId: orderId,
+                }
+            }).done(function(data) {
+                $('#orderDetails_' + orderId).html(data);
+            }).fail(function() {
+                notiError();
+            }).always(function() {
+                btn.hide();
+            });
+        }
+
+        /**
+         * Update status order
+         * @param orderId - id of order
+         * @param status - status order
+         * @param btn - button to update status
+         */
+        function updateStatusOrder(orderId, status, btn, message = null) {
+            $.ajax({
+                type: "POST",
+                url: "{{ route('admin.order.updateStatus') }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    orderId: orderId,
+                    status: status,
+                },
+            }).done(function(res) {
+                const data = res.data.original;
+                if (data.success) {
+                    notiSuccess(message ?? data.success, 'center', function() {
+                        window.location.reload();
+                    });
+                } else {
+                    notiError(data.error);
+                }
+            }).fail(function() {
+                notiError();
+            }).always(function() {
+                btn.prop('disabled', false);
+                btn.text('Cancel order');
+            });
+        }
         $(document).ready(function() {
             searchOrder();
 
+            // show order
             $('.btn-show-order').on('click', function(e) {
                 e.preventDefault();
                 $('.btn-show-order').removeClass('active');
                 $(this).addClass('active');
                 const statusOrder = $(this).data('status');
                 searchOrder(1, statusOrder);
-            })
+            });
+
+            // show order details
+            $(document).on('click', '.btn-order-details', function(e) {
+                e.preventDefault();
+                const orderId = $(this).data('order-id');
+                searchOrderDetails(1, orderId, $(this));
+            });
+
+            // click to cancel order
+            $(document).on('click', '.btn-cancel-order', function(e) {
+                e.preventDefault();
+                const orderId = $(this).data('order-id');
+                const btnCancel = $(this);
+                const messageSuccess = 'Order canceled successfully!'
+                showConfirmDialog('Are you sure you want to cancel this order?', function() {
+                    btnCancel.prop('disabled', true);
+                    btnCancel.text('Loading...');
+                    updateStatusOrder(orderId, parseInt(statusCancelOrder), btnCancel,
+                        messageSuccess);
+                });
+
+            });
+
+            // click to repurchase order
+            $(document).on('click', '.btn-repurchase', function(e) {
+                e.preventDefault();
+                const orderId = $(this).data('order-id');
+                const btnRepurchase = $(this);
+                const messageSuccess = 'Successfully redeemed order! Please check your purchase order again'
+                showConfirmDialog('Are you sure you want to repurchase this order?', function() {
+                    btnRepurchase.prop('disabled', true);
+                    btnRepurchase.text('Loading...');
+                    updateStatusOrder(orderId, parseInt(statusWatingCofirm), btnRepurchase,
+                        messageSuccess);
+                });
+
+            });
+
         })
     </script>
 @endsection
