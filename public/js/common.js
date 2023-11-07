@@ -21,11 +21,8 @@ function showConfirmDialog(message, preConfirmCallback) {
  * @param {String} mess
  * @param {Function} callback function call back when notification done
  */
-function notiSuccess(mess = 'Success',position = 'top-end', callback = function () { }) {
+function notiSuccess(mess = 'Success', position = 'top-end', callback = function () { }) {
     $('#alert-error').addClass('d-none');
-    // $('html, body').animate({
-    //     scrollTop: $(".container").offset().top
-    // });
     const Toast = Swal.mixin({
         toast: true,
         position: position,
@@ -50,11 +47,11 @@ function notiSuccess(mess = 'Success',position = 'top-end', callback = function 
  * show error message
  * @param {String} mess
  */
-function notiError(mess="Something went wrong. Please try again."){
+function notiError(mess = "Something went wrong. Please try again.") {
     Swal.fire({
-        icon:'error',
-        title:'Error',
-        text:mess,
+        icon: 'error',
+        title: 'Error',
+        text: mess,
     });
 };
 
@@ -64,9 +61,9 @@ function notiError(mess="Something went wrong. Please try again."){
  * @param {Element} input
  * @param {Element} image
  */
-function handleImageUpload(input,image){
-    if(input.files && input.files[0]){
-        $(image).attr('src',URL.createObjectURL(input.files[0]));
+function handleImageUpload(input, image) {
+    if (input.files && input.files[0]) {
+        $(image).attr('src', URL.createObjectURL(input.files[0]));
     }
 }
 
@@ -75,7 +72,7 @@ function handleImageUpload(input,image){
  * @param {Number} productId id of product
  * @param {Number} quantity 
  */
-function addToCart(productId,quantity,size,btn){
+function addToCart(productId, quantity, size, btn) {
     $.ajax({
         type: "POST",
         url: globalRouter.urlAddToCart,
@@ -85,19 +82,19 @@ function addToCart(productId,quantity,size,btn){
         data: {
             productId: productId,
             quantity: quantity,
-            size:size
+            size: size
         }
-    }).done(function(res) {
+    }).done(function (res) {
         const quantityAvailable = res.data.original.quantityAvailable;
         const data = res.data.original;
         if (data.success) {
-            notiSuccess(data.success,'center');
+            notiSuccess(data.success, 'center');
             $('#product-available').text(quantityAvailable);
 
         } else if (data.error) {
             notiError(data.error);
         }
-    }).fail(function(xhr) {
+    }).fail(function (xhr) {
         if (xhr.status === 401) {
             window.location.href = "/login";
         }
@@ -109,7 +106,7 @@ function addToCart(productId,quantity,size,btn){
         } else {
             notiError();
         }
-    }).always(function() {
+    }).always(function () {
         btn.prop('disabled', false);
     })
 }
