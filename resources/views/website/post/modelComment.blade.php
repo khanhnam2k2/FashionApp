@@ -3,7 +3,7 @@
      <div class="modal-dialog">
          <div class="modal-content">
              <div class="modal-header">
-                 <h5 class="modal-title" id="titleComment">Leave A Comment</h5>
+                 <h5 class="modal-title" id="titleComment">Bình luận</h5>
                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true">&times;</span>
                  </button>
@@ -17,8 +17,8 @@
                          <input type="hidden" name="postId" value="{{ $post->id }}">
                          <div class="col-lg-12">
                              <div class="d-flex flex-column">
-                                 <textarea name="content" class="form-control" placeholder="Comment"></textarea>
-                                 <label for="file">📸</label>
+                                 <textarea name="content" class="form-control" placeholder="Nội dung"></textarea>
+                                 <label for="file" style="cursor: pointer">📸</label>
                                  <input type="file" class="form-control d-none" id="file" name="file">
                                  <input type="hidden" name="fileOld">
                              </div>
@@ -33,8 +33,8 @@
                  </form>
              </div>
              <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                 <button id="btn-comment-post" type="button" class="btn btn-dark">Post Comment</button>
+                 <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                 <button id="btn-comment-post" type="button" class="btn btn-dark">Đăng</button>
              </div>
          </div>
      </div>

@@ -9,9 +9,8 @@
                     <div class="blog__hero__text">
                         <h2>{{ $post->title }}</h2>
                         <ul>
-                            <li>By {{ $post->author }}</li>
-                            <li>{{ $post->created_at->format('d F Y') }}</li>
-                            <li><span id="totalComment">{{ $post->commentCount }}</span> Comments</li>
+                            <li><i class="fa-solid fa-user mr-2"></i> {{ $post->author }}</li>
+                            <li><i class="fa-solid fa-calendar mr-2"></i>{{ $post->created_at->format('d F Y') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -36,27 +35,14 @@
                         </div>
 
                         <div class="blog__details__option mb-3">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="blog__details__author">
-                                        {{-- <div class="blog__details__author__pic">
-                                            <img src="img/blog/details/blog-author.jpg" alt="">
-                                        </div> --}}
-                                        <div class="blog__details__author__text">
-                                            <h5>Author: {{ $post->author }}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="">
                             <div class="comment-container" id="commentPostList">
-
                             </div>
                         </div>
                         <div class="blog__details__comment">
                             <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modalCommentPost">
-                                Leave A Comment
+                                Để lại bình luận của bạn
                             </button>
                         </div>
                     </div>
@@ -119,10 +105,10 @@
                 data: data,
             }).done(function(res) {
                 if (res.data == null) {
-                    notiError('Please enter comment content');
+                    notiError('Vui lòng nhập nội dung bình luận');
                     return;
                 }
-                notiSuccess('Comment successfully', 'center');
+                notiSuccess('Bình luận thành công', 'center');
                 form[0].reset();
                 deleteFileComment($('#deleteFileCommentPost'));
                 $('#modalCommentPost').modal('toggle');
@@ -152,7 +138,7 @@
                 data: data,
             }).done(function(res) {
                 if (res.data == null) {
-                    notiError('Please enter comment content');
+                    notiError('Vui lòng nhập nội dung bình luận');
                     return;
                 } else {
                     const data = res.data.original;
@@ -161,7 +147,7 @@
                         return;
                     }
                 }
-                notiSuccess('Comment successfully', 'center');
+                notiSuccess('Cập nhật bình luận thành công', 'center');
                 form[0].reset();
                 deleteFileComment($('#deleteFileCommentPost'));
                 $('#modalCommentPost').modal('toggle');
@@ -226,21 +212,21 @@
                         }
                     }
                     $('#previewFileCommentPost').html(filePreviewHtml);
-                    $('#titleComment').html('Edit Comment');
+                    $('#titleComment').html('Chỉnh sửa bình luận');
                 } else {
                     $("input[name='commentId']").val('');
                     $("textarea[name='content']").val('');
                     $('#previewFileCommentPost').empty();
                     $("input[name='fileOld']").val('');
                     $('#deleteFileCommentPost').hide();
-                    $('#titleComment').html('Leave A Comment');
+                    $('#titleComment').html('Bình luận');
                 }
             });
 
             // delete comment
             $(document).on('click', '.delete-comment-post', function() {
                 let commentId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this comment?', function() {
+                showConfirmDialog('bạn có chắc là bạn muốn xoá bình luận này không?', function() {
                     $.ajax({
                         url: urlDeleteComment.replace(':id', commentId),
                         type: "DELETE",

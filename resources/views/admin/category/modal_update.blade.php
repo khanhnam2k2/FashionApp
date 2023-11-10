@@ -3,19 +3,20 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titleCategoryModal">Add Category</h5>
+                <h5 class="modal-title" id="titleCategoryModal">Thêm danh mục mới</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="form_category">
                     <input type="hidden" name="categoryId" id="categoryId">
                     <div class="mb-4">
-                        <label for="categoryName" class="form-label">Name<span class="text-danger">*</span></label>
+                        <label for="categoryName" class="form-label">Tên danh mục<span
+                                class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="categoryName" name="name">
                     </div>
                     <div class="mb-4 d-flex align-items-center">
                         <label class="col-md-3 control-label">
-                            <b>Status<span class="text-danger">*</span></b>
+                            <b>Trạng thái<span class="text-danger">*</span></b>
                         </label>
                         <label class="toggle">
                             <input type="checkbox" name="status" checked="true" id="cbStatusCate">
@@ -25,8 +26,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button id="btnSaveCategory" type="button" onclick="doSubmitCategory()" class="btn btn-primary">Save
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                <button id="btnSaveCategory" type="button" onclick="doSubmitCategory()" class="btn btn-primary">Lưu
                 </button>
             </div>
         </div>
@@ -43,11 +44,11 @@
         formData.append('name', $('#categoryName').val());
         formData.append('status', $('#cbStatusCate').is(':checked') ? 1 : 0);
         if ($('#categoryId').val() == '') {
-            showConfirmDialog('Are you sure you want to create this category?', function() {
+            showConfirmDialog('Bạn có chắc chắn muốn tạo danh mục này không?', function() {
                 createCategory(formData);
             });
         } else {
-            showConfirmDialog('Are you sure you want to update this category?', function() {
+            showConfirmDialog('Bạn có chắc chắn muốn cập nhật danh mục này không?', function() {
                 updateCategory(formData);
             });
         }
@@ -69,7 +70,7 @@
 
         }).done(function(res) {
             if (res == 'ok') {
-                notiSuccess('Category created successfully');
+                notiSuccess('Danh mục được tạo thành công');
                 searchCategory();
                 $('#updateCategoryModal').modal('toggle');
 
@@ -102,7 +103,7 @@
             data: data,
         }).done(function(res) {
             if (res == 'ok') {
-                notiSuccess('Category updated successfully');
+                notiSuccess('Danh mục được cập nhật thành công');
                 searchCategory();
                 $('#updateCategoryModal').modal('toggle');
 
@@ -128,12 +129,12 @@
                 $("#categoryId").val(data.id);
                 $("#categoryName").val(data.name);
                 $('#cbStatusCate').prop('checked', data.status == 1);
-                $('#titleCategoryModal').html('Update category');
+                $('#titleCategoryModal').html('Cập nhật danh mục');
             } else {
                 $("#categoryId").val("");
                 $("#categoryName").val("");
                 $('#cbStatusCate').prop('checked', true);
-                $('#titleCategoryModal').html('Create new category');
+                $('#titleCategoryModal').html('Thêm mới danh mục');
             }
         });
     })

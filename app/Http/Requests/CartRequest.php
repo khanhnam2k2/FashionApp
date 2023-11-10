@@ -33,10 +33,10 @@ class CartRequest extends FormRequest
     public function messages()
     {
         return [
-            'quantity.required' => 'Quantity is required',
-            'quantity.integer' => 'Quantity must be an integer',
-            'quantity.min' => 'Minimum quantity is 1',
-            'size.required' => 'Size is required',
+            'quantity.required' => 'Vui lòng nhập số lượng sản phẩm',
+            'quantity.integer' => 'Số lượng sản phẩm phải là kiểu số',
+            'quantity.min' => 'Số lượng tối thiểu là 1',
+            'size.required' => 'Vui lòng chọn size quần áo',
         ];
     }
 

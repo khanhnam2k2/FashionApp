@@ -5,10 +5,12 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Title</th>
-            <th>Image</th>
-            <th>Status</th>
-            <th>Option</th>
+            <th>Tiêu đề bài viết</th>
+            <th>Ảnh đại diện</th>
+            <th>Tác giả</th>
+            <th>Ngày tạo</th>
+            <th>Trạng thái</th>
+            <th>Tùy chọn</th>
         </tr>
     </thead>
     <tbody>
@@ -22,15 +24,20 @@
                             style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;" alt="">
                     </a>
                 </td>
+                <td>{{ $item->userCreated }}</td>
+                <td>{{ $item->created_at->format('d F Y') }}</td>
                 <td><button style="cursor: unset"
                         class="btn btn-{{ $item->status == Status::ON ? 'primary' : 'danger' }}">{{ $item->status == Status::ON ? 'ON' : 'OFF' }}</button>
                 </td>
                 <td>
-                    <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}" data-bs-target="#updatePostModal"
-                        data-bs-backdrop="static" data-bs-keyboard="false" class="btn btn-success m-1 me-4"><i
-                            class="fa-solid fa-pen-to-square me-2"></i>Edit</button>
-                    <button id="btnDeletePost" data-id="{{ $item->id }}" class="btn btn-danger"><i
-                            class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                    <div class="d-flex flex-column gap-2">
+                        <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}"
+                            data-bs-target="#updatePostModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            class="btn btn-success m-1 me-4"><i class="fa-solid fa-pen-to-square me-2"></i>Chỉnh
+                            sửa</button>
+                        <button id="btnDeletePost" data-id="{{ $item->id }}" class="btn btn-danger"><i
+                                class="fa-solid fa-trash-can me-2"></i>Xóa</button>
+                    </div>
                 </td>
             </tr>
         @endforeach

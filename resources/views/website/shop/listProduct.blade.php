@@ -21,10 +21,9 @@
                 <div class="product__item__text">
                     <h6>{{ $item->name }}</h6>
                     <button data-id="{{ $key }}" data-product-id="{{ $item->id }}" class="add-cart btn">+
-                        Add To
-                        Cart</button>
+                        Thêm vào giỏ hàng</button>
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5>${{ $item->price }}</h5>
+                        <h5>{{ number_format($item->price, 0, ',', '.') }}đ</h5>
                         @php
                             $sizes = explode(',', $item->sizes);
                         @endphp
@@ -44,8 +43,8 @@
         </div>
     @endforeach
     @if (count($data) == 0)
-        <div style="position:absolute;top:50%;left:50%;transform: translateX(-50%);font-size:25px">
-            There is no data to display
+        <div class="text-danger" style="position:absolute;top:50%;left:50%;transform: translateX(-50%);font-size:25px">
+            Không có sản phẩm nào để hiển thị!
         </div>
     @endif
 </div>

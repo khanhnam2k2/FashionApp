@@ -14,14 +14,14 @@
             <ul id="sidebarnav">
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Home</span>
+                    <span class="hide-menu">Trang chủ</span>
                 </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('admin.dashboard') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
-                        <span class="hide-menu">Dashboard</span>
+                        <span class="hide-menu">Bảng điều khiển</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">
@@ -33,14 +33,14 @@
                         <span>
                             <i class="fa-solid fa-truck-fast"></i>
                         </span>
-                        <span class="hide-menu">Order</span>
+                        <span class="hide-menu">Danh sách đặt hàng</span>
                     </a>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('admin.category.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-article"></i>
                         </span>
-                        <span class="hide-menu">Categories</span>
+                        <span class="hide-menu">Danh mục sản phẩm</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -48,7 +48,7 @@
                         <span>
                             <i class="fa-solid fa-shirt"></i>
                         </span>
-                        <span class="hide-menu">Products</span>
+                        <span class="hide-menu">Danh sách sản phẩm</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -56,7 +56,7 @@
                         <span>
                             <i class="fa-solid fa-blog"></i>
                         </span>
-                        <span class="hide-menu">Posts</span>
+                        <span class="hide-menu">Bài viết</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -64,7 +64,7 @@
                         <span>
                             <i class="fa-solid fa-address-book"></i>
                         </span>
-                        <span class="hide-menu">Contacts</span>
+                        <span class="hide-menu">Liên hệ</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -72,7 +72,7 @@
                         <span>
                             <i class="fa-solid fa-users"></i>
                         </span>
-                        <span class="hide-menu">Customers</span>
+                        <span class="hide-menu">Quản lý khách hàng</span>
                     </a>
                 </li>
             </ul>

@@ -32,8 +32,18 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ], [
+            'name.required' => 'Vui lòng nhập tên của bạn',
+            'name.max' => 'Tên không thể dài hơn 255 ký tự',
+            'email.required' => 'Vui lòng nhập địa chỉ email',
+            'email.email' => 'Email không hợp lệ',
+            'email.max' => 'Email không thể dài hơn 255 ký tự',
+            'email.unique' => 'Email này đã tồn tại',
+            'password.min' => 'Mật khẩu tối thiểu 8 ký tự',
+            'password.required' => 'Vui lòng nhập mật khẩu',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp',
         ]);
 
         $user = User::create([

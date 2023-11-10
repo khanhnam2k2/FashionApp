@@ -2,16 +2,15 @@
 @section('content')
     <div class="category-container container">
         <div class="d-flex justify-content-between">
-            <h2>Category List</h2>
+            <h2>Danh mục sản phẩm</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchCategory" placeholder="search here..." class="form-control"
-                    name="nameCategory">
+                <input type="text" id="txtSearchCategory" placeholder="..." class="form-control" name="nameCategory">
                 <button class="btn btn-primary" onclick="searchCategory()"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </div>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCategoryModal"
-                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New
-                Category</button>
+                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>Tạo danh mục
+                mới</button>
         </div>
         <div class="mt-3">
             <div id="category_table">
@@ -54,7 +53,7 @@
             // delete category
             $(document).on('click', '#btnDeleteCate', function() {
                 let categoryId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this category?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xóa danh mục này không?', function() {
                     $.ajax({
                         url: urlDeleteCategory.replace(':id', categoryId),
                         type: "DELETE",
@@ -63,7 +62,7 @@
                         },
                     }).done(function(res) {
                         if (res == 'ok') {
-                            notiSuccess("Deleted category successfully");
+                            notiSuccess("Xóa danh mục thành công");
                             searchCategory();
                         }
                     }).fail(function(xhr) {

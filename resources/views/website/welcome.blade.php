@@ -9,11 +9,12 @@
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
                             <div class="hero__text">
-                                <h6>Summer Collection</h6>
-                                <h2>Fall - Winter Collections 2030</h2>
-                                <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
-                                    commitment to exceptional quality.</p>
-                                <a href="{{ route('shop.index') }}" class="primary-btn">Shop now <span
+                                <h6>Bộ sưu tập mùa hè</h6>
+                                <h2>Bộ sưu tập Thu – Đông 2030</h2>
+                                <p>Một nhãn hiệu chuyên tạo ra những sản phẩm thiết yếu sang trọng. Được tạo ra một cách có
+                                    đạo đức với một thái độ kiên định
+                                    cam kết chất lượng vượt trội.</p>
+                                <a href="{{ route('shop.index') }}" class="primary-btn">Mua sắm ngay bây giờ <span
                                         class="arrow_right"></span></a>
                                 <div class="hero__social">
                                     <a href="#"><i class="fa-brands fa-facebook"></i></i></a>
@@ -31,11 +32,12 @@
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
                             <div class="hero__text">
-                                <h6>Summer Collection</h6>
-                                <h2>Fall - Winter Collections 2030</h2>
-                                <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
-                                    commitment to exceptional quality.</p>
-                                <a href="{{ route('shop.index') }}" class="primary-btn">Shop now <span
+                                <h6>Bộ sưu tập mùa hè</h6>
+                                <h2>Bộ sưu tập Thu – Đông 2030</h2>
+                                <p>Một nhãn hiệu chuyên tạo ra những sản phẩm thiết yếu sang trọng. Được tạo ra một cách có
+                                    đạo đức với một thái độ kiên định
+                                    cam kết chất lượng vượt trội.</p>
+                                <a href="{{ route('shop.index') }}" class="primary-btn">Mua sắm ngay bây giờ <span
                                         class="arrow_right"></span></a>
                                 <div class="hero__social">
                                     <a href="#"><i class="fa-brands fa-facebook"></i></i></a>
@@ -61,8 +63,8 @@
                             <img src="img/banner/banner-1.jpg" alt="">
                         </div>
                         <div class="banner__item__text">
-                            <h2>Clothing Collections 2030</h2>
-                            <a href="{{ route('shop.index') }}">Shop now</a>
+                            <h2>Bộ sưu tập quần áo 2030</h2>
+                            <a href="{{ route('shop.index') }}">Mua sắm ngay bây giờ</a>
                         </div>
                     </div>
                 </div>
@@ -72,8 +74,8 @@
                             <img src="img/banner/banner-2.jpg" alt="">
                         </div>
                         <div class="banner__item__text">
-                            <h2>Accessories</h2>
-                            <a href="{{ route('shop.index') }}">Shop now</a>
+                            <h2>Phụ kiện</h2>
+                            <a href="{{ route('shop.index') }}">Mua sắm ngay bây giờ</a>
                         </div>
                     </div>
                 </div>
@@ -83,8 +85,8 @@
                             <img src="img/banner/banner-3.jpg" alt="">
                         </div>
                         <div class="banner__item__text">
-                            <h2>Shoes Spring 2030</h2>
-                            <a href="{{ route('shop.index') }}">Shop now</a>
+                            <h2>Giày Xuân 2030</h2>
+                            <a href="{{ route('shop.index') }}">Mua sắm ngay bây giờ</a>
                         </div>
                     </div>
                 </div>
@@ -99,7 +101,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="filter__controls">
-                            <li class="active" data-filter="*">All</li>
+                            <li class="active" data-filter="*">Tất cả</li>
                             @foreach ($categories as $key => $category)
                                 <li data-filter=".{{ Str::slug($category->name) }}">
                                     {{ $category->name }}</li>
@@ -128,10 +130,9 @@
                                 <div class="product__item__text">
                                     <h6>{{ $item->name }}</h6>
                                     <button data-id="{{ $key }}" data-product-id="{{ $item->id }}"
-                                        class="add-cart btn">+ Add To
-                                        Cart</button>
+                                        class="add-cart btn">+ Thêm vào giỏ hàng</button>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <h5>${{ $item->price }}</h5>
+                                        <h5>{{ number_format($item->price, 0, ',', '.') }}đ</h5>
                                         @php
                                             $sizes = explode(',', $item->sizes);
                                         @endphp
@@ -174,9 +175,9 @@
                 <div class="col-lg-4">
                     <div class="instagram__text">
                         <h2>Instagram</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.</p>
-                        <h3>#Male_Fashion</h3>
+                        <p>Theo dõi chúng tôi trên Instagram để biết thêm về các sản phẩm chất lượng cao từ shop chúng tôi
+                        </p>
+                        <h3><a class="text-danger" href="#">#Male_Fashion</a></h3>
                     </div>
                 </div>
             </div>
@@ -189,8 +190,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Latest News</span>
-                        <h2>Fashion New Trends</h2>
+                        <span>Bài viết mới nhất</span>
+                        <h2>Thời trang Xu hướng mới</h2>
                     </div>
                 </div>
             </div>
@@ -203,7 +204,7 @@
                                 <span><img src="{{ asset('img/icon/calendar.png') }}" alt=""> 16 February
                                     2020</span>
                                 <h5>{{ $post->title }}</h5>
-                                <a href="{{ route('post.details', $post->id) }}">Read More</a>
+                                <a href="{{ route('post.details', $post->id) }}">Đọc thêm</a>
                             </div>
                         </div>
                     </div>

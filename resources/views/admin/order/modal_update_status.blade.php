@@ -3,40 +3,40 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titleUpdateStatus">Update status</h5>
+                <h5 class="modal-title" id="titleUpdateStatus">Cập nhật trạng thái đơn hàng</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="form_update_status">
                     <input type="hidden" name="orderId">
                     <div class="row mb-4">
-                        <div class="col-md-4">
-                            <h5>Order Id: <span id="orderId"></span></h5>
+                        <div class="col-md-6">
+                            <h5>Mã đơn hàng: <span class="text-primary" id="orderCode"></span></h5>
                         </div>
-                        <div class="col-md-8">
-                            <h5>Orderer: <span id="orderer"></span></h5>
+                        <div class="col-md-6">
+                            <h5>Người đặt: <span class="text-primary"id="orderer"></span></h5>
                         </div>
                     </div>
                     <div class="mb-4">
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <label for="statusOrder" class="form-label">Status Order<span
+                            <label for="statusOrder" class="form-label">Trạng thái đơn hàng<span
                                     class="text-danger">*</span></label>
                             <select name="status" class="form-select" id="statusOrder">
-                                <option value="1">Wait for confirmation</option>
-                                <option value="2">Confirmed successfully</option>
-                                <option value="3">Delivering</option>
-                                <option value="4">Successful delivery</option>
-                                <option value="0">Cancel Order</option>
+                                <option value="1">Chờ xác nhận</option>
+                                <option value="2">Xác nhận thành công</option>
+                                <option value="3">Đang giao</option>
+                                <option value="4">Giao hàng thành công</option>
+                                <option value="0">Hủy đơn hàng</option>
                             </select>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button id="btnUpdateStatus" type="button" class="btn btn-primary">Update
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                <button id="btnUpdateStatus" type="button" class="btn btn-primary">Cập nhật
                 </button>
             </div>
         </div>
@@ -90,9 +90,10 @@
             const btnUpdate = $(this);
             btnUpdate.prop('disabled', true);
             let formData = new FormData($('form#form_update_status')[0]);
-            showConfirmDialog('Are you sure you want to update the status of this order?', function() {
-                updateStatusOrder(formData, btnUpdate);
-            });
+            showConfirmDialog('Bạn có chắc chắn muốn cập nhật trạng thái của đơn hàng này không?',
+                function() {
+                    updateStatusOrder(formData, btnUpdate);
+                });
 
         })
         // event show update status order modal
@@ -108,9 +109,8 @@
                     }
                 })
                 $('input[name="orderId"]').val(data.id);
-                $('#orderId').text(data.id);
+                $('#orderCode').text(data.code);
                 $('#orderer').text(data.full_name);
-                $('#titleUpdateStatus').html('Update status order');
             } else {
                 notiError();
             }

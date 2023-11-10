@@ -1,39 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Booking Confirmation</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .text-danger {
+            color: rgb(215, 75, 75);
+        }
+    </style>
 </head>
 
 <body>
-    <h2>Order #{{ $order->code }} has been successfully canceled</h2>
-
-    <div style="padding:50px">
-        <p>Hello, {{ $order->full_name }}</p>
-        <p>Your order #{{ $order->code }} was canceled on {{ $order->updated_at }}</p>
+    <div class="container">
+        <p>Xin chào, {{ $order->full_name }}</p>
+        <p>Đơn hàng #{{ $order->code }} của bạn được hủy vào {{ $order->updated_at->format('d/m/y') }}</p>
         <div>
-            <h3>Your order information</h3>
-            <ul>
-                <li>Code orders: <span>{{ $order->code }}</span></li>
-                <li>Order date:: <span>{{ $order->created_at }}</span></li>
-            </ul>
-        </div>
-        <div class="">
-            <a href="{{ route('shop.index') }}" style="padding:10px 20px">Continue Shopping</a>
+            <h3>Thông tin đơn hàng</h3>
+            <p>Mã đơn hàng: <span class="text-danger">{{ $order->code }}</span></p>
+            <p>Ngày đặt: <span class="text-danger">{{ $order->created_at }}</span></p>
         </div>
 
-        <p>Please contact us if you have any questions or concerns.</p>
+        <p>Vui lòng liên hệ với chúng tôi nếu bạn có bất kỳ câu hỏi hoặc mối quan tâm nào.</p>
         <ul>
             <li>Phone: 📞+0947837222</li>
             <li>Gmail: 📧 MailFashion@gmail.com</li>
         </ul>
 
-        <p>Best regards,</p>
-        <p>Male Fashion Team</p>
-        <p>Have questions? Contact us <a href="{{ route('contact.show') }}">here</a></p>
-
+        <p>Trân trọng,</p>
+        <p>Male Fashion</p>
     </div>
 
 </body>

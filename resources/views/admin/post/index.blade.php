@@ -2,14 +2,14 @@
 @section('content')
     <div class="product-container ">
         <div class="d-flex justify-content-between">
-            <h2>Post List</h2>
+            <h2>Danh sách bài viết</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchPost" placeholder="search here..." class="form-control" name="nameProduct">
+                <input type="text" id="txtSearchPost" placeholder="..." class="form-control" name="namePost">
                 <button class="btn btn-primary" onclick="searchPost()"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updatePostModal"
-                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New
-                Post</button>
+                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>Tạo mới bài
+                viết</button>
         </div>
         <div class="mt-3">
             <div id="post_table">
@@ -67,7 +67,7 @@
             // Delete product
             $(document).on('click', '#btnDeletePost', function() {
                 let postId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this post?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xóa bài viết này?', function() {
                     $.ajax({
                         url: urlDeletePost.replace(':id', postId),
                         type: "DELETE",
@@ -76,7 +76,7 @@
                         },
                     }).done(function(res) {
                         if (res == 'ok') {
-                            notiSuccess("Deleted post successfully");
+                            notiSuccess("Đã xóa bài viết thành công");
                             searchPost();
                         }
                     }).fail(function(xhr) {

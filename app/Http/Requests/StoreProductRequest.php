@@ -39,21 +39,20 @@ class StoreProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Name product is required',
-            'price.required' => 'Price product is required',
-            'quantity.required' => 'The quantity field is required.',
-            'quantity.array' => 'The quantity must be an array.',
-            'quantity.min' => 'The quantity must have at least 1 element.',
-            'quantity.*.required' => 'Each quantity element is required.',
-            'quantity.*.integer' => 'Each quantity element must be an integer.',
-            'quantity.*.min' => 'Each quantity element must have a minimum value of 1.',
-            'sizes.required' => 'Size product is required',
-            'sizes.*.required' => 'Each size element is required.',
-            'images.required' => 'The images field is required.',
-            'images.min' => 'At least one image is required.',
-            'images.max' => 'Maximum 4 images',
-            'images.*.image' => 'Each image must be a valid image file.',
-            'images.*.mimes' => 'Each image must be in one of the following formats: jpeg, png, jpg, gif.',
+            'name.required' => 'Vui lòng nhập tên sản phẩm',
+            'price.required' => 'Vui lòng nhập giá sản phẩm',
+            'quantity.required' => 'Vui lòng nhập số lượng sản phẩm',
+            'quantity.min' => 'Số lượng sản phẩm không được bé hơn 1',
+            'quantity.*.required' => 'Vui lòng nhập số lượng sản phẩm',
+            'quantity.*.integer' => 'Vui lòng nhập đúng kiểu số',
+            'quantity.*.min' => 'Số lượng sản phẩm không được bé hơn 1',
+            'sizes.required' => 'Vui lòng nhập size quần áo',
+            'sizes.*.required' => 'Vui lòng nhập size quần áo',
+            'images.required' => 'Vui lòng chọn ảnh cho sản phẩm',
+            'images.min' => 'Tối thiểu 1 ảnh cho 1 sản phẩm',
+            'images.max' => 'Tối đa 4 ảnh cho 1 sản phẩm',
+            'images.*.image' => 'Vui lòng chọn đúng định dạng ảnh.',
+            'images.*.mimes' => 'Ảnh phải theo các định dạng sau: jpeg, png, jpg, gif.',
         ];
     }
     /**

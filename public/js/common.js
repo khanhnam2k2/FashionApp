@@ -10,8 +10,8 @@ function showConfirmDialog(message, preConfirmCallback) {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancel',
-        confirmButtonText: 'Ok',
+        cancelButtonText: 'Huỷ bỏ',
+        confirmButtonText: 'Đồng ý',
         preConfirm: preConfirmCallback
     });
 }
@@ -21,7 +21,7 @@ function showConfirmDialog(message, preConfirmCallback) {
  * @param {String} mess
  * @param {Function} callback function call back when notification done
  */
-function notiSuccess(mess = 'Success', position = 'top-end', callback = function () { }) {
+function notiSuccess(mess = 'Thành công', position = 'top-end', callback = function () { }) {
     $('#alert-error').addClass('d-none');
     const Toast = Swal.mixin({
         toast: true,
@@ -47,11 +47,12 @@ function notiSuccess(mess = 'Success', position = 'top-end', callback = function
  * show error message
  * @param {String} mess
  */
-function notiError(mess = "Something went wrong. Please try again.") {
+function notiError(mess = "Đã xảy ra lỗi. Vui lòng thử lại") {
     Swal.fire({
         icon: 'error',
-        title: 'Error',
+        title: 'Lỗi',
         text: mess,
+        confirmButtonText: 'Đồng ý',
     });
 };
 

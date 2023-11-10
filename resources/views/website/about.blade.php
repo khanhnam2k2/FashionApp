@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'About Us - Male Fashion')
+@section('title', 'Về chúng tôi - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
@@ -7,10 +7,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>About Us</h4>
+                        <h4>Về chúng tôi</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Home</a>
-                            <span>About Us</span>
+                            <a href="{{ route('home') }}">Trang chủ</a>
+                            <span>Về chúng tôi</span>
                         </div>
                     </div>
                 </div>
@@ -32,23 +32,29 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="about__item">
-                        <h4>Who We Are ?</h4>
-                        <p>Contextual advertising programs sometimes have strict policies that need to be adhered too.
-                            Let’s take Google as an example.</p>
+                        <h4>Chúng tôi là ai ?</h4>
+                        <p>Chúng tôi là đội ngũ tận tâm và sáng tạo, đặt sứ mệnh là mang đến trải nghiệm mua sắm quần áo nam
+                            tốt nhất cho khách hàng. Với niềm đam mê về thời trang và sự hiểu biết sâu rộng về xu hướng,
+                            chúng tôi cam kết cung cấp những sản phẩm chất lượng, thể hiện phong cách và cá nhân hóa đẳng
+                            cấp.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="about__item">
-                        <h4>Who We Do ?</h4>
-                        <p>In this digital generation where information can be easily obtained within seconds, business
-                            cards still have retained their importance.</p>
+                        <h4>Chúng tôi làm gì?</h4>
+                        <p>Chúng tôi chuyên tạo ra không gian mua sắm trực tuyến linh hoạt và tiện lợi, nơi mà quý khách có
+                            thể khám phá những bộ sưu tập đa dạng từ áo polo đến quần jeans, đáp ứng mọi nhu cầu thời trang
+                            của họ. Với sự tỉ mỉ trong từng chi tiết và sự linh hoạt trong phong cách, chúng tôi hỗ trợ
+                            khách hàng xây dựng phong cách riêng biệt và tự tin.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="about__item">
-                        <h4>Why Choose Us</h4>
-                        <p>A two or three storey house is the ideal way to maximise the piece of earth on which our home
-                            sits, but for older or infirm people.</p>
+                        <h4>Tạo sao chọn chúng tôi?</h4>
+                        <p>Chọn chúng tôi không chỉ là việc chọn mua sắm, mà còn là sự chọn lựa cho sự tự tin và phong cách.
+                            Chúng tôi cam kết đem đến trải nghiệm mua sắm trực tuyến an toàn, đáng tin cậy và đầy đủ thông
+                            tin để khách hàng có thể đưa ra quyết định thông tin. Sự chăm sóc khách hàng nhiệt tình và đội
+                            ngũ chuyên gia thời trang của chúng tôi sẽ làm bạn hài lòng với mỗi lựa chọn.</p>
                     </div>
                 </div>
             </div>
@@ -63,8 +69,8 @@
                 <div class="col-lg-6 p-0">
                     <div class="testimonial__text">
                         <span class="icon_quotations"></span>
-                        <p>“Going out after work? Take your butane curling iron with you to the office, heat it up,
-                            style your hair before you leave the office and you won’t have to make a trip back home.”
+                        <p>“Đi ra ngoài sau giờ làm việc? Mang theo máy uốn tóc butan đến văn phòng, làm nóng nó, tạo kiểu
+                            tóc trước khi rời văn phòng và bạn sẽ không phải quay về nhà.”
                         </p>
                         <div class="testimonial__author">
                             <div class="testimonial__author__pic">
@@ -91,8 +97,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Our Team</span>
-                        <h2>Meet Our Team</h2>
+                        <span>Đội ngũ của chúng tôi</span>
                     </div>
                 </div>
             </div>
@@ -136,8 +141,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Partner</span>
-                        <h2>Happy Clients</h2>
+                        <span>Đối tác</span>
                     </div>
                 </div>
             </div>

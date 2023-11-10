@@ -2,10 +2,9 @@
 @section('content')
     <div class="contact-container container">
         <div class="d-flex justify-content-between">
-            <h2>Contact List</h2>
+            <h2>Danh sách liên hệ</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchContact" placeholder="search here..." class="form-control"
-                    name="nameCategory">
+                <input type="text" id="txtSearchContact" placeholder="..." class="form-control" name="nameCategory">
                 <button class="btn btn-primary" onclick="searchContact()"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </div>
@@ -50,7 +49,7 @@
             // delete contact
             $(document).on('click', '#btnDeleteContact', function() {
                 let contactId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this contact?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xóa địa chỉ liên hệ này không?', function() {
                     $.ajax({
                         url: urlDeleteContact.replace(':id', contactId),
                         type: "DELETE",
@@ -59,7 +58,7 @@
                         },
                     }).done(function(res) {
                         if (res == 'ok') {
-                            notiSuccess("Deleted contact successfully");
+                            notiSuccess("Đã xóa liên hệ thành công");
                             searchContact();
                         }
                     }).fail(function(xhr) {

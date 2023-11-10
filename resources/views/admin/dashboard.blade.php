@@ -7,7 +7,7 @@
                     <div class="card-body">
                         <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
                             <div class="mb-3 mb-sm-0">
-                                <h5 class="card-title fw-semibold">Total money earned each month</h5>
+                                <h5 class="card-title fw-semibold">Bảng thống kê số tiền kiếm được theo từng tháng </h5>
                             </div>
                             <div>
                                 <select id="yearSelect" name="year" class="form-select">
@@ -23,7 +23,7 @@
             </div>
 
         </div>
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-lg-4 d-flex align-items-stretch">
                 <div class="card w-100">
                     <div class="card-body p-4">
@@ -200,11 +200,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="py-6 px-6 text-center">
-            <p class="mb-0 fs-4">Design and Developed by <a href="https://adminmart.com/" target="_blank"
-                    class="pe-1 text-primary text-decoration-underline">AdminMart.com</a> Distributed by <a
+            <p class="mb-0 fs-4">Thiết kế và phát triển bởi <a href="https://adminmart.com/" target="_blank"
+                    class="pe-1 text-primary text-decoration-underline">AdminMart.com</a> Phân phối bởi <a
                     href="https://themewagon.com">ThemeWagon</a></p>
         </div>
     </div>

@@ -2,11 +2,10 @@
 @section('content')
     <div class="orderdetails-container container">
         <div class="d-flex justify-content-between align-items-center">
-            <h2>Detail Order List</h2>
+            <h2>Danh sách chi tiết đơn hàng</h2>
             <span id="orderId" class="d-none">{{ $id }}</span>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchOrderDetails" placeholder="search here..." class="form-control"
-                    name="orderDeitals">
+                <input type="text" id="txtSearchOrderDetails" placeholder="..." class="form-control" name="orderDeitals">
                 <button class="btn btn-primary" onclick="searchOrderDetailsAdmin()"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </div>

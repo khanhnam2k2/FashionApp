@@ -37,7 +37,7 @@ class CartService extends BaseService
             $product = Product::find($request->productId);
 
             if (!$product) {
-                return response()->json(['error' => 'Product not found']);
+                return response()->json(['error' => 'Sản phẩm không có']);
             }
             $user = Auth::user();
             $cart = Cart::where('user_id', $user->id)->first();
@@ -55,7 +55,7 @@ class CartService extends BaseService
                 ->first();
 
             if (!$productSizeQuantity) {
-                return response()->json(['error' => 'This size is out of stock']);
+                return response()->json(['error' => 'Kích thước này đã hết hàng']);
             }
 
             $existingCartItem = CartItem::where('cart_id', $cart->id)
@@ -65,13 +65,13 @@ class CartService extends BaseService
             $newQuantity = $request->quantity;
             if ($existingCartItem) {
                 if ($existingCartItem->quantity >= $productSizeQuantity->quantity) {
-                    return response()->json(['error' => 'The number of products in the shopping cart exceeds the quantity in stock']);
+                    return response()->json(['error' => 'Số lượng sản phẩm trong giỏ hàng vượt quá số lượng trong kho. Xin lỗi vì sự bất tiện này']);
                 }
                 $existingCartItem->quantity += $newQuantity;
                 $existingCartItem->save();
             } else {
                 if ($newQuantity > $productSizeQuantity->quantity) {
-                    return response()->json(['error' => 'The number of products in the shopping cart exceeds the quantity in stock']);
+                    return response()->json(['error' => 'Số lượng sản phẩm trong giỏ hàng vượt quá số lượng trong kho. Xin lỗi vì sự bất tiện này']);
                 }
 
                 $cartItem = new CartItem();
@@ -84,7 +84,7 @@ class CartService extends BaseService
 
             DB::commit();
 
-            return response()->json(['success' => 'Product added successfully', 'quantityAvailable' => $productSizeQuantity->quantity]);
+            return response()->json(['success' => 'Đã thêm sản phẩm thành công', 'quantityAvailable' => $productSizeQuantity->quantity]);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
@@ -235,7 +235,7 @@ class CartService extends BaseService
                 ->first();
 
             if (!$cartItem) {
-                return response()->json(['error' => 'Product not found in the cart']);
+                return response()->json(['error' => 'Không tìm thấy sản phẩm trong giỏ hàng']);
             }
 
             // delete cart item
@@ -243,7 +243,7 @@ class CartService extends BaseService
 
             DB::commit();
 
-            return response()->json(['success' => 'Successfully removed the product from the cart']);
+            return response()->json(['success' => 'Đã xóa thành công sản phẩm khỏi giỏ hàng']);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
@@ -266,7 +266,7 @@ class CartService extends BaseService
             $cart = Cart::where('user_id', $user->id)->first();
 
             if (!$cart) {
-                return response()->json(['error' => 'Cart not found']);
+                return response()->json(['error' => 'Không tìm thấy giỏ hàng']);
             }
             // cart item update
             $cartItem = CartItem::where('cart_id', $cart->id)
@@ -285,9 +285,9 @@ class CartService extends BaseService
                     $cartItem->quantity = $newQuantity;
                     $cartItem->save();
                     DB::commit();
-                    return response()->json(['success' => 'Cart updated successfully']);
+                    return response()->json(['success' => 'Giỏ hàng được cập nhật thành công']);
                 } else {
-                    return response()->json(['error' => 'New quantity exceeds available quantity']);
+                    return response()->json(['error' => 'Số lượng mới vượt quá số lượng sản phẩm trong kho. Vui lòng chọn lại']);
                 }
             }
         } catch (Exception $e) {
@@ -334,7 +334,7 @@ class CartService extends BaseService
                     ->first();
                 if (!$productSizeQuantity || $productSizeQuantity->quantity < $item->quantity) {
                     DB::rollBack();
-                    return response()->json(['error' => 'Not enough quantity in stock for some items']);
+                    return response()->json(['error' => 'Không đủ số lượng sản phẩm cho một số sản phẩm. Vui lòng kiểm tra lại']);
                 }
 
                 $orderItemData[] = [
@@ -354,7 +354,7 @@ class CartService extends BaseService
 
             DB::commit();
 
-            return response()->json(['success' => 'Order Success! Please check your purchase']);
+            return response()->json(['success' => 'Đặt hàng thành công! Vui lòng kiểm tra đơn mua của bạn']);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);

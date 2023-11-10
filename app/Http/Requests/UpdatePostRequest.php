@@ -34,10 +34,11 @@ class UpdatePostRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'Title is required',
-            'contentPost.required' => 'Content is required',
-            'image.mines' => 'Image format must be jpeg, jpg, png, gif',
-            'image.max' => 'The maximum size of a photo is 20MB',
+            'title.required' => 'Vui lòng nhập tiêu đề cho bài viết',
+            'contentPost.required' => 'Vui lòng nhập nội dung bài viết',
+            'image.image' => 'Ảnh đại diện phải có định dạng là ảnh',
+            'image.mines' => 'Ảnh đại diện phải thuộc các định dạng sau: jpeg, jpg, png, gif',
+            'image.max' => 'Ảnh đại diện không được vượt quá 20MB',
         ];
     }
 

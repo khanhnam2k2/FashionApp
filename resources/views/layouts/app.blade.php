@@ -57,8 +57,8 @@
         <div class="offcanvas__option">
             @guest
                 <div class="offcanvas__links">
-                    <a href="#">Sign in</a>
-                    <a href="#">Register</a>
+                    <a href="#">Đăng nhập</a>
+                    <a href="#">Đăng ký</a>
                 </div>
             @else
                 <div class="offcanvas__top__hover">
@@ -66,7 +66,7 @@
                     <ul>
                         <li><a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                                {{ __('Đăng xuất') }}
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -83,7 +83,7 @@
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">
-            <p>Free shipping, 30-day return or refund guarantee.</p>
+            <p>Miễn phí vận chuyển, đảm bảo hoàn trả hoặc hoàn tiền trong 30 ngày.</p>
         </div>
     </div>
     <!-- Offcanvas Menu End -->

@@ -4,26 +4,26 @@
             <div class="row">
                 <div class="col-lg-6 col-md-7">
                     <div class="header__top__left">
-                        <p>Free shipping, 30-day return or refund guarantee.</p>
+                        <p>Miễn phí vận chuyển, đảm bảo hoàn trả hoặc hoàn tiền trong 30 ngày.</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         @guest
                             <div class="header__top__links">
-                                <a href="{{ route('login') }}">Sign in</a>
-                                <a href="{{ route('register') }}">Register</a>
+                                <a href="{{ route('login') }}">Đăng nhập</a>
+                                <a href="{{ route('register') }}">Đăng ký</a>
                             </div>
                         @else
                             <div class="header__top__hover">
                                 <span>{{ Auth::user()->name }} <i class="arrow_carrot-down"></i></span>
-                                <ul>
+                                <ul class="text-center">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('order.index') }}">Purchase order</a>
+                                        <a class="dropdown-item" href="{{ route('order.index') }}">Đơn mua</a>
                                     </li>
                                     <li><a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
+                                            {{ __('Đăng xuất') }}
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                             @csrf
@@ -47,16 +47,17 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="{{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a>
+                        <li class="{{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('home') }}">Trang
+                                chủ</a>
                         </li>
+                        <li class="{{ request()->is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">Về
+                                chúng tôi</a></li>
                         <li class="{{ request()->is('shop') ? 'active' : '' }}"><a
                                 href="{{ route('shop.index') }}">Shop</a></li>
-                        <li class="{{ request()->is('about') ? 'active' : '' }}"><a
-                                href="{{ route('about') }}">About</a></li>
                         <li class="{{ request()->is('post') ? 'active' : '' }}"><a
-                                href="{{ route('post.index') }}">Blog</a></li>
+                                href="{{ route('post.index') }}">Bài viết</a></li>
                         <li class="{{ request()->is('contacts') ? 'active' : '' }}"><a
-                                href="{{ route('contact.show') }}">Contacts</a></li>
+                                href="{{ route('contact.show') }}">Liên hệ</a></li>
                     </ul>
                 </nav>
             </div>

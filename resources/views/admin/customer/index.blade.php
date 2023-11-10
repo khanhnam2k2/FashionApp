@@ -2,10 +2,9 @@
 @section('content')
     <div class="customer-container container">
         <div class="d-flex justify-content-between">
-            <h2>Customer List</h2>
+            <h2>Danh sách tài khoản khách hàng</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchCustomer" placeholder="search here..." class="form-control"
-                    name="nameCategory">
+                <input type="text" id="txtSearchCustomer" placeholder="..." class="form-control" name="nameCategory">
                 <button class="btn btn-primary" onclick="searchCustomer()"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </div>
@@ -51,7 +50,7 @@
             // delete customer 
             $(document).on('click', '#btnDeleteCustomer', function() {
                 let customerId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this customer?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xóa tài khoản khách hàng này?', function() {
                     $.ajax({
                         url: urlDeleteCustomer.replace(':id', customerId),
                         type: "DELETE",
@@ -60,7 +59,7 @@
                         },
                     }).done(function(res) {
                         if (res == 'ok') {
-                            notiSuccess("Deleted customer successfully");
+                            notiSuccess("Đã xóa tài khoản khách hàng thành công");
                             searchCustomer();
                         }
                     }).fail(function() {

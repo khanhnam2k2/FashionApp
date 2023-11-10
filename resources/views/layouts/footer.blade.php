@@ -6,22 +6,22 @@
                     <div class="footer__logo">
                         <a href="#"><img src="{{ asset('img/footer-logo.png') }}" alt=""></a>
                     </div>
-                    <p>The customer is at the heart of our unique business model, which includes design.</p>
+                    <p>Khách hàng là trung tâm của mô hình kinh doanh độc đáo của chúng tôi, bao gồm cả thiết kế.</p>
                 </div>
             </div>
             <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
                 <div class="footer__widget">
-                    <h6>Quick links</h6>
+                    <h6>Đường dẫn nhanh</h6>
                     <ul>
                         <li><a href="{{ route('shop.index') }}">Shop</a></li>
-                        <li><a href="{{ route('about') }}">About us</a></li>
-                        <li><a href="{{ route('post.index') }}">Post</a></li>
+                        <li><a href="{{ route('about') }}">Về chúng tôi</a></li>
+                        <li><a href="{{ route('post.index') }}">Bài viết</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-6">
                 <div class="footer__widget">
-                    <h6>Contact Us</h6>
+                    <h6>Liên hệ chúng tôi</h6>
                     <ul>
                         <li><a href="#">📞+034398499</a></li>
                         <li><a href="#">📧:Mailfahsion@gmail.com</a></li>
@@ -30,11 +30,11 @@
             </div>
             <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
                 <div class="footer__widget">
-                    <h6>NewLetter</h6>
+                    <h6>Tin tức mới nhất</h6>
                     <div class="footer__newslatter">
-                        <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                        <p>Hãy là người đầu tiên biết về hàng mới, sách tra cứu, khuyến mại và khuyến mãi!</p>
                         <form action="#">
-                            <input type="text" placeholder="Your email">
+                            <input type="text" placeholder="email của bạn">
                             <button type="submit"><span class="icon_mail_alt"></span></button>
                         </form>
                     </div>
@@ -44,15 +44,13 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="footer__copyright__text">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    <p>Copyright ©
+                    <p>Bản quyền ©
                         <script>
                             document.write(new Date().getFullYear());
                         </script>2020
-                        All rights reserved | This template is made with <i class="fa fa-heart-o"
-                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        Mọi quyền được bảo lưu | Mẫu này được thực hiện với <i class="fa fa-heart-o"
+                            aria-hidden="true"></i> bởi <a href="https://colorlib.com" target="_blank">Colorlib</a>
                     </p>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>
             </div>
         </div>

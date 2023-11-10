@@ -2,10 +2,10 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Name Customer</th>
+            <th>Tên khách hàng</th>
             <th>Email</th>
-            <th>Message</th>
-            <th>Option</th>
+            <th>Nội dung liên hệ</th>
+            <th>Tùy chọn</th>
         </tr>
     </thead>
     <tbody>
@@ -17,13 +17,14 @@
                 <td>{{ $item->message }}</td>
                 <td>
                     <button id="btnDeleteContact" data-id="{{ $item->id }}" class="btn btn-danger"><i
-                            class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                            class="fa-solid fa-trash-can me-2"></i>Xóa</button>
                 </td>
             </tr>
         @endforeach
         @if (count($data) == 0)
-            <td class="align-center" colspan="9" style="background-color: white; font-size : 20px;text-align:center">
-                There is no data to display
+            <td class="align-center text-danger" colspan="9"
+                style="background-color: white; font-size : 20px;text-align:center">
+                Không có liên hệ nào!
             </td>
         @endif
     </tbody>

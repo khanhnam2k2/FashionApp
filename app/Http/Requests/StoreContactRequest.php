@@ -34,9 +34,9 @@ class StoreContactRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Name is required',
-            'email.required' => 'Email is required',
-            'message.required' => 'Message is required',
+            'name.required' => 'Vui lòng nhập tên của bạn',
+            'email.required' => 'Vui lòng nhập địa chỉ email',
+            'message.required' => 'Vui lòng nhập nội dụng liên hệ',
         ];
     }
 

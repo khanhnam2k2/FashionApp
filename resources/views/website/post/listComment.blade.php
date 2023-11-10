@@ -2,7 +2,7 @@
     use App\Enums\UserRole;
 @endphp
 <div class="my-3">
-    <h3>Comment ({{ $data->total() }})</h3>
+    <h3>Bình luận ({{ $data->total() }})</h3>
 </div>
 @foreach ($data as $item)
     <div class="blog__details__quote mt-4">

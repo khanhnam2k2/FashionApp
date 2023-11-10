@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titlePostModal">Create new post</h5>
+                <h5 class="modal-title" id="titlePostModal">Tạo mới bài viết</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,26 +11,25 @@
                     <input type="hidden" name="postId" id="postId">
                     <div class="row mb-4">
                         <div class="col-md-12">
-                            <label for="title" class="form-label">Title<span class="text-danger">*</span></label>
+                            <label for="title" class="form-label">Tiêu đề<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="title" name="title">
                         </div>
                     </div>
                     <div class="">
-                        <label for="postImage" class="form-label">Image</label>
+                        <label for="postImage" class="form-label">Ảnh đại diện</label>
                         <input type="file" class="form-control" id="postImage" name="image">
                     </div>
                     <div class="w-100 d-flex justify-content-center my-2" id="imagePostPreviewContainer">
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-12">
-                            <label for="contentPost" class="form-label">Content</label>
-                            {{-- <textarea class="ckeditor form-control" id="contentPost" name="contentPost"></textarea> --}}
+                            <label for="contentPost" class="form-label">Nội dung</label>
                             <textarea name="content" id="editor"></textarea>
                         </div>
                     </div>
                     <div class="mb-4 d-flex align-items-center">
                         <label class="col-md-3 control-label">
-                            <b>Status<span class="text-danger">*</span></b>
+                            <b>Trạng thái<span class="text-danger">*</span></b>
                         </label>
                         <label class="toggle">
                             <input type="checkbox" name="status" checked="true" id="cbStatusPost">
@@ -40,8 +39,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button id="btnSaveProduct" type="button" onclick="doSubmitPost()" class="btn btn-primary">Save
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                <button id="btnSaveProduct" type="button" onclick="doSubmitPost()" class="btn btn-primary">Lưu
                 </button>
             </div>
         </div>
@@ -72,11 +71,11 @@
         formData.append('statusPost', $('#cbStatusPost').is(':checked') ? 1 : 0);
         formData.append('contentPost', myEditor.getData());
         if ($('#postId').val() == '') {
-            showConfirmDialog('Are you sure you want to create this post?', function() {
+            showConfirmDialog('Bạn có chắc chắn muốn tạo bài viết này?', function() {
                 createPost(formData);
             });
         } else {
-            showConfirmDialog('Are you sure you want to update this post?', function() {
+            showConfirmDialog('Bạn có chắc chắn muốn cập nhật bài viết này?', function() {
                 updatePost(formData);
             });
         }
@@ -98,7 +97,7 @@
 
         }).done(function(res) {
             if (res == 'ok') {
-                notiSuccess('Post created successfully');
+                notiSuccess('Bài viết được tạo thành công');
                 searchPost();
                 $('#updatePostModal').modal('toggle');
             }
@@ -131,7 +130,7 @@
 
         }).done(function(res) {
             if (res == 'ok') {
-                notiSuccess('Post updated successfully');
+                notiSuccess('Đã cập nhật bài đăng thành công');
                 searchPost();
                 $('#updatePostModal').modal('toggle');
 
@@ -165,7 +164,7 @@
                 myEditor.setData(data.content);
                 $('#imagePostPreviewContainer').html(imagePreviewHtml);
                 $('#cbStatusPost').prop('checked', data.status == 1);
-                $('#titlePostModal').html('Update Post');
+                $('#titlePostModal').html('Cập nhật bài viết');
             } else {
                 imagePreviewHtml =
                     `<img src="{{ asset('img/default-img.png') }}" id="imagePostPreview" />`;
@@ -175,7 +174,7 @@
                 $("#postImage").val('');
                 $('#imagePostPreviewContainer').html(imagePreviewHtml);
                 $('#cbStatusPost').prop('checked', true);
-                $('#titlePostModal').html('Create new post');
+                $('#titlePostModal').html('Tạo mới bài viết');
             }
         });
     })

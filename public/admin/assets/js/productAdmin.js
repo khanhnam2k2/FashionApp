@@ -36,11 +36,11 @@ function doSubmitProduct() {
         }
     }
     if ($('#productId').val() == '') {
-        showConfirmDialog('Are you sure you want to create this product?', function () {
+        showConfirmDialog('Bạn có chắc chắn muốn tạo sản phẩm này không?', function () {
             createProduct(formData, btnSubmit);
         });
     } else {
-        showConfirmDialog('Are you sure you want to update this product?', function () {
+        showConfirmDialog('Bạn có chắc chắn muốn cập nhật sản phẩm này?', function () {
             updateProduct(formData, btnSubmit);
         });
     }
@@ -64,7 +64,7 @@ function createProduct(data, btn) {
         data: data,
     }).done(function (res) {
         if (res == 'ok') {
-            notiSuccess('Product created successfully');
+            notiSuccess('Sản phẩm được tạo thành công');
             searchProduct();
             $('#updateProductModal').modal('toggle');
             arrayImagesUpload = [];
@@ -102,7 +102,7 @@ function updateProduct(data, btn) {
 
     }).done(function (res) {
         if (res == 'ok') {
-            notiSuccess('Product updated successfully');
+            notiSuccess('Sản phẩm được cập nhật thành công');
             searchProduct();
             $('#updateProductModal').modal('toggle');
             arrayImagesUpload = [];
@@ -149,7 +149,7 @@ $(document).ready(function () {
     // Delete product
     $(document).on('click', '#btnDeleteProduct', function () {
         let productId = $(this).data('id');
-        showConfirmDialog('Are you sure you want to delete this product?', function () {
+        showConfirmDialog('Bạn có chắc chắn muốn xóa sản phẩm này?', function () {
             $.ajax({
                 url: globalRouter.urlDeleteProduct.replace(':id', productId),
                 type: "DELETE",
@@ -158,7 +158,7 @@ $(document).ready(function () {
                 },
             }).done(function (res) {
                 if (res == 'ok') {
-                    notiSuccess("Deleted product successfully");
+                    notiSuccess("Đã xóa sản phẩm thành công");
                     searchProduct();
                 }
             }).fail(function (xhr) {
@@ -191,7 +191,7 @@ $(document).ready(function () {
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="productQuantity" class="form-label">Quantity<span
+                    <label for="productQuantity" class="form-label">Số lượng<span
                             class="text-danger">*</span></label>
                     <input class="form-control" type="number" value="1" name="quantity[]">
                 </div>
@@ -250,11 +250,12 @@ $(document).ready(function () {
             $('#imageProductPreviewContainer').html(rowImages);
             $('#productImage').val('');
 
-            $('#titleImage').text('Change Image (max 4 images)');
+            $('#titleImage').text('Thay đổi hình ảnh (tối đa 4)');
 
             sizes.forEach(function (size, index) {
                 let htmlSize = `
                     <div class="row">
+                        <span class="removeSize text-end mt-2" style="cursor:pointer;color:red"><i class="fa-solid fa-circle-xmark"></i></span>
                         <div class="col-md-6">
                             <label for="productSize" class="form-label">Size<span
                                     class="text-danger">*</span></label>
@@ -266,7 +267,7 @@ $(document).ready(function () {
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="productQuantity" class="form-label">Quantity<span
+                            <label for="productQuantity" class="form-label">Số lượng<span
                                     class="text-danger">*</span></label>
                             <input class="form-control" type="number" value="${quantities[index]}" name="quantity[]">
                         </div>
@@ -280,14 +281,14 @@ $(document).ready(function () {
             $('#productSku').val(data.sku);
             $('#category').val(data.category_id);
             $('#cbStatusProduct').prop('checked', data.status == 1);
-            $('#titleCategoryModal').html('Update product');
+            $('#titleCategoryModal').html('Cập nhật sản phẩm');
         } else {
             $('#productId').val('');
             $('#productName').val('');
             $('#productPrice').val('');
             $('#productQuantity').val('');
 
-            $('#titleImage').text('Choose Image (max 4 images)');
+            $('#titleImage').text('Chọn ảnh (tối đa 4)');
             $('#productImage').val('');
             arrayImagesUpload = [];
 
@@ -305,7 +306,7 @@ $(document).ready(function () {
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="productQuantity" class="form-label">Quantity<span
+                            <label for="productQuantity" class="form-label">Số lượng<span
                                     class="text-danger">*</span></label>
                             <input class="form-control" type="number" value="1" name="quantity[]">
                         </div>
@@ -318,7 +319,7 @@ $(document).ready(function () {
             $('#sizes').val('');
             $('#imageProductPreviewContainer').html('');
             $('#cbStatusProduct').prop('checked', true);
-            $('#titleCategoryModal').html('Create new product');
+            $('#titleCategoryModal').html('Tạo sản phẩm mới');
         }
     });
 });

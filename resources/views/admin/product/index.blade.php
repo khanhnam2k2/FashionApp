@@ -2,15 +2,15 @@
 @section('content')
     <div class="product-container ">
         <div class="d-flex justify-content-between">
-            <h2>Product List</h2>
+            <h2>Danh sách sản phẩm</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchProduct" placeholder="search here..." class="form-control" name="nameProduct">
+                <input type="text" id="txtSearchProduct" placeholder="..." class="form-control" name="nameProduct">
                 <button class="btn btn-primary" onclick="searchProduct()"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </div>
             <div class="">
                 <select class="form-select" name="sortByCategory" id="sortByCategory">
-                    <option selected value="">Sort by Category</option>
+                    <option selected value="">Tìm kiếm theo tên danh mục</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
@@ -18,10 +18,10 @@
             </div>
             @if (count($categories) > 0)
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateProductModal"
-                    data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New
-                    Product</button>
+                    data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>Thêm mới sản
+                    phẩm</button>
             @else
-                <a href="{{ route('admin.category.index') }}">Please create a new category to add products</a>
+                <a href="{{ route('admin.category.index') }}">Vui lòng tạo danh mục mới để thêm sản phẩm</a>
             @endif
         </div>
         <div class="mt-3">

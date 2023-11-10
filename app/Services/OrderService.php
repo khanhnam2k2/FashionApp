@@ -97,9 +97,9 @@ class OrderService extends BaseService
                     $order->status = $newStatus;
                     $order->save();
                     Mail::to($order->email)->send(new OrderCancel($order, $orderItems));
-                    return response()->json(['success' => 'Cancel order successfully']);
+                    return response()->json(['success' => 'Hủy bỏ đơn hàng thành công']);
                 } else {
-                    return response()->json(['error' => 'You do not have permission to update this order status']);
+                    return response()->json(['error' => 'Bạn không có quyền cập nhật trạng thái cho đơn đặt hàng này!']);
                 }
             } elseif ($newStatus >= $currentStatus && $newStatus <= ($currentStatus + 1)) {
                 $order->status = $newStatus;
@@ -107,9 +107,9 @@ class OrderService extends BaseService
                 if ($newStatus == StatusOrder::successfulDelivery) {
                     Mail::to($order->email)->send(new OrderSuccess($order, $orderItems));
                 }
-                return response()->json(['success' => 'Update order status successfully']);
+                return response()->json(['success' => 'Cập nhật trạng thái đơn hàng thành công']);
             } else {
-                return response()->json(['error' => 'Please update the status sequentially']);
+                return response()->json(['error' => 'Vui lòng cập nhật theo thứ tự']);
             }
         } catch (Exception $e) {
             Log::error($e);

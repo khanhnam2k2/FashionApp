@@ -2,14 +2,14 @@
 @php
     use App\Enums\Status;
 @endphp
-@section('title', 'Post - Male Fashion')
+@section('title', 'Bài viết - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-blog set-bg" data-setbg="{{ asset('img/breadcrumb-bg.jpg') }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2>Our Blog</h2>
+                    <h2>Bài viết</h2>
                 </div>
             </div>
         </div>
@@ -19,8 +19,8 @@
     <section class="blog spad">
         <div class="container">
             <div class="form-search d-flex algin-items-center mb-3 justify-content-end">
-                <input type="text" id="txtSearchPostWeb" placeholder="search here..." name="namePost">
-                <button class="btn btn-dark" onclick="searchPostWeb()">Search</button>
+                <input type="text" id="txtSearchPostWeb" placeholder="nhập tên bài viết..." name="namePost">
+                <button class="btn btn-dark" onclick="searchPostWeb()">Tìm kiếm</button>
             </div>
             <div id="post_list">
                 <div class="d-flex justify-content-center mt-5">

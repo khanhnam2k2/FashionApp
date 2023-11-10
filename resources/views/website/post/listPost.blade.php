@@ -12,14 +12,14 @@
                         {{ $item->created_at->format('d F Y') }}
                     </span>
                     <h5>{{ $item->title }}</h5>
-                    <a href="{{ route('post.details', $item->id) }}">Read More</a>
+                    <a href="{{ route('post.details', $item->id) }}">Đọc thêm</a>
                 </div>
             </div>
         </div>
     @endforeach
     @if (count($data) == 0)
         <div class="col-12 text-center my-4">
-            <h2>There are no posts to display!</h2>
+            <h2>Không có bài viết nào!</h2>
         </div>
     @endif
 </div>

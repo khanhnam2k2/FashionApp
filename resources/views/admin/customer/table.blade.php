@@ -2,10 +2,10 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Name customer</th>
-            <th>Email</th>
-            <th>Date created</th>
-            <th>Option</th>
+            <th>Tên người dùng</th>
+            <th>Email đăng nhập</th>
+            <th>Ngày tạo</th>
+            <th>Tùy chọn</th>
         </tr>
     </thead>
     <tbody>
@@ -17,13 +17,14 @@
                 <td>{{ $item->created_at->format('d-m-Y') }}</td>
                 <td>
                     <button id="btnDeleteCustomer" data-id="{{ $item->id }}" class="btn btn-danger"><i
-                            class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                            class="fa-solid fa-trash-can me-2"></i>Xóa tài khoản</button>
                 </td>
             </tr>
         @endforeach
         @if (count($data) == 0)
-            <td class="align-center" colspan="9" style="background-color: white; font-size : 20px;text-align:center">
-                There is no data to display
+            <td class="align-center text-danger" colspan="9"
+                style="background-color: white; font-size : 20px;text-align:center">
+                Không có tài khoản nào!
             </td>
         @endif
     </tbody>

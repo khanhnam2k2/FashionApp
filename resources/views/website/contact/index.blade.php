@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Contacts - Male Fashion')
+@section('title', 'Liên hệ - Male Fashion')
 
 @section('content')
     <!-- Map Begin -->
@@ -17,10 +17,8 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="contact__text">
                         <div class="section-title">
-                            <span>Information</span>
-                            <h2>Contact Us</h2>
-                            <p>As you might expect of a company that began as a high-end interiors contractor, we pay
-                                strict attention.</p>
+                            <span>Thông tin</span>
+                            <h2>Liên hệ với chúng tôi</h2>
                         </div>
                         <ul>
                             <li>
@@ -39,16 +37,14 @@
                         <form id="form_contact">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="text" name="name" placeholder="Name"
-                                        value="{{ Auth::user()->name ?? '' }}">
+                                    <input type="text" name="name" placeholder="Tên của bạn">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="email" name="email" placeholder="Email"
-                                        value="{{ Auth::user()->email ?? '' }}">
+                                    <input type="email" name="email" placeholder="Email">
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea name="message" placeholder="Message"></textarea>
-                                    <button id="btnSubmitContact" class="site-btn">Send Message</button>
+                                    <textarea name="message" placeholder="Nội dung liên hệ"></textarea>
+                                    <button id="btnSubmitContact" class="site-btn">Gửi</button>
                                 </div>
                             </div>
                         </form>
@@ -76,7 +72,7 @@
                     data: formData,
                 }).done(function(data) {
                     if (data == 'ok') {
-                        notiSuccess('Thank you for your feedback.', 'center', function() {
+                        notiSuccess('Cảm ơn phản hồi của bạn.', 'center', function() {
                             window.location.reload();
                         })
                     }

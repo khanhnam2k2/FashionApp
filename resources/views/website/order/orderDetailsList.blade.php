@@ -1,5 +1,5 @@
 @foreach ($data as $item)
-    <div class="row border-bottom pb-2 mb-3">
+    <div class="row border-bottom border-top p-2 mb-3">
         <div class="col-md-8">
             <div class="d-flex">
                 <div class="">
@@ -17,10 +17,9 @@
             </div>
         </div>
         <div class="col-md-4 " style="text-align: end">
-            <p class="p-3 text-danger">${{ $item->price }}</p>
+            <p class="p-3">Thành tiền
+                <span class="text-danger">: {{ number_format($item->price, 0, ',', '.') }}đ</span>
+            </p>
         </div>
-    </div>
-    <div style="text-align: end">
-        <p>Total price: <span style="color:red;font-size:20px">${{ $item->price * $item->quantity }}</span></p>
     </div>
 @endforeach

@@ -12,7 +12,7 @@
                     <div class="breadcrumb__text">
                         <h4>Shop</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Home</a>
+                            <a href="{{ route('home') }}">Trang chủ</a>
                             <span>Shop</span>
                         </div>
                     </div>
@@ -30,7 +30,8 @@
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
                             <div class="form-search">
-                                <input type="text" name="search" id="txtSearchProduct" placeholder="Search...">
+                                <input type="text" name="search" id="txtSearchProduct"
+                                    placeholder="nhập tên sản phẩm...">
                                 <button onclick="searchProductShop()"><span class="icon_search"></span></button>
                             </div>
                         </div>
@@ -38,7 +39,7 @@
                             <div class="accordion" id="accordionExample">
                                 <div class="card">
                                     <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                                        <a data-toggle="collapse" data-target="#collapseOne">Danh mục</a>
                                     </div>
                                     <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
@@ -63,17 +64,18 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__left">
-                                    <a class="btn" style="background: #f3f2ee" href="{{ route('cart.index') }}">My cart
+                                    <a class="btn" style="background: #f3f2ee" href="{{ route('cart.index') }}"><i
+                                            class="fa-solid fa-cart-shopping mr-2"></i>Giỏ hàng
                                     </a>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__right">
-                                    <p>Sort by Price:</p>
+                                    <p>Sắp xếp theo giá:</p>
                                     <select id="sortByPrice">
-                                        <option value="" disabled selected>Choose type sort</option>
-                                        <option value="asc">Low To High</option>
-                                        <option value="desc">High To Low</option>
+                                        <option value="" disabled selected>Chọn sắp xếp kiểu</option>
+                                        <option value="asc">Thấp đến cao</option>
+                                        <option value="desc">Cao đến thấp</option>
                                     </select>
                                 </div>
                             </div>

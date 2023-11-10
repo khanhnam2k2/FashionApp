@@ -26,8 +26,8 @@ Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 Route::prefix('post')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('post.index');
-    Route::post('/search', [PostController::class, 'search'])->name('post.search');
     Route::get('/details/{id}', [PostController::class, 'details'])->name('post.details');
+    Route::post('/search', [PostController::class, 'search'])->name('post.search');
 });
 
 Route::prefix('shop')->group(function () {
@@ -129,10 +129,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/update', [CommentController::class, 'update'])->name('comment.update');
         Route::delete('/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
     });
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 

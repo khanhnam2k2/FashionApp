@@ -14,10 +14,10 @@ class CategoriesSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['id' => 1, 'name' => 'category 1', 'status' => 1, 'created_at' => Carbon::now()],
-            ['id' => 2, 'name' => 'category 2', 'status' => 1, 'created_at' => Carbon::now()],
-            ['id' => 3, 'name' => 'category 3', 'status' => 0, 'created_at' => Carbon::now()],
-            ['id' => 4, 'name' => 'category 4', 'status' => 1, 'created_at' => Carbon::now()],
+            ['id' => 1, 'name' => 'Áo Phông', 'status' => 1, 'created_at' => Carbon::now()],
+            ['id' => 2, 'name' => 'Áo Sơ Mi', 'status' => 1, 'created_at' => Carbon::now()],
+            ['id' => 3, 'name' => 'Quần Jeans', 'status' => 1, 'created_at' => Carbon::now()],
+            ['id' => 4, 'name' => 'Áo Polo', 'status' => 1, 'created_at' => Carbon::now()],
         ];
         DB::table('categories')->insert($data);
     }

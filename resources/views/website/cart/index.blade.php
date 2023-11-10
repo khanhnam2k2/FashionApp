@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Cart - Male Fashion')
+@section('title', 'Giỏ hàng - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
@@ -7,11 +7,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Shopping Cart</h4>
+                        <h4>Giỏ hàng</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Home</a>
+                            <a href="{{ route('home') }}">Trang chủ</a>
                             <a href="{{ route('shop.index') }}">Shop</a>
-                            <span>Shopping Cart</span>
+                            <span>Giỏ hàng</span>
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                 const productId = $(this).data('product-id');
                 const size = $(this).data('size');
                 $(this).prop('disabled', true);
-                showConfirmDialog('Are you sure you want to remove this product?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?', function() {
                     $.ajax({
                         type: "DELETE",
                         url: "{{ route('cart.remove') }}",
@@ -152,7 +152,7 @@
                     }
                     updateCart(data);
                 } else {
-                    notiError('Minimum quantity is 1');
+                    notiError('Số lượng tối thiểu là 1');
                 }
 
             })

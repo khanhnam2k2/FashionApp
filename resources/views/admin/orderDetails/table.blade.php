@@ -2,11 +2,11 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Product</th>
-            <th>Size</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
+            <th>Sản phẩm</th>
+            <th>Size quần áo</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Thành tiền</th>
         </tr>
     </thead>
     <tbody>
@@ -25,8 +25,8 @@
                 </td>
                 <td>{{ $item->size }} </td>
                 <td>{{ $item->quantity }}</td>
-                <td>${{ $item->price }}</td>
-                <td>${{ $item->price * $item->quantity }}</td>
+                <td>{{ number_format($item->price, 0, ',', '.') }}đ</td>
+                <td>{{ number_format($item->price * $item->quantity, 0, ',', '.') }}đ</td>
             </tr>
         @endforeach
         @if (count($data) == 0)

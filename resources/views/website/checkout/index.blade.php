@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Checkout - Male Fashion')
+@section('title', 'Đặt hàng - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
@@ -7,11 +7,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Check Out</h4>
+                        <h4>Thanh toán</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Home</a>
+                            <a href="{{ route('home') }}">Trang chủ</a>
                             <a href="{{ route('shop.index') }}">Shop</a>
-                            <span>Check Out</span>
+                            <span>Đặt hàng</span>
                         </div>
                     </div>
                 </div>
@@ -28,11 +28,11 @@
                     <form id="form_order">
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
-                                <h6 class="checkout__title">Billing Details</h6>
+                                <h6 class="checkout__title">Chi tiết đặt hàng</h6>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="checkout__input">
-                                            <p>Full Name<span>*</span></p>
+                                            <p>Tên của bạn<span>*</span></p>
                                             <input type="text" name="full_name" value="{{ Auth::user()->name ?? '' }}">
                                         </div>
                                     </div>
@@ -40,37 +40,38 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="checkout__input">
-                                            <p>Phone<span>*</span></p>
+                                            <p>Số liên hệ<span>*</span></p>
                                             <input type="text" name="phone">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="checkout__input">
-                                            <p>Email<span>*</span></p>
+                                            <p>Địa chỉ Email<span>*</span></p>
                                             <input type="email" name="email" value="{{ Auth::user()->email ?? '' }}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="checkout__input mb-2">
-                                    <p>Address<span>*</span></p>
-                                    <textarea name="address" placeholder="Street Address" class="form-control"></textarea>
+                                    <p>Địa chỉ giao hàng<span>*</span></p>
+                                    <textarea name="address" class="form-control"></textarea>
                                 </div>
                                 <div class="checkout__input">
-                                    <p>Message</p>
-                                    <textarea class="form-control" name="message" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                    <p>Mô tả thêm</p>
+                                    <textarea class="form-control" name="message"
+                                        placeholder="Ghi chú về đơn đặt hàng của bạn, ví dụ: ghi chú đặc biệt để giao hàng."></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="checkout__order">
-                                    <h4 class="order__title">Your order</h4>
+                                    <h4 class="order__title">Đơn hàng của bạn</h4>
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Product</th>
+                                                <th>Sản phẩm</th>
                                                 <th>Size</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Total</th>
+                                                <th>Số lượng</th>
+                                                <th>Giá</th>
+                                                <th>Thành tiền</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -86,21 +87,23 @@
                                                         {{ $item->quantity }}
                                                     </td>
                                                     <td>
-                                                        ${{ $item->productPrice }}
+                                                        {{ number_format($item->productPrice, 0, ',', '.') }}đ
                                                     </td>
                                                     <td>
-                                                        $<span>{{ $item->total }}</span>
+                                                        <span>{{ number_format($item->total, 0, ',', '.') }}đ</span>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                     <ul class="checkout__total__all">
-                                        <li>Total amount <span>$<span id="total_order">{{ $totalCarts }}</span></span>
+                                        <li>Tổng tiền đơn hàng: <span
+                                                id="total_order">{{ number_format($totalCarts, 0, ',', '.') }}<span><span>đ</span>
                                         </li>
                                     </ul>
-                                    <p> <i class="fa-solid fa-truck-fast"></i> Free ship</p>
-                                    <button type="button" id="btn-order" class="site-btn">PLACE ORDER</button>
+                                    <p> <i class="fa-solid fa-truck-fast"></i> Miễn phí giao hàng - Thanh toán khi nhận hàng
+                                        (COD)</p>
+                                    <button type="button" id="btn-order" class="site-btn">Đặt hàng</button>
                                 </div>
                             </div>
                         </div>
@@ -162,10 +165,12 @@
             $('#btn-order').click(function(e) {
                 e.preventDefault();
                 const btnOrder = $(this);
-                btnOrder.prop('disabled', true);
                 let formData = new FormData($('form#form_order')[0]);
-                formData.append('total_order', parseFloat($('#total_order').text()));
-                showConfirmDialog('Are you sure you want to place this order?', function() {
+                const spanContent = $("#total_order").text();
+                const totalOrder = parseFloat(spanContent.replace(/\./g, ''));
+                formData.append('total_order', totalOrder);
+                showConfirmDialog('Bạn có chắc chắn muốn đặt đơn hàng này không?', function() {
+                    btnOrder.prop('disabled', true);
                     createOrder(formData, btnOrder);
                 });
             })

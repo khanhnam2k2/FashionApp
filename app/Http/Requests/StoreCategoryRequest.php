@@ -31,7 +31,7 @@ class StoreCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Name Category is required',
+            'name.required' => 'Vui lòng nhập tên danh mục sản phẩm',
         ];
     }
 

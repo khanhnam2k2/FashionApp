@@ -2,7 +2,7 @@
 @php
     use App\Enums\StatusOrder;
 @endphp
-@section('title', 'My Order - Male Fashion')
+@section('title', 'Đơn mua - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
@@ -10,10 +10,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>My Order</h4>
+                        <h4>Đơn mua</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Home</a>
-                            <span>My Order</span>
+                            <a href="{{ route('home') }}">Trang chủ</a>
+                            <span>Đơn mua</span>
                         </div>
                     </div>
                 </div>
@@ -31,11 +31,11 @@
                         <h4>{{ Auth::user()->name }}</h4>
                         <ul>
                             <li>
-                                <a href="#"><i class="fa-regular fa-user mr-2"></i>My profile</a>
+                                <a href="#"><i class="fa-regular fa-user mr-2"></i>Trang cá nhân</a>
                             </li>
                             <li>
                                 <a class="{{ request()->is('order') ? 'active' : '' }}" href="{{ route('order.index') }}"><i
-                                        class="fa-solid fa-receipt mr-2"></i>My order</a>
+                                        class="fa-solid fa-receipt mr-2"></i>Đơn mua</a>
                             </li>
                         </ul>
                     </div>
@@ -44,16 +44,16 @@
                     <nav class="" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
                         <div class="nav nav-tabs d-flex justify-content-between align-items-center mb-3" id="nav-tab"
                             role="tablist">
-                            <button class="btn-show-order nav-link active border-0" type="button">All</button>
-                            <button class="btn-show-order nav-link border-0" data-status="1" type="button">Wait for
-                                confirmation</button>
-                            <button class="btn-show-order nav-link border-0" data-status="2" type="button">Confirmed
-                                successfully</button>
-                            <button class="btn-show-order nav-link border-0"data-status="3"
-                                type="button">Delivering</button>
-                            <button class="btn-show-order nav-link border-0"data-status="4" type="button">Complete</button>
-                            <button class="btn-show-order nav-link border-0"data-status="0" type="button">Cancel
-                                Order</button>
+                            <button class="btn-show-order nav-link active border-0" type="button">Tất cả</button>
+                            <button class="btn-show-order nav-link border-0" data-status="1" type="button">Chờ xác
+                                nhận</button>
+                            <button class="btn-show-order nav-link border-0" data-status="2" type="button">Xác nhận thành
+                                công</button>
+                            <button class="btn-show-order nav-link border-0"data-status="3" type="button">Đang
+                                giao</button>
+                            <button class="btn-show-order nav-link border-0"data-status="4" type="button">Hoàn
+                                thành</button>
+                            <button class="btn-show-order nav-link border-0"data-status="0" type="button">Đã hủy</button>
 
                         </div>
                     </nav>
@@ -204,14 +204,13 @@
                 e.preventDefault();
                 const orderId = $(this).data('order-id');
                 const btnCancel = $(this);
-                const messageSuccess = 'Order canceled successfully!'
-                showConfirmDialog('Are you sure you want to cancel this order?', function() {
+                const messageSuccess = 'Đơn hàng đã được hủy thành công!'
+                showConfirmDialog('Bạn có chắc chắn muốn hủy đơn hàng này không?', function() {
                     btnCancel.prop('disabled', true);
-                    btnCancel.text('Loading...');
+                    btnCancel.text('Đang hủy...');
                     updateStatusOrder(orderId, parseInt(statusCancelOrder), btnCancel,
                         messageSuccess);
                 });
-
             });
 
             // click to repurchase order
@@ -219,14 +218,14 @@
                 e.preventDefault();
                 const orderId = $(this).data('order-id');
                 const btnRepurchase = $(this);
-                const messageSuccess = 'Successfully redeemed order! Please check your purchase order again'
-                showConfirmDialog('Are you sure you want to repurchase this order?', function() {
+                const messageSuccess =
+                    'Đã mua lại đơn hàng thành công! Vui lòng kiểm tra lại đơn mua của bạn'
+                showConfirmDialog('Bạn có chắc chắn muốn mua lại đơn đặt hàng này không?', function() {
                     btnRepurchase.prop('disabled', true);
-                    btnRepurchase.text('Loading...');
+                    btnRepurchase.text('Đang mua lại...');
                     updateStatusOrder(orderId, parseInt(statusWatingCofirm), btnRepurchase,
                         messageSuccess);
                 });
-
             });
 
         })

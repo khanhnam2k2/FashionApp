@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titleCategoryModal">Create new product</h5>
+                <h5 class="modal-title" id="titleCategoryModal">Tạo sản phẩm mới</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,18 +11,19 @@
                     <input type="hidden" name="productId" id="productId">
                     <div class="row mb-4">
                         <div class="col-md-8">
-                            <label for="productName" class="form-label">Name<span class="text-danger">*</span></label>
+                            <label for="productName" class="form-label">Tên sản phẩm<span
+                                    class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="productName" name="name">
                         </div>
                         <div class="col-md-4">
-                            <label for="productPrice" class="form-label">Price<span class="text-danger">*</span></label>
+                            <label for="productPrice" class="form-label">Giá<span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="productPrice" name="price">
                         </div>
                     </div>
                     <div class="">
                         <div class="d-flex items-center justify-content-between">
                             <div class="d-flex items-center gap-4">
-                                <h5 id="titleImage">Choose Image (max 4 images)</h5>
+                                <h5 id="titleImage">Chọn ảnh (tối đa 4)</h5>
                                 <label for="productImage" class="form-label"><i
                                         class="fa-solid fa-file-image"></i></label>
                             </div>
@@ -36,7 +37,7 @@
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-8">
-                            <label for="category" class="form-label">Category<span class="text-danger">*</span></label>
+                            <label for="category" class="form-label">Danh mục<span class="text-danger">*</span></label>
                             <select name="category_id" class="form-select" id="category">
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -65,26 +66,26 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="productQuantity" class="form-label">Quantity<span
+                                            <label for="productQuantity" class="form-label">Số lượng<span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control" type="number" value="1" name="quantity[]">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn" id="addSize">Add size</button>
+                            <button class="btn btn-info mt-2" id="addSize">Thêm size mới</button>
                         </div>
 
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-12">
-                            <label for="productDescription" class="form-label">Description</label>
+                            <label for="productDescription" class="form-label">Mô tả</label>
                             <textarea class="form-control" id="productDescription" name="description"></textarea>
                         </div>
                     </div>
                     <div class="mb-4 d-flex align-items-center">
                         <label class="col-md-3 control-label">
-                            <b>Status<span class="text-danger">*</span></b>
+                            <b>Trạng thái<span class="text-danger">*</span></b>
                         </label>
                         <label class="toggle">
                             <input type="checkbox" name="status" checked="true" id="cbStatusProduct">
@@ -94,8 +95,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button id="btnSaveProduct" type="button" onclick="doSubmitProduct()" class="btn btn-primary">Save
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                <button id="btnSaveProduct" type="button" onclick="doSubmitProduct()" class="btn btn-primary">Lưu
                 </button>
             </div>
         </div>

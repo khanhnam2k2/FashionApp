@@ -2,15 +2,12 @@
 @section('content')
     <div class="order-container container">
         <div class="d-flex justify-content-between">
-            <h2>Order List</h2>
+            <h2>Danh sách đặt hàng</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchOrder" placeholder="search here..." class="form-control" name="nameCategory">
+                <input type="text" id="txtSearchOrder" placeholder="..." class="form-control" name="nameCategory">
                 <button class="btn btn-primary" onclick="searchOrderAdmin()"><i
                         class="fa-solid fa-magnifying-glass"></i></button>
             </div>
-            {{-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCategoryModal"
-                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>New
-                Category</button> --}}
         </div>
         <div class="mt-3">
             <div id="order_table">
@@ -53,7 +50,7 @@
             // delete category
             $(document).on('click', '#btnDeleteOrder', function() {
                 let orderId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this order?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xóa đơn hàng này không?', function() {
                     $.ajax({
                         url: urlDeleteOrder.replace(':id', orderId),
                         type: "DELETE",
@@ -62,7 +59,7 @@
                         },
                     }).done(function(res) {
                         if (res == 'ok') {
-                            notiSuccess("Deleted order successfully");
+                            notiSuccess("Xóa đơn hàng thành công");
                             searchOrderAdmin();
                         }
                     }).fail(function(xhr) {

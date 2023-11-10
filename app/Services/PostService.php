@@ -37,7 +37,8 @@ class PostService extends BaseService
     public function searchPost($searchName = null, $paginate = 4, $status = null)
     {
         try {
-            $posts = Post::select('posts.*');
+            $posts = Post::select('posts.*', 'users.name as userCreated')
+                ->join('users', 'users.id', '=', 'posts.user_id');
 
             if ($searchName != null && $searchName != '') {
                 $posts->where('posts.title', 'LIKE', '%' . $searchName . '%');
@@ -147,19 +148,9 @@ class PostService extends BaseService
                 'posts.image',
                 'posts.created_at',
                 'users.name as author',
-                DB::raw('COUNT(comments.post_id) as commentCount')
             )
                 ->join('users', 'users.id', '=', 'posts.user_id')
-                ->join('comments', 'comments.post_id', '=', 'posts.id')
                 ->where('status', Status::ON)->where('posts.id', $id)
-                ->groupBy(
-                    'posts.id',
-                    'posts.title',
-                    'posts.content',
-                    'posts.image',
-                    'posts.created_at',
-                    'users.name'
-                )
                 ->first();
 
             return $data;

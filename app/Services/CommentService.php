@@ -94,7 +94,7 @@ class CommentService extends BaseService
 
             $currentUser = Auth::user();
             if ($currentUser->id !== $comment->user_id) {
-                return response()->json(['error' => 'You do not have permission to update this comment!']);
+                return response()->json(['error' => 'Ybạn không có quyền cập nhật!']);
             }
 
             if (!empty($request->file('file')) || !empty($request->content)) {
@@ -107,7 +107,7 @@ class CommentService extends BaseService
                 }
                 $comment->content = $request->content;
                 $comment->save();
-                return response()->json(['success' => 'Updated comment successfully']);
+                return response()->json(['success' => 'Cập nhật thành công']);
             }
         } catch (Exception $e) {
             Log::error($e);
@@ -127,15 +127,18 @@ class CommentService extends BaseService
             $currentUser = Auth::user();
 
             if ($currentUser->id !== $comment->user_id && !$currentUser->role == UserRole::ADMIN) {
-                return response()->json(['error' => 'You do not have permission to delete this comment!']);
+                return response()->json(['error' => 'Bạn không có quyền xóa!']);
             }
             if ($comment->image) {
                 $this->deleteFile($comment->image);
             }
 
             $comment->delete();
-
-            return response()->json(['success' => 'Delete comment successfully']);
+            if ($comment->product_id == null) {
+                return response()->json(['success' => 'Xóa bình luận thành công']);
+            } else {
+                return response()->json(['success' => 'Xóa đánh giá thành công']);
+            }
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);

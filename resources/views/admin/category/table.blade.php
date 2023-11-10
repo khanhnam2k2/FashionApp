@@ -5,9 +5,9 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Name Category</th>
-            <th>Status</th>
-            <th>Option</th>
+            <th>Tên danh mục</th>
+            <th>Trạng thái</th>
+            <th>Tùy chọn</th>
         </tr>
     </thead>
     <tbody>
@@ -21,15 +21,16 @@
                 <td>
                     <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}"
                         data-bs-target="#updateCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                        class="btn btn-success m-1 me-4"><i class="fa-solid fa-pen-to-square me-2"></i>Edit</button>
+                        class="btn btn-success m-1 me-4"><i class="fa-solid fa-pen-to-square me-2"></i>Chỉnh sửa</button>
                     <button id="btnDeleteCate" data-id="{{ $item->id }}" class="btn btn-danger"><i
-                            class="fa-solid fa-trash-can me-2"></i>Delete</button>
+                            class="fa-solid fa-trash-can me-2"></i>Xóa</button>
                 </td>
             </tr>
         @endforeach
         @if (count($data) == 0)
-            <td class="align-center" colspan="9" style="background-color: white; font-size : 20px;text-align:center">
-                There is no data to display
+            <td class="align-center text-danger" colspan="9"
+                style="background-color: white; font-size : 20px;text-align:center">
+                Không có danh mục nào để hiển thị!
             </td>
         @endif
     </tbody>

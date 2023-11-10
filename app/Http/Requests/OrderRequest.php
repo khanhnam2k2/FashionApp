@@ -35,12 +35,12 @@ class OrderRequest extends FormRequest
     public function messages()
     {
         return [
-            'full_name.required' => 'Full Name is required',
-            'address.required' => 'Address is required',
-            'phone.required' => 'Phone is required',
-            'phone.regex' => 'Invalid phone number.',
-            'email.required' => 'Email is required',
-            'email.email' => 'Invalid email',
+            'full_name.required' => 'Vui lòng nhập họ và tên của bạn',
+            'address.required' => 'Vui lòng nhập địa chỉ giao hàng',
+            'phone.required' => 'Vui lòng nhập số điện thoại liên hệ',
+            'phone.regex' => 'Số điện thoại không hợp lệ',
+            'email.required' => 'Vui lòng nhập địa chỉ email',
+            'email.email' => 'Địa chỉ email không hợp lệ',
         ];
     }
 

@@ -1,45 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Booking Confirmation</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-top: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .text-danger {
+            color: rgb(215, 75, 75);
+        }
+    </style>
 </head>
 
 <body>
-    <h2>Order #{{ $order->code }} has been delivered successfully</h2>
-
-
-    <div style="padding:50px">
-        <p>Hello, {{ $order->full_name }}</p>
-        <p>Your order #{{ $order->code }} successfully delivered on {{ $order->updated_at }}</p>
+    <div class="container">
+        <p>Xin chào, {{ $order->full_name }}</p>
+        <p>Đơn hàng #{{ $order->code }} của bạn đã được giao thành công ngày
+            {{ $order->updated_at->format('d/m/y') }}
+        </p>
+        <hr>
+        <h4>Thông tin đơn hàng - Dành cho người mua</h4>
+        <p>Mã đơn hàng: <span class="text-danger">{{ $order->code }}</span></p>
+        <p>Ngày đặt hàng: <span class="text-danger">{{ $order->created_at }}</span></p>
 
         <div>
-            <h3>Your order information</h3>
-            <ul>
-                <li>Code orders: <span>{{ $order->code }}</span></li>
-                <li>Order date:: <span>{{ $order->created_at }}</span></li>
-            </ul>
-        </div>
-
-        <div style="margin: 0 30px ">
             <table>
                 <thead>
                     <tr>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total Price</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($orderItems as $item)
                         <tr>
                             <td>{{ $item->productName }}</td>
-                            <td>${{ $item->price }}</td>
+                            <td>{{ number_format($item->price, 0, ',', '.') }}đ</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>${{ $item->price * $item->quantity }}</td>
+                            <td>{{ number_format($item->price * $item->quantity, 0, ',', '.') }}đ</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -47,23 +81,20 @@
         </div>
 
         <div>
-            <ul>
-                <li>Total amount: <span>${{ $order->total_order }}</span></li>
-                <li>Transport fee: <span>$0</span></li>
-                <li>TTotal payment:: <span>${{ $order->total_order }}</span></li>
-            </ul>
+            <p>Tổng tiền đơn hàng: <span>{{ number_format($order->total_order, 0, ',', '.') }}đ</span></p>
+            <p>Phí vận chuyển: <span>0đ</span></p>
+            <p>Tổng tiền thanh toán: <span>{{ number_format($order->total_order, 0, ',', '.') }}đ</span></p>
         </div>
 
-        <p>Please contact us if you have any questions or concerns.</p>
+        <p>Cảm ơn bạn đã tin tưởng Male Fashion.</p>
+        <p>Vui lòng liên hệ với chúng tôi nếu bạn có bất kỳ câu hỏi hoặc mối quan tâm nào.</p>
         <ul>
-            <li>Phone: 📞+0947837222</li>
+            <li>SDT: 📞+0947837222</li>
             <li>Gmail: 📧 MailFashion@gmail.com</li>
         </ul>
 
-        <p>Best regards,</p>
-        <p>Male Fashion Team</p>
-        <p>Have questions? Contact us <a href="{{ route('contact.show') }}">here</a></p>
-
+        <p>Trân trọng,</p>
+        <p>Male Fashion</p>
     </div>
 
 </body>

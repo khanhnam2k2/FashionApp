@@ -10,7 +10,7 @@
                         <div class="product__details__breadcrumb">
                             <a href="{{ route('home') }}">Home</a>
                             <a href="{{ route('shop.index') }}">Shop</a>
-                            <span>Product Details</span>
+                            <span>Chi tiết sản phẩm</span>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="col-lg-8">
                         <div class="product__details__text">
                             <h4>{{ $product->name }}</h4>
-                            <h3>${{ $product->price }}</h3>
+                            <h3>{{ number_format($product->price, 0, ',', '.') }}đ</h3>
                             <p>{{ $product->description }}</p>
                             <div class="product__details__option">
                                 <div class="product__details__option__size">
@@ -73,14 +73,14 @@
                                     <input type="number" min="1" class="form-control" id="quantityProduct"
                                         value="1">
                                 </div>
-                                <button id="addToCart" class="btn primary-btn">add to cart</button>
+                                <button id="addToCart" class="btn primary-btn">Thêm vào giỏ hàng</button>
                                 <div class="mt-3">
-                                    <h5 class="d-none"><span id="product-available">0</span> products available</h5>
+                                    <h5 class="d-none"><span id="product-available">0</span> sản phẩm có sẵn</h5>
                                 </div>
                             </div>
 
                             <div class="product__details__btns__option">
-                                <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+                                <a href="#"><i class="fa fa-heart"></i> thêm vào danh sách yêu thích</a>
                             </div>
                         </div>
                     </div>
@@ -90,17 +90,17 @@
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#tabs-5" role="tab">Description</a>
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-5" role="tab">Mô tả sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tabs-6" role="tab">Customer
-                                        Previews</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-6" role="tab">Đánh giá
+                                        khách hàng</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane" id="tabs-5" role="tabpanel">
                                     <div class="product__details__tab__content">
-                                        <p class="note">{{ $product->description ?? 'No description' }}</p>
+                                        <p class="note">{{ $product->description ?? 'Không có mô tả' }}</p>
                                     </div>
                                 </div>
                                 <div class="tab-pane active" id="tabs-6" role="tabpanel">
@@ -108,7 +108,7 @@
                                     <div class="blog__details__comment mb-5">
                                         <button type="button" class="btn btn-dark" data-toggle="modal"
                                             data-target="#modalCommentProduct">
-                                            Leave A Comment
+                                            Để lại đánh giá của bạn
                                         </button>
 
                                     </div>
@@ -195,7 +195,7 @@
                     notiError('Please enter review content');
                     return;
                 }
-                notiSuccess('Review successfully', 'center');
+                notiSuccess('Đánh giá thành công', 'center');
                 form[0].reset();
                 deleteFileComment($('#deleteFileCommentProduct'));
                 $('#modalCommentProduct').modal('toggle');
@@ -234,7 +234,7 @@
                         return;
                     }
                 }
-                notiSuccess('Review successfully', 'center');
+                notiSuccess('Cập nhật đánh giá thành công', 'center');
                 form[0].reset();
                 deleteFileComment($('#deleteFileCommentProduct'));
                 $('#modalCommentProduct').modal('toggle');
@@ -315,21 +315,21 @@
                         }
                     }
                     $('#previewFileCommentProduct').html(filePreviewHtml);
-                    $('#titleComment').html('Edit Comment');
+                    $('#titleComment').html('Chỉnh sửa đánh giá');
                 } else {
                     $("input[name='commentId']").val('');
                     $("textarea[name='content']").val('');
                     $('#previewFileCommentProduct').empty();
                     $("input[name='fileOld']").val('');
                     $('#deleteFileCommentProduct').hide();
-                    $('#titleComment').html('Leave A Comment');
+                    $('#titleComment').html('Đánh giá');
                 }
             });
 
             // delete comment
             $(document).on('click', '.delete-comment-product', function() {
                 let commentId = $(this).data('id');
-                showConfirmDialog('Are you sure you want to delete this review?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xóa đánh giá này?', function() {
                     $.ajax({
                         url: urlDeleteComment.replace(':id', commentId),
                         type: "DELETE",
