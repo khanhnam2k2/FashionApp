@@ -170,6 +170,7 @@
                 const totalOrder = parseFloat(spanContent.replace(/\./g, ''));
                 formData.append('total_order', totalOrder);
                 showConfirmDialog('Bạn có chắc chắn muốn đặt đơn hàng này không?', function() {
+                    btnOrder.text('Đang đặt hàng...');
                     btnOrder.prop('disabled', true);
                     createOrder(formData, btnOrder);
                 });

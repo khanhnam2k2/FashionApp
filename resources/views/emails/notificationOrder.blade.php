@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Order Confirmation</title>
+    <title>Order Notification</title>
     <style type="text/css">
         body {
             font-family: Arial, sans-serif;
@@ -17,11 +17,6 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-top: 0;
         }
 
         table {
@@ -48,15 +43,14 @@
 
 <body>
     <div class="container">
-        <p>Xin chào, {{ $order->full_name }}</p>
-        <p>Đơn hàng #{{ $order->code }} của bạn đã được giao thành công ngày
-            {{ $order->updated_at->format('d/m/y') }}
-        </p>
-        <hr>
-        <h4>Thông tin đơn hàng - Dành cho người mua</h4>
-        <p>Mã đơn hàng: <span class="text-danger">{{ $order->code }}</span></p>
-        <p>Ngày đặt hàng: <span class="text-danger">{{ $order->created_at }}</span></p>
-
+        <p>Xin chào, Admin</p>
+        <p>Có 1 đơn đặt hàng mới. Vui lòng kiểm tra và xử lý đơn hàng <a href="{{ route('admin.order.index') }}">tại
+                đây</a>.</p>
+        <div>
+            <h3>Thông tin đơn hàng</h3>
+            <p>Mã đơn hàng: <span class="text-danger">{{ $order->code }}</span></p>
+            <p>Ngày đặt: <span class="text-danger">{{ $order->created_at }}</span></p>
+        </div>
         <div>
             <table>
                 <thead>
@@ -79,20 +73,6 @@
                 </tbody>
             </table>
         </div>
-
-        <div>
-            <p>Tổng tiền đơn hàng: <span>{{ number_format($order->total_order, 0, ',', '.') }}đ</span></p>
-            <p>Phí vận chuyển: <span>0đ</span></p>
-            <p>Tổng tiền thanh toán: <span>{{ number_format($order->total_order, 0, ',', '.') }}đ</span></p>
-        </div>
-
-        <p>Cảm ơn bạn đã tin tưởng Male Fashion.</p>
-        <p>Vui lòng liên hệ với chúng tôi nếu bạn có bất kỳ câu hỏi hoặc mối quan tâm nào.</p>
-        <ul>
-            <li>SDT: 📞+0947837222</li>
-            <li>Gmail: 📧 MailFashion@gmail.com</li>
-        </ul>
-
         <p>Trân trọng,</p>
         <p>Male Fashion</p>
     </div>

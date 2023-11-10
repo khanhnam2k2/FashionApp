@@ -2,15 +2,19 @@
 
 namespace App\Services;
 
+use App\Enums\UserRole;
+use App\Mail\OrderNotification;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductSizeQuantity;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CartService extends BaseService
 {
@@ -320,6 +324,7 @@ class CartService extends BaseService
             ];
 
             $order = Order::create($orderData);
+
             $cart = Cart::where('user_id', $user->id)->first();
 
             $cartItems = CartItem::select('cart_items.*', 'products.price as productPrice')
@@ -352,6 +357,10 @@ class CartService extends BaseService
             DB::table('order_items')->insert($orderItemData);
             CartItem::where('cart_id', $cart->id)->delete();
 
+            $adminEmails = User::where('role', UserRole::ADMIN)->pluck('email')->toArray();
+            $orderItems = $this->getOrderDetails($order->id);
+
+            Mail::to($adminEmails)->send(new OrderNotification($order, $orderItems));
             DB::commit();
 
             return response()->json(['success' => 'Đặt hàng thành công! Vui lòng kiểm tra đơn mua của bạn']);
