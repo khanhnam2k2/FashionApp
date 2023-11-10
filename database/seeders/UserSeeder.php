@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'id' => 1,
             'role' => UserRole::ADMIN,
             'name' => 'Administrator',
-            'email' => 'admin@gmail.com',
+            'email' => 'danghanam2k2@gmail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),
             'created_at' => Carbon::now()
