@@ -324,7 +324,26 @@ ol {
 /*---------------------
   Header
 -----------------------*/
+.text-overflow{
+	width: 150px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+#cart_list{
+	display: none;
+	right:10px;
+	top:55px;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	padding:10px 20px;
+	z-index: 20000;
+	background: #fff;
+	border-radius: 10px;
+	max-height: 90vh;
+	width: 400px;
+	max-width: 450px;
 
+}
 .header {
 	background: #ffffff;
 }

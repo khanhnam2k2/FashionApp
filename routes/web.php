@@ -116,6 +116,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index');
         Route::post('/', [CartController::class, 'search'])->name('cart.search');
+        Route::post('/searchLimit', [CartController::class, 'searchLimit'])->name('cart.searchLimit');
         Route::post('/add_to_cart', [CartController::class, 'addToCart'])->name('cart.add');
         Route::post('/update_cart', [CartController::class, 'updateCart'])->name('cart.update');
         Route::delete('/remove', [CartController::class, 'removeProduct'])->name('cart.remove');

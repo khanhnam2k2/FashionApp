@@ -64,11 +64,40 @@
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a>
-                    <a href="{{ route('cart.index') }}"><img src="{{ asset('img/icon/cart.png') }}" alt="">
-                        <span>0</span></a>
+                    <a class="position-relative" id="cartIcon" href="{{ route('cart.index') }}"><img
+                            src="{{ asset('img/icon/cart.png') }}" alt="">
+                    </a>
+                    <div id="cart_list" class="position-absolute">
+                    </div>
                 </div>
             </div>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
+
+<script>
+    function searchCartList() {
+        $.ajax({
+            url: "{{ route('cart.searchLimit') }}",
+            type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+        }).done(function(data) {
+            $('#cart_list').html(data);
+        }).fail(function() {
+            notiError();
+        });
+    }
+    $(document).ready(function() {
+
+        $('#cartIcon,#cart_list').mouseenter(function() {
+            $('#cart_list').show();
+            searchCartList();
+        })
+        $("#cartIcon, #cart_list").mouseleave(function() {
+            $('#cart_list').hide();
+        });
+    })
+</script>

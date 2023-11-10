@@ -41,7 +41,7 @@
                                         <td class="quantity__item">
                                             <div class="quantity">
                                                 @if ($item->quantity > $item->quantityAvailable)
-                                                    <span class="btn btn-danger">Out Of Stock</span>
+                                                    <span class="btn btn-danger">Hết hàng</span>
                                                 @else
                                                     <div
                                                         class="pro-qty-2 d-flex align-items-center justify-content-between w-100 border border-dark">

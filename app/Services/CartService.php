@@ -149,6 +149,54 @@ class CartService extends BaseService
     }
 
     /**
+     * Show cart list limit
+     * @return Array data cart
+     */
+    public function showCartLimit()
+    {
+        try {
+            $user  = Auth::user();
+            $cart = Cart::where('user_id', $user->id)->first();
+
+            if (!$cart) {
+                $cart = new Cart();
+                $cart->user_id = $user->id;
+                $cart->save();
+            }
+            $cartItems = CartItem::where('cart_id', $cart->id)
+                ->join('products', 'cart_items.product_id', '=', 'products.id')
+                ->join('product_size_quantities', function ($join) {
+                    $join->on('products.id', '=', 'product_size_quantities.product_id');
+                    $join->on('cart_items.size', '=', 'product_size_quantities.size');
+                })
+                ->select(
+                    'cart_items.cart_id',
+                    'cart_items.size',
+                    'cart_items.quantity',
+                    'products.id as productId',
+                    'products.name as productName',
+                    'products.price as productPrice',
+                    'products.images as productImage',
+                    'product_size_quantities.quantity as quantityAvailable'
+                )
+                ->selectRaw('SUM(cart_items.quantity * products.price) as total')
+                ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images', 'product_size_quantities.quantity')
+                ->orderBy('cart_items.created_at', 'desc')
+                ->take(4)->get();
+
+            $countCart = $cartItems->count();
+
+            return [
+                'cartItems' => $cartItems,
+                'countCart' => $countCart,
+            ];
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
      * Show cart in checkout page
      * @return Array data cart
      */

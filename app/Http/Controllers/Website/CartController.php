@@ -42,6 +42,14 @@ class CartController extends Controller
             'totalCarts' => $data['totalCarts'],
         ]);
     }
+    public function searchLimit()
+    {
+        $data = $this->cartService->showCartLimit();
+        return view('website.cart.listCart', [
+            'cartItems' => $data['cartItems'],
+            'countCart' => $data['countCart'],
+        ]);
+    }
 
     /**
      * Add product to cart
