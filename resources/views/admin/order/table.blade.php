@@ -4,11 +4,11 @@
 <table class="table text-nowrap mb-0 align-middle table-resposive">
     <thead>
         <tr>
-            <th>#</th>
             <th>Mã đơn hàng</th>
-            <th>Tên tài khoản</th>
             <th>Tên người đặt</th>
             <th>Ngày đặt</th>
+            <th>SDT liên hệ</th>
+            <th>Địa chỉ giao hàng</th>
             <th>Tổng tiền</th>
             <th>Trạng thái</th>
             <th>Tùy chọn</th>
@@ -17,11 +17,11 @@
     <tbody>
         @foreach ($data as $key => $item)
             <tr>
-                <td>{{ $item->id }}</td>
                 <td>{{ $item->code }}</td>
-                <td>{{ $item->username }}</td>
                 <td>{{ $item->full_name }}</td>
-                <td>{{ $item->created_at }}</td>
+                <td>{{ $item->created_at->format('d-m-Y') }}</td>
+                <td>{{ $item->phone }}</td>
+                <td>{{ $item->address }}</td>
                 <td>{{ number_format($item->total_order, 0, ',', '.') }}đ</td>
                 <td>
                     @switch($item->status)
