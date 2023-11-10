@@ -62,35 +62,6 @@
     </section>
     <!-- About Section End -->
 
-    <!-- Testimonial Section Begin -->
-    <section class="testimonial">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6 p-0">
-                    <div class="testimonial__text">
-                        <span class="icon_quotations"></span>
-                        <p>“Đi ra ngoài sau giờ làm việc? Mang theo máy uốn tóc butan đến văn phòng, làm nóng nó, tạo kiểu
-                            tóc trước khi rời văn phòng và bạn sẽ không phải quay về nhà.”
-                        </p>
-                        <div class="testimonial__author">
-                            <div class="testimonial__author__pic">
-                                <img src="{{ asset('img/about/testimonial-author.jpg') }}" alt="">
-                            </div>
-                            <div class="testimonial__author__text">
-                                <h5>Augusta Schultz</h5>
-                                <p>Fashion Design</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 p-0">
-                    <div class="testimonial__pic set-bg" data-setbg="{{ asset('img/about/testimonial-pic.jpg') }}"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Testimonial Section End -->
-
     <!-- Team Section Begin -->
     <section class="team spad">
         <div class="container">
