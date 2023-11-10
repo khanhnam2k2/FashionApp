@@ -76,7 +76,7 @@
                     data: formData,
                 }).done(function(data) {
                     if (data == 'ok') {
-                        notiSuccess('Thank you for your feedback.', function() {
+                        notiSuccess('Thank you for your feedback.', 'center', function() {
                             window.location.reload();
                         })
                     }
