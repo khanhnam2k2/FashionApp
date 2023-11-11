@@ -31,7 +31,9 @@
                         <h4>{{ Auth::user()->name }}</h4>
                         <ul>
                             <li>
-                                <a href="#"><i class="fa-regular fa-user mr-2"></i>Trang cá nhân</a>
+                                <a class="{{ request()->is('profile') ? 'active' : '' }}"
+                                    href="{{ route('profile.index') }}"><i class="fa-regular fa-user mr-2"></i>Trang cá
+                                    nhân</a>
                             </li>
                             <li>
                                 <a class="{{ request()->is('order') ? 'active' : '' }}" href="{{ route('order.index') }}"><i
@@ -67,35 +69,7 @@
 
 
 @endsection
-<style>
-    .order-container ul {
-        list-style: none;
-        margin: 20px 10px;
-    }
 
-    .order-container ul li {
-        margin-bottom: 10px;
-    }
-
-    .order-container ul li a {
-        color: #000;
-    }
-
-    .order-container ul li a.active {
-        color: red;
-    }
-
-    .order-container .nav-link {
-        background-color: transparent;
-        border: none;
-        font-size: 20px !important;
-    }
-
-    .order-container .nav-link.active {
-        color: red !important;
-        border-bottom: 1px solid red !important;
-    }
-</style>
 @section('web-script')
     <script>
         var statusCancelOrder = {{ StatusOrder::cancelOrder }};

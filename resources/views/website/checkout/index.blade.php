@@ -41,7 +41,7 @@
                                     <div class="col-lg-6">
                                         <div class="checkout__input">
                                             <p>Số liên hệ<span>*</span></p>
-                                            <input type="text" name="phone">
+                                            <input type="text" value="{{ Auth::user()->phone ?? '' }}" name="phone">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="checkout__input mb-2">
                                     <p>Địa chỉ giao hàng<span>*</span></p>
-                                    <textarea name="address" class="form-control"></textarea>
+                                    <textarea name="address" style="color:#000" class="form-control">{{ Auth::user()->address ?? '' }}</textarea>
                                 </div>
                                 <div class="checkout__input">
                                     <p>Mô tả thêm</p>
@@ -142,7 +142,7 @@
                     const data = res.data.original;
                     if (data.success) {
                         notiSuccess(data.success, 'center', function() {
-                            window.location.href = "{{ route('home') }}";
+                            window.location.href = "{{ route('order.index') }}";
                         });
                     } else {
                         notiError(data.error);

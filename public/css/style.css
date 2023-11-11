@@ -544,11 +544,14 @@ ol {
 }
 
 .header__nav__option a span {
-	color: #0d0d0d;
-	font-size: 11px;
-	position: absolute;
-	left: 5px;
-	top: 8px;
+	color: #fff;
+    font-size: 11px;
+    position: absolute;
+    left: 12px;
+    top: -5px;
+	background: #000;
+    border-radius: 50%;
+	padding: 2px 4px;
 }
 
 .header__nav__option a:last-child {
@@ -2587,6 +2590,34 @@ input[type=number] {
   Checkout
 -----------------------*/
 
+.order-container ul {
+	list-style: none;
+	margin: 20px 10px;
+}
+
+.order-container ul li {
+	margin-bottom: 10px;
+}
+
+.order-container ul li a {
+	color: #000;
+}
+
+.order-container ul li a.active {
+	color: red;
+}
+
+.order-container .nav-link {
+	background-color: transparent;
+	border: none;
+	font-size: 20px !important;
+}
+
+.order-container .nav-link.active {
+	color: red !important;
+	border-bottom: 1px solid red !important;
+}
+
 .coupon__code {
 	color: #0d0d0d;
 	font-size: 14px;
@@ -2631,7 +2662,7 @@ input[type=number] {
 	width: 100%;
 	border: 1px solid #e1e1e1;
 	font-size: 14px;
-	color: #b7b7b7;
+	color: #000;
 	padding-left: 20px;
 	margin-bottom: 20px;
 }
@@ -3433,6 +3464,14 @@ input[type=number] {
 	padding: 14px 35px;
 }
 
+/* profile */
+.profile-container{
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	padding: 20px;
+}
+.profile-container .card-profile{
+	padding: 10px 50px;
+}
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
 @media only screen and (min-width: 1200px) {
