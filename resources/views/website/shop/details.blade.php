@@ -78,10 +78,6 @@
                                     <h5 class="d-none"><span id="product-available">0</span> sản phẩm có sẵn</h5>
                                 </div>
                             </div>
-
-                            <div class="product__details__btns__option">
-                                <a href="#"><i class="fa fa-heart"></i> thêm vào danh sách yêu thích</a>
-                            </div>
                         </div>
                     </div>
                 </div>

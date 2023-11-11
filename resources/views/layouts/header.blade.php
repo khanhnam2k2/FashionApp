@@ -68,7 +68,6 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt="heart"></a>
                     <a class="position-relative" id="cartIcon" href="{{ route('cart.index') }}"><img
                             src="{{ asset('img/icon/cart.png') }}" alt="cart">
                     </a>
