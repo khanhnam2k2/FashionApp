@@ -11,12 +11,12 @@
                 </div>
                 <div class="d-flex flex-column">
                     <p class="text-overflow m-0">{{ $item->productName }} @if ($item->quantity > $item->quantityAvailable)
-                            <span class="btn btn-danger">Hết hàng</span>
+                            <span class="text-danger">: Hết hàng</span>
                         @else
                             <span class="text-danger"> x {{ $item->quantity }}</span>
+                            <p>size: <span class="text-danger">{{ $item->size }}</span></p>
                         @endif
                     </p>
-                    <p>size: <span class="text-danger">{{ $item->size }}</span></p>
                 </div>
                 <p class="text-danger">{{ number_format($item->total, 0, ',', '.') }}đ</p>
             </div>
