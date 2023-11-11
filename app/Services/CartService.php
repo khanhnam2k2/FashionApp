@@ -181,13 +181,14 @@ class CartService extends BaseService
                 )
                 ->selectRaw('SUM(cart_items.quantity * products.price) as total')
                 ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images', 'product_size_quantities.quantity')
-                ->orderBy('cart_items.created_at', 'desc')
-                ->take(4)->get();
+                ->orderBy('cart_items.created_at', 'desc');
 
-            $countCart = $cartItems->count();
+            $countCart = $cartItems->get()->count();
+            $cartItemLimit = $cartItems->take(4)->get();
+
 
             return [
-                'cartItems' => $cartItems,
+                'cartItemLimit' => $cartItemLimit,
                 'countCart' => $countCart,
             ];
         } catch (Exception $e) {

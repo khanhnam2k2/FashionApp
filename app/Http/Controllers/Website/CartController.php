@@ -46,7 +46,7 @@ class CartController extends Controller
     {
         $data = $this->cartService->showCartLimit();
         return view('website.cart.listCart', [
-            'cartItems' => $data['cartItems'],
+            'cartItemLimit' => $data['cartItemLimit'],
             'countCart' => $data['countCart'],
         ]);
     }
