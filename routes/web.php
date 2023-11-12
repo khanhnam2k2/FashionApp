@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\Website\CartController;
 use App\Http\Controllers\Website\CheckoutController;
@@ -15,7 +16,7 @@ use App\Http\Controllers\Website\ContactController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\OrderController;
 use App\Http\Controllers\Website\PostController;
-use App\Http\Controllers\Website\ProfileController as WebsiteProfileController;
+use App\Http\Controllers\Website\ProfileController;
 use App\Http\Controllers\Website\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -103,13 +104,18 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/search', [AdminOrderController::class, 'searchDetails'])->name('admin.order.searchDetails');
     });
 
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [AdminProfileController::class, 'index'])->name('admin.profile.index');
+        Route::post('/updateProfile', [AdminProfileController::class, 'updateProfile'])->name('admin.profile.updateProfile');
+    });
+
     Route::post('ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 });
 Route::middleware('auth')->group(function () {
 
     Route::prefix('profile')->group(function () {
-        Route::get('/', [WebsiteProfileController::class, 'index'])->name('profile.index');
-        Route::post('/updateProfile', [WebsiteProfileController::class, 'updateProfile'])->name('profile.updateProfile');
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::post('/updateProfile', [ProfileController::class, 'updateProfile'])->name('profile.updateProfile');
     });
 
     Route::prefix('order')->group(function () {

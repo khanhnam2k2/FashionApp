@@ -92,6 +92,11 @@
 @endsection
 @section('web-script')
     <script>
+        /*
+         * Update profile user
+         *param data data to update profile
+         *param btn button to update
+         */
         function updateProfile(data, btn) {
             $.ajax({
                 type: "POST",
@@ -117,9 +122,13 @@
             })
         }
         $(document).ready(function() {
+
+            // change image profile
             $('#avatar_user').change(function() {
                 handleImageUpload(this, $('#avatar_img'));
             });
+
+            // click to update profile
             $('#btnUpdateProfile').click(function(e) {
                 e.preventDefault();
                 const btnUpdateProfile = $(this);
