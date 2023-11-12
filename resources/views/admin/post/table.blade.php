@@ -43,8 +43,9 @@
         @endforeach
 
         @if (count($data) == 0)
-            <td class="align-center" colspan="9" style="background-color: white; font-size : 20px;text-align:center">
-                There is no data to display
+            <td class="align-center text-danger" colspan="9"
+                style="background-color: white; font-size : 20px;text-align:center">
+                Không có bài viết nào để hiển thị!
             </td>
         @endif
     </tbody>
