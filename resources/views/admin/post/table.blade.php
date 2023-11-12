@@ -25,7 +25,7 @@
                     </a>
                 </td>
                 <td>{{ $item->userCreated }}</td>
-                <td>{{ $item->created_at->format('d F Y') }}</td>
+                <td>{{ $item->created_at->format('d-m-Y') }}</td>
                 <td><button style="cursor: unset"
                         class="btn btn-{{ $item->status == Status::ON ? 'primary' : 'danger' }}">{{ $item->status == Status::ON ? 'ON' : 'OFF' }}</button>
                 </td>
