@@ -12,9 +12,32 @@ function showConfirmDialog(message, preConfirmCallback) {
         cancelButtonColor: '#d33',
         cancelButtonText: 'Huỷ bỏ',
         confirmButtonText: 'Đồng ý',
+        allowEnterKey: false,
+        didOpen: function () {
+            // Listen for keydown events on the modal
+            document.addEventListener('keydown', keydownListener);
+        },
+        willClose: function () {
+            // Remove the keydown event listener when the modal is closing
+            document.removeEventListener('keydown', keydownListener);
+        },
         preConfirm: preConfirmCallback
     });
+
+    function keydownListener(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            preConfirmCallback();
+            Swal.close();
+        }
+    }
 }
+
+
+
+
+
+
 
 /**
  * show success message
