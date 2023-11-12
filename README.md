@@ -1,5 +1,5 @@
-# Project FashionApp
-## Technology
+# Đồ án chuyên ngành năm 4: Webite bán quần áo bằng Laravel
+## Công nghệ
 1. Laravel 10x (PHP v8.1.17)
     - Documentation: https://laravel.com/docs/9.x
 2. Bootstrap v5.2.3
@@ -8,82 +8,56 @@
     - https://fontawesome.com/icons
 4. Alert
     - SweetAlert: https://sweetalert2.github.io/
-## SETUP PROJECT
-- Step 1: Create file `.env` for API, refer `.env.example`
+5. Ckeditor
+    - https://ckeditor.com/ckeditor-5/
+6. Lightbox
+    - https://lokeshdhakar.com/projects/lightbox2/
+7. Jquery
+    - https://jquery.com/
+    
+## Setup Website
+- Bước 1: Tạo file `.env` cho API, và file tham khảo `.env.example`
     ```
     cp .env.example .env
     ```
-- Step 2: Run command line to install vendor
+- Bước 2: Chạy dòng lệnh để cài đặt vendor
     ```
     composer install
     ```
-- Step 3: Run command line to generate key
+- Bước 3: Chạy dòng lệnh để tạo khóa (key)
     ```
     php artisan key:generate
     ```
-- Step 4: Run command line to run migrate to create DB
+- Bước 4: Chạy dòng lệnh để chạy Migrate tạo DB
     ```
-    php artisan migrate --force
+    php artisan migrate:fresh
     ```
-- Step 5: Run command line to add default DB
+- Bước 5: Chạy dòng lệnh để thêm DB mặc định
     ```
     php artisan db:seed
     ```
-- Step 6: Run command line to add storage link
+- Bước 6: Chạy dòng lệnh để thêm liên kết lưu trữ ảnh vào storage
     ```
     php artisan storage:link
     ```
-- Step 7: Run command line to install npm dependencies
+- Bước 7: Chạy dòng lệnh để cài đặt các gói phụ thuộc 
     ```
     npm install
     ```
 
-- Step 8: Run server
+- Bước 8: Chạy server
     ```
     php artisan serve 
 
-- Run command line
     ```
-    1. Log router list
-        php artisan route:list
-        php artisan api:routes
-    2. Add component
-        php artisan make:component NameComponent
-    3. Add enum
-        php artisan make:enum NameEnum
-    4. Add Controller
-        php artisan make:controller UserController
-    4. Migration
-        - create table: php artisan make:migration create_{table_name}_table
-        - add column: php artisan make:migration add_{column_name}_to_{table_name}_table
-        - add more columns: php artisan make:migration add_{column_name}_and_{column_name}_columns_to_{table_name}_table
-        - change column: php artisan make:migration change_{column_name}_column_in_{table_name}_table
-        - rename column: php artisan make:migration rename_{old_column_name}_column_to_{new_column_name}_in_{table_name}_table
-    5. Clear config
-        php artisan config:clear
-    6. Clear Cache
-        php artisan cache:clear
-    7. Clear Route Cache
-        php artisan route:cache
-        php artisan route:clear
-    8. Clear View Cache
-        php artisan view:clear
-    9. Clear Config Cache
-        php artisan config:cache
-    10. Clear all
-        php artisan optimize
-        php artisan optimize:clear
+- Tài khoản admin:
+     ```
+    Username: danghanam2k2@gmail.com
+    Password: 12345678
     ```
-
-    - Account admin:
-        ```
-        Username: admin@gmail.com
-        Password: 12345678
-        ```
 
 ## Visual studio code Extensions
 - GitLens
-- EditorConfig
 - Laravel Blade Snippets
 - Laravel Snippets
 - Laravel Format
