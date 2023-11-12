@@ -18,8 +18,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset('admin/assets/images/profile/user-1.jpg') }}" alt="" width="35"
-                            height="35" class="rounded-circle">
+                        <img src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) : asset('img/avatar.png') }}"
+                            alt="avatar" width="40" height="40" class="rounded-circle">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                         <div class="message-body">
