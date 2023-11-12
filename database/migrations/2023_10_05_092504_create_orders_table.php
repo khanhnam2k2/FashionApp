@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('message')->nullable();
             $table->string('code')->nullable();
             $table->tinyInteger('status')->default(1);
-            $table->float('total_order')->nullable();
+            $table->double('total_order', 15, 0)->nullable();
             $table->timestamps();
         });
     }
