@@ -5,9 +5,9 @@
             <h2>Danh sách chi tiết đơn hàng</h2>
             <span id="orderId" class="d-none">{{ $id }}</span>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchOrderDetails" placeholder="..." class="form-control" name="orderDeitals">
-                <button class="btn btn-primary" onclick="searchOrderDetailsAdmin()"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" id="txtSearchOrderDetails" placeholder="Tìm kiếm ở đây..." class="form-control"
+                    name="orderDeitals">
+
             </div>
         </div>
         <div class="mt-3">
@@ -25,7 +25,7 @@
         /**
          * Load order details list
          */
-        function searchOrderDetailsAdmin(page = 1) {
+        function searchOrderDetailsAdmin(page = 1, searchName = '') {
             $.ajax({
                 url: '<?= route('admin.order.searchDetails') ?>?page=' + page,
                 type: "POST",
@@ -34,7 +34,7 @@
                 },
                 data: {
                     orderId: $("#orderId").text(),
-                    searchName: $('#txtSearchOrderDetails').val(),
+                    searchName: searchName,
                 }
             }).done(function(data) {
                 $('#order_details_table').html(data);
@@ -45,6 +45,17 @@
 
         $(document).ready(function() {
             searchOrderDetailsAdmin();
+
+            // event enter keyword search
+            $('#txtSearchOrderDetails').keyup(debounce(function(e) {
+                let search = e.currentTarget.value ?? '';
+                if (search != '') {
+                    searchOrderDetailsAdmin(1, search);
+                } else {
+                    searchOrderDetailsAdmin();
+                }
+            }, 500));
+
         });
     </script>
 @endsection

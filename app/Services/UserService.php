@@ -20,7 +20,7 @@ class UserService
             $customers = User::select('users.*');
 
             if ($searchName != null && $searchName != '') {
-                $customers->where('users.name', 'LIKE', '%' . $searchName . '%');
+                $customers = $customers->where('users.name', 'LIKE', '%' . $searchName . '%');
             }
 
             $customers = $customers->where('role', UserRole::USER)->latest()->paginate(5);

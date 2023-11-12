@@ -4,9 +4,8 @@
         <div class="d-flex justify-content-between">
             <h2>Danh mục sản phẩm</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchCategory" placeholder="..." class="form-control" name="nameCategory">
-                <button class="btn btn-primary" onclick="searchCategory()"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" id="txtSearchCategory" placeholder="Tìm kiếm ở đây..." class="form-control"
+                    name="nameCategory">
             </div>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCategoryModal"
                 data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>Tạo danh mục
@@ -29,7 +28,7 @@
         /**
          * Load cagtegory list
          */
-        function searchCategory(page = 1) {
+        function searchCategory(page = 1, searchName = '') {
             $.ajax({
                 url: '<?= route('admin.category.search') ?>?page=' + page,
                 type: "POST",
@@ -37,7 +36,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    searchName: $('#txtSearchCategory').val(),
+                    searchName: searchName,
                 }
             }).done(function(data) {
                 $('#category_table').html(data);
@@ -49,6 +48,15 @@
         $(document).ready(function() {
             searchCategory();
 
+            // event enter keyword search
+            $('#txtSearchCategory').keyup(debounce(function(e) {
+                let search = e.currentTarget.value ?? '';
+                if (search != '') {
+                    searchCategory(1, search);
+                } else {
+                    searchCategory();
+                }
+            }, 500));
 
             // delete category
             $(document).on('click', '#btnDeleteCate', function() {

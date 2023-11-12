@@ -41,7 +41,7 @@ class ContactService
             $contacts = Contact::select('contacts.*');
 
             if ($searchName != null && $searchName != '') {
-                $contacts->where('contacts.name', 'LIKE', '%' . $searchName . '%')
+                $contacts = $contacts->where('contacts.name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('contacts.email', 'LIKE', '%' . $searchName . '%');
             }
 

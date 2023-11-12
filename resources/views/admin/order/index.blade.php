@@ -4,9 +4,8 @@
         <div class="d-flex justify-content-between">
             <h2>Danh sách đặt hàng</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchOrder" placeholder="..." class="form-control" name="nameCategory">
-                <button class="btn btn-primary" onclick="searchOrderAdmin()"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" id="txtSearchOrder" placeholder="Tìm kiếm ở đây..." class="form-control"
+                    name="nameCategory">
             </div>
         </div>
         <div class="mt-3">
@@ -26,7 +25,7 @@
         /**
          * Load cagtegory list
          */
-        function searchOrderAdmin(page = 1) {
+        function searchOrderAdmin(page = 1, searchName = '') {
             $.ajax({
                 url: '<?= route('admin.order.search') ?>?page=' + page,
                 type: "POST",
@@ -34,7 +33,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    searchName: $('#txtSearchOrder').val(),
+                    searchName: searchName,
                 }
             }).done(function(data) {
                 $('#order_table').html(data);
@@ -46,6 +45,15 @@
         $(document).ready(function() {
             searchOrderAdmin();
 
+            // event enter keyword search
+            $('#txtSearchOrder').keyup(debounce(function(e) {
+                let search = e.currentTarget.value ?? '';
+                if (search != '') {
+                    searchOrderAdmin(1, search);
+                } else {
+                    searchOrderAdmin();
+                }
+            }, 500));
 
             // delete category
             $(document).on('click', '#btnDeleteOrder', function() {

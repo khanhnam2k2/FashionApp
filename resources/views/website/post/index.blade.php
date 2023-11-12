@@ -19,8 +19,8 @@
     <section class="blog spad">
         <div class="container">
             <div class="form-search d-flex algin-items-center mb-3 justify-content-end">
-                <input type="text" id="txtSearchPostWeb" placeholder="nhập tên bài viết..." name="namePost">
-                <button class="btn btn-dark" onclick="searchPostWeb()">Tìm kiếm</button>
+                <input type="text" class="px-3 py-2 rounded-pill" id="txtSearchPostWeb" placeholder="nhập tên bài viết..."
+                    name="namePost">
             </div>
             <div id="post_list">
                 <div class="d-flex justify-content-center mt-5">
@@ -37,7 +37,7 @@
         /**
          * Load cagtegory list
          */
-        function searchPostWeb(page = 1) {
+        function searchPostWeb(page = 1, searhName = '') {
             $.ajax({
                 url: '<?= route('post.search') ?>?page=' + page,
                 type: "POST",
@@ -45,7 +45,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    searchName: $('#txtSearchPostWeb').val(),
+                    searchName: searhName,
                     paginate: 3,
                     status: {{ Status::ON }}
                 },
@@ -57,6 +57,17 @@
         }
         $(document).ready(function() {
             searchPostWeb();
+
+            // event enter keyword search
+            $('#txtSearchPostWeb').keyup(debounce(function(e) {
+                let search = e.currentTarget.value ?? '';
+                if (search != '') {
+                    searchPostWeb(1, search);
+                } else {
+                    searchPostWeb();
+                }
+            }, 500));
+
         })
     </script>
 

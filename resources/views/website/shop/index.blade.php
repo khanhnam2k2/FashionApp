@@ -45,6 +45,9 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll" id="categoryContainer">
+                                                    <li class="mb-3 "><span class="categoryProduct" data-id="">Tất
+                                                            cả</span>
+                                                    </li>
                                                     @foreach ($categories as $category)
                                                         <li class="mb-3 "><span class="categoryProduct"
                                                                 data-id="{{ $category->id }}">{{ $category->name }}</span>
@@ -93,7 +96,7 @@
     <script>
         var statusON = {{ Status::ON }};
 
-        function searchProductShop(page = 1, searchName = null, sortByPrice = null, categoryId = null, status) {
+        function searchProductShop(page = 1, searchName = '', sortByPrice = null, categoryId = null, status) {
             $.ajax({
                 url: '<?= route('shop.search') ?>?page=' + page,
                 type: "POST",
@@ -101,7 +104,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    searchName: $('#txtSearchProduct').val(),
+                    searchName: searchName,
                     sortByPrice: sortByPrice,
                     categoryId: categoryId,
                     status: status ?? statusON
@@ -119,9 +122,20 @@
             $('#sortByPrice').change(function() {
                 let sortByPrice = $(this).val();
                 let categoryId = $('#categoryContainer').find('.active').data('id');
-                searchProductShop(page = 1, searchName = null, sortByPrice = sortByPrice, categoryId =
-                    categoryId ?? null);
+                searchProductShop(page = 1, '', sortByPrice, categoryId ?? null);
             });
+
+            // event enter keyword search
+            $('#txtSearchProduct').keyup(debounce(function(e) {
+                let search = e.currentTarget.value ?? '';
+                let categoryId = $('#categoryContainer').find('.active').data('id');
+                if (search != '') {
+                    searchProductShop(1, search, $('#sortByPrice').val() ?? null, categoryId ?? null);
+                } else {
+                    searchProductShop(1, '', $('#sortByPrice').val() ?? null, categoryId ?? null);
+
+                }
+            }, 500));
 
             // list product show by category
             $('.categoryProduct').on('click', function() {

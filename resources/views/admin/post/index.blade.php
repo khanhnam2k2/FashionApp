@@ -4,11 +4,10 @@
         <div class="d-flex justify-content-between">
             <h2>Danh sách bài viết</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchPost" placeholder="..." class="form-control" name="namePost">
-                <button class="btn btn-primary" onclick="searchPost()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" id="txtSearchPost" placeholder="Tìm kiếm ở đây..." class="form-control" name="namePost">
             </div>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updatePostModal"
-                data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>Tạo mới bài
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updatePostModal" data-bs-backdrop="static"
+                data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>Tạo mới bài
                 viết</button>
         </div>
         <div class="mt-3">
@@ -41,7 +40,7 @@
         /**
          * Load cagtegory list
          */
-        function searchPost(page = 1) {
+        function searchPost(page = 1, searchName = '') {
             $.ajax({
                 url: '<?= route('admin.post.search') ?>?page=' + page,
                 type: "POST",
@@ -49,7 +48,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    searchName: $('#txtSearchPost').val(),
+                    searchName: searchName,
                 },
             }).done(function(data) {
                 $('#post_table').html(data);
@@ -62,7 +61,15 @@
 
             searchPost();
 
-
+            // event enter keyword search
+            $('#txtSearchPost').keyup(debounce(function(e) {
+                let search = e.currentTarget.value ?? '';
+                if (search != '') {
+                    searchPost(1, search);
+                } else {
+                    searchPost();
+                }
+            }, 500));
 
             // Delete product
             $(document).on('click', '#btnDeletePost', function() {

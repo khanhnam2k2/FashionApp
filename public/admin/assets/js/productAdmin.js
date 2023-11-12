@@ -5,7 +5,7 @@ let arrayImagesUpload = []; // array of images product upload
  * Load product list
  * @param {Number} page current page
  */
-function searchProduct(page = 1, categoryId = null) {
+function searchProduct(page = 1, searchName = '', categoryId = null) {
     $.ajax({
         url: globalRouter.urlSearchPost + '?page=' + page,
         type: 'POST',
@@ -13,7 +13,7 @@ function searchProduct(page = 1, categoryId = null) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         data: {
-            searchName: $('#txtSearchProduct').val(),
+            searchName: searchName,
             categoryId: categoryId,
         },
     }).done(function (data) {
@@ -141,10 +141,23 @@ function innerHtmlImageUpload(array) {
 
 $(document).ready(function () {
     searchProduct();
+
+    // search by category
     $('#sortByCategory').on('change', function () {
         let categoryId = $(this).val();
-        searchProduct(page = 1, categoryId = categoryId ?? null);
-    })
+        searchProduct(page = 1, $('#txtSearchProduct').val() ?? '', categoryId = categoryId ?? null);
+    });
+
+    // event enter keyword search
+    $('#txtSearchProduct').keyup(debounce(function (e) {
+        let search = e.currentTarget.value ?? '';
+        if (search != '') {
+            searchProduct(1, search, $('#sortByCategory').val() ?? null);
+        } else {
+            searchProduct(1, '', $('#sortByCategory').val() ?? null);
+
+        }
+    }, 500));
 
     // Delete product
     $(document).on('click', '#btnDeleteProduct', function () {

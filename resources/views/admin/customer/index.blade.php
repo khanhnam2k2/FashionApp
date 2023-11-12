@@ -4,9 +4,8 @@
         <div class="d-flex justify-content-between">
             <h2>Danh sách tài khoản khách hàng</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchCustomer" placeholder="..." class="form-control" name="nameCategory">
-                <button class="btn btn-primary" onclick="searchCustomer()"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" id="txtSearchCustomer" placeholder="Tìm kiếm ở đây..." class="form-control"
+                    name="nameCategory">
             </div>
         </div>
         <div class="mt-3">
@@ -26,7 +25,7 @@
          * Load customer list
          * @param page 
          */
-        function searchCustomer(page = 1) {
+        function searchCustomer(page = 1, searchName = '') {
             $.ajax({
                 url: '<?= route('admin.customer.search') ?>?page=' + page,
                 type: "POST",
@@ -34,7 +33,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    searchName: $('#txtSearchCustomer').val(),
+                    searchName: searchName,
                 }
             }).done(function(data) {
                 $('#customer_table').html(data);
@@ -46,6 +45,15 @@
         $(document).ready(function() {
             searchCustomer();
 
+            // event enter keyword search
+            $('#txtSearchCustomer').keyup(debounce(function(e) {
+                let search = e.currentTarget.value ?? '';
+                if (search != '') {
+                    searchCustomer(1, search);
+                } else {
+                    searchCustomer();
+                }
+            }, 500));
 
             // delete customer 
             $(document).on('click', '#btnDeleteCustomer', function() {

@@ -48,10 +48,13 @@ class CategoryService
     {
         try {
             $categories = Category::select('categories.*');
+
             if ($searchName != null && $searchName != '') {
-                $categories->where('categories.name', 'LIKE', '%' . $searchName . '%');
+                $categories = $categories->where('categories.name', 'LIKE', '%' . $searchName . '%');
             }
+
             $categories = $categories->latest()->paginate(6);
+
             return $categories;
         } catch (Exception $e) {
             Log::error($e);

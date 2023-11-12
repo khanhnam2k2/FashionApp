@@ -4,9 +4,8 @@
         <div class="d-flex justify-content-between">
             <h2>Danh sách liên hệ</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchContact" placeholder="..." class="form-control" name="nameCategory">
-                <button class="btn btn-primary" onclick="searchContact()"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" id="txtSearchContact" placeholder="Tìm kiếm ở đây..." class="form-control"
+                    name="nameCategory">
             </div>
         </div>
         <div class="mt-3">
@@ -25,7 +24,7 @@
         /**
          * Load contact list
          */
-        function searchContact(page = 1) {
+        function searchContact(page = 1, searchName = '') {
             $.ajax({
                 url: '<?= route('admin.contact.search') ?>?page=' + page,
                 type: "POST",
@@ -33,7 +32,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    searchName: $('#txtSearchContact').val(),
+                    searchName: searchName,
                 }
             }).done(function(data) {
                 $('#contact_table').html(data);
@@ -45,6 +44,15 @@
         $(document).ready(function() {
             searchContact();
 
+            // event enter keyword search
+            $('#txtSearchContact').keyup(debounce(function(e) {
+                let search = e.currentTarget.value ?? '';
+                if (search != '') {
+                    searchContact(1, search);
+                } else {
+                    searchContact();
+                }
+            }, 500));
 
             // delete contact
             $(document).on('click', '#btnDeleteContact', function() {

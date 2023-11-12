@@ -61,7 +61,7 @@ class OrderService extends BaseService
                 ->join('users', 'users.id', '=', 'orders.user_id');
 
             if ($searchName != null && $searchName != '') {
-                $orders->where('orders.full_name', 'LIKE', '%' . $searchName . '%')
+                $orders = $orders->where('orders.full_name', 'LIKE', '%' . $searchName . '%')
                     ->orWhere('orders.code', 'LIKE', '%' . $searchName . '%');
             }
 
@@ -152,7 +152,7 @@ class OrderService extends BaseService
                 ->where('order_id', $order->id);
 
             if ($searchName != null && $searchName != '') {
-                $orderDetail->where('products.name', 'LIKE', '%' . $searchName . '%');
+                $orderDetail = $orderDetail->where('products.name', 'LIKE', '%' . $searchName . '%');
             }
 
             $orderDetail = $orderDetail->paginate(3);

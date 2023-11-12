@@ -110,21 +110,19 @@ class ProductService extends BaseService
                 ->whereNull('products.deleted_at');
 
             if ($status != null && $status != '') {
-                $products->where('products.status', '=', $status);
+                $products = $products->where('products.status', '=', $status);
             }
 
             if ($searchName != null && $searchName != '') {
-                $products->where('products.name', 'LIKE', '%' . $searchName . '%')
-                    ->orWhere('products.price', 'LIKE', '%' . $searchName . '%')
-                    ->orWhere('categories.name', 'LIKE', '%' . $searchName . '%');
+                $products = $products->where('products.name', 'LIKE', '%' . $searchName . '%');
             }
 
             if ($sortByPrice != null && $sortByPrice != '') {
-                $products->orderBy('price', $sortByPrice);
+                $products = $products->orderBy('price', $sortByPrice);
             }
 
             if ($categoryId != null && $categoryId != '') {
-                $products->where('products.category_id', $categoryId);
+                $products = $products->where('products.category_id', $categoryId);
             }
 
             $products = $products->groupBy(

@@ -4,9 +4,8 @@
         <div class="d-flex justify-content-between">
             <h2>Danh sách sản phẩm</h2>
             <div class="form-search d-flex algin-items-center gap-2">
-                <input type="text" id="txtSearchProduct" placeholder="..." class="form-control" name="nameProduct">
-                <button class="btn btn-primary" onclick="searchProduct()"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+                <input type="text" id="txtSearchProduct" placeholder="Tìm kiếm ở đây..." class="form-control"
+                    name="nameProduct">
             </div>
             <div class="">
                 <select class="form-select" name="sortByCategory" id="sortByCategory">
