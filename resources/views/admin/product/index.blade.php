@@ -9,7 +9,8 @@
             </div>
             <div class="">
                 <select class="form-select" name="sortByCategory" id="sortByCategory">
-                    <option selected value="">Tìm kiếm theo tên danh mục</option>
+                    <option selected disabled value="">Tìm kiếm theo tên danh mục</option>
+                    <option value="">Tất cả</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
