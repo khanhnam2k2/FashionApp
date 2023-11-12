@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CKEditorController extends Controller
 {
@@ -14,14 +15,18 @@ class CKEditorController extends Controller
     public function upload(Request $request)
     {
         if ($request->hasFile('upload')) {
-            $originName = $request->file('upload')->getClientOriginalName();
+            $file = $request->file('upload');
+            $originName = $file->getClientOriginalName();
             $fileName = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $request->file('upload')->getClientOriginalExtension();
+            $extension = $file->getClientOriginalExtension();
             $fileName = $fileName . '_' . time() . '.' . $extension;
 
-            $request->file('upload')->move(public_path('media'), $fileName);
+            // Lưu ảnh vào thư mục storage/app/public
+            $filePath = $file->storeAs('public/media', $fileName);
 
-            $url = asset('media/' . $fileName);
+            // Lấy URL của ảnh từ thư mục storage/app/public
+            $url = Storage::url($filePath);
+
             return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
         }
     }
