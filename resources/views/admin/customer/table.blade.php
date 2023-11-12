@@ -3,7 +3,9 @@
         <tr>
             <th>#</th>
             <th>Tên người dùng</th>
+            <th>Số điện thoại</th>
             <th>Email đăng nhập</th>
+            <th>Địa chỉ</th>
             <th>Ngày tạo</th>
             <th>Tùy chọn</th>
         </tr>
@@ -13,7 +15,9 @@
             <tr>
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $item->name }}</td>
+                <td>{{ $item->phone }}</td>
                 <td>{{ $item->email }}</td>
+                <td>{{ $item->address }}</td>
                 <td>{{ $item->created_at->format('d-m-Y') }}</td>
                 <td>
                     <button id="btnDeleteCustomer" data-id="{{ $item->id }}" class="btn btn-danger"><i
