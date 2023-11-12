@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Post Details - Male Fashion')
+@section('title', $post->title . ' - Male Fashion')
 @section('content')
     <!-- Blog Details Hero Begin -->
     <section class="blog-hero spad">
@@ -226,7 +226,7 @@
             // delete comment
             $(document).on('click', '.delete-comment-post', function() {
                 let commentId = $(this).data('id');
-                showConfirmDialog('bạn có chắc là bạn muốn xoá bình luận này không?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xoá bình luận này không?', function() {
                     $.ajax({
                         url: urlDeleteComment.replace(':id', commentId),
                         type: "DELETE",

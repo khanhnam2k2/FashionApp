@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Shop Details - Male Fashion')
+@section('title', $product->name . ' - Male Fashion')
 @section('content')
     <!-- Shop Details Section Begin -->
     <section class="shop-details">
@@ -10,7 +10,7 @@
                         <div class="product__details__breadcrumb">
                             <a href="{{ route('home') }}">Home</a>
                             <a href="{{ route('shop.index') }}">Shop</a>
-                            <span>Chi tiết sản phẩm</span>
+                            <span>{{ $product->name }}</span>
                         </div>
                     </div>
                 </div>
