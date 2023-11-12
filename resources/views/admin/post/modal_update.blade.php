@@ -12,7 +12,7 @@
                     <div class="row mb-4">
                         <div class="col-md-12">
                             <label for="title" class="form-label">Tiêu đề<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="title" name="title">
+                            <input type="text" class="form-control" id="titlePost" name="title">
                         </div>
                     </div>
                     <div class="">
@@ -40,7 +40,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
-                <button id="btnSaveProduct" type="button" onclick="doSubmitPost()" class="btn btn-primary">Lưu
+                <button id="btnSubmitPost" type="button" class="btn btn-primary">Lưu
                 </button>
             </div>
         </div>
@@ -66,17 +66,21 @@
     /**
      * Submit form post
      */
-    function doSubmitPost() {
+    function doSubmitPost(btn) {
         let formData = new FormData($('form#form_post')[0]);
         formData.append('statusPost', $('#cbStatusPost').is(':checked') ? 1 : 0);
         formData.append('contentPost', myEditor.getData());
         if ($('#postId').val() == '') {
             showConfirmDialog('Bạn có chắc chắn muốn tạo bài viết này?', function() {
-                createPost(formData);
+                btn.text('Đang tạo...');
+                btn.prop('disabled', true);
+                createPost(formData, btn);
             });
         } else {
             showConfirmDialog('Bạn có chắc chắn muốn cập nhật bài viết này?', function() {
-                updatePost(formData);
+                btn.text('Đang cập nhật...');
+                btn.prop('disabled', true);
+                updatePost(formData, btn);
             });
         }
     }
@@ -84,7 +88,7 @@
     /**
      * Create form post
      */
-    function createPost(data) {
+    function createPost(data, btn) {
         $.ajax({
             type: "POST",
             url: "{{ route('admin.post.create') }}",
@@ -110,6 +114,9 @@
             } else {
                 notiError();
             }
+        }).always(function() {
+            btn.text('Lưu');
+            btn.prop('disabled', false);
         })
 
     }
@@ -117,7 +124,7 @@
     /**
      * Update form post
      */
-    function updatePost(data) {
+    function updatePost(data, btn) {
         $.ajax({
             type: "POST",
             url: "{{ route('admin.post.update') }}",
@@ -144,23 +151,44 @@
             } else {
                 notiError();
             }
+        }).always(function() {
+            btn.text('Lưu');
+            btn.prop('disabled', false);
         })
     }
 
     $(document).ready(function() {
 
-        // add/change image for product
+
+        // Add/change image for post
         $('#postImage').on('change', function() {
             handleImageUpload(this, $('#imagePostPreview'));
         });
-        // event show product modal
+
+        // Click to submit the post
+        $('#btnSubmitPost').click(function(e) {
+            e.preventDefault();
+            doSubmitPost($(this));
+        });
+
+        // Press enter to submit the post
+        $('#updatePostModal').on('keypress', function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                const btnSubmitPost = $('#btnSubmitPost');
+                doSubmitPost(btnSubmitPost);
+            }
+        });
+
+        // Event show post modal
         $('#updatePostModal').on('shown.bs.modal', function(e) {
+            $('#titlePost').focus();
             const data = $(e.relatedTarget).data('item');
             let imagePreviewHtml = '';
             if (data) {
                 imagePreviewHtml = `<img src="/storage/${data.image}" id="imagePostPreview" />`
                 $("#postId").val(data.id);
-                $("#title").val(data.title);
+                $("#titlePost").val(data.title);
                 myEditor.setData(data.content);
                 $('#imagePostPreviewContainer').html(imagePreviewHtml);
                 $('#cbStatusPost').prop('checked', data.status == 1);
@@ -169,7 +197,7 @@
                 imagePreviewHtml =
                     `<img src="{{ asset('img/default-img.png') }}" id="imagePostPreview" />`;
                 $("#postId").val('');
-                $("#title").val('');
+                $("#titlePost").val('');
                 myEditor.setData('');
                 $("#postImage").val('');
                 $('#imagePostPreviewContainer').html(imagePreviewHtml);

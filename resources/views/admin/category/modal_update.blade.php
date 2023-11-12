@@ -38,18 +38,22 @@
     /**
      * Submit form cateogry
      */
-    function doSubmitCategory() {
+    function doSubmitCategory(btn) {
         let formData = new FormData();
         formData.append('categoryId', $('#categoryId').val());
         formData.append('name', $('#categoryName').val());
         formData.append('status', $('#cbStatusCate').is(':checked') ? 1 : 0);
         if ($('#categoryId').val() == '') {
             showConfirmDialog('Bạn có chắc chắn muốn tạo danh mục này không?', function() {
-                createCategory(formData);
+                btn.text('Đang tạo...');
+                btn.prop('disabled', true);
+                createCategory(formData, btn);
             });
         } else {
             showConfirmDialog('Bạn có chắc chắn muốn cập nhật danh mục này không?', function() {
-                updateCategory(formData);
+                btn.text('Đang cập nhật...');
+                btn.prop('disabled', true);
+                updateCategory(formData, btn);
             });
         }
     }
@@ -57,7 +61,7 @@
     /**
      * Create form cateogry
      */
-    function createCategory(data) {
+    function createCategory(data, btn) {
         $.ajax({
             type: "POST",
             url: "{{ route('admin.category.create') }}",
@@ -84,6 +88,9 @@
             } else {
                 notiError();
             }
+        }).always(function() {
+            btn.text('Lưu');
+            btn.prop('disabled', false);
         })
 
     }
@@ -91,7 +98,7 @@
     /**
      * Update form cateogry
      */
-    function updateCategory(data) {
+    function updateCategory(data, btn) {
         $.ajax({
             type: "POST",
             url: "{{ route('admin.category.update') }}",
@@ -117,13 +124,32 @@
             } else {
                 notiError();
             }
+        }).always(function() {
+            btn.text('Lưu');
+            btn.prop('disabled', false);
         })
     }
 
     $(document).ready(function() {
 
-        // event show category modal
+        // Click to submit the category
+        $('#btnSaveCategory').click(function(e) {
+            e.preventDefault();
+            doSubmitCategory($(this));
+        });
+
+        // Press enter to submit the category
+        $('#updateCategoryModal').on('keypress', function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                const btnSubmitCategory = $('#btnSaveCategory');
+                doSubmitCategory(btnSubmitCategory);
+            }
+        });
+
+        // Event show category modal
         $('#updateCategoryModal').on('shown.bs.modal', function(e) {
+            $('#categoryName').focus();
             var data = $(e.relatedTarget).data('item');
             if (data) {
                 $("#categoryId").val(data.id);

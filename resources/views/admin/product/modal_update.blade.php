@@ -96,7 +96,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
-                <button id="btnSaveProduct" type="button" onclick="doSubmitProduct()" class="btn btn-primary">Lưu
+                <button id="btnSubmitProduct" type="button" class="btn btn-primary">Lưu
                 </button>
             </div>
         </div>

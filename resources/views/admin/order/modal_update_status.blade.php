@@ -49,54 +49,66 @@
      * @param {formData} data data status to update status order
      * @param {Element} btn btn update status
      */
-    function updateStatusOrder(data, btn) {
-        $.ajax({
-            type: "POST",
-            url: "{{ route('admin.order.updateStatus') }}",
-            contentType: false,
-            processData: false,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: data,
-        }).done(function(res) {
-            const data = res.data.original;
-            if (data.success) {
-                notiSuccess(data.success);
-                searchOrderAdmin();
-                $('#updateStatusOrderModal').modal('toggle');
-            } else {
-                notiError(data.error);
-            }
-        }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
-            } else {
-                notiError();
-            }
-        }).always(function() {
-            btn.prop('disabled', false);
-        })
+    function updateStatusOrder(btn) {
+        let data = new FormData($('form#form_update_status')[0]);
+        showConfirmDialog('Bạn có chắc chắn muốn cập nhật trạng thái của đơn hàng này không?',
+            function() {
+                btn.text('Đang cập nhật...');
+                btn.prop('disabled', true);
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.order.updateStatus') }}",
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: data,
+                }).done(function(res) {
+                    const data = res.data.original;
+                    if (data.success) {
+                        notiSuccess(data.success);
+                        searchOrderAdmin();
+                        $('#updateStatusOrderModal').modal('toggle');
+                    } else {
+                        notiError(data.error);
+                    }
+                }).fail(function(xhr) {
+                    if (xhr.status === 400 && xhr.responseJSON.errors) {
+                        const errorMessages = xhr.responseJSON.errors;
+                        for (let fieldName in errorMessages) {
+                            notiError(errorMessages[fieldName][0]);
+                        }
+                    } else {
+                        notiError();
+                    }
+                }).always(function() {
+                    btn.text('Cập nhật');
+                    btn.prop('disabled', false);
+                })
+            });
+
     }
 
     $(document).ready(function() {
 
-        // click to update status order
+        // Click to update status order
         $('#btnUpdateStatus').click(function(e) {
             e.preventDefault();
-            const btnUpdate = $(this);
-            btnUpdate.prop('disabled', true);
-            let formData = new FormData($('form#form_update_status')[0]);
-            showConfirmDialog('Bạn có chắc chắn muốn cập nhật trạng thái của đơn hàng này không?',
-                function() {
-                    updateStatusOrder(formData, btnUpdate);
-                });
+            updateStatusOrder($(this));
 
-        })
-        // event show update status order modal
+        });
+
+        // Press enter to update status order
+        $('#updateStatusOrderModal').on('keypress', function(e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                const btnUpdateStatus = $('#btnUpdateStatus');
+                updateStatusOrder(btnUpdateStatus);
+            }
+        });
+
+        // Event show update status order modal
         $('#updateStatusOrderModal').on('shown.bs.modal', function(e) {
             const data = $(e.relatedTarget).data('item');
             if (data) {

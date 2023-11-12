@@ -26,8 +26,7 @@ function searchProduct(page = 1, searchName = '', categoryId = null) {
 /**
  * Submit product
  */
-function doSubmitProduct() {
-    const btnSubmit = $('#btnSaveProduct');
+function doSubmitProduct(btn) {
     let formData = new FormData($('form#form_product')[0]);
     formData.append('statusProduct', $('#cbStatusProduct').is(':checked') ? 1 : 0);
     if (arrayImagesUpload.length > 0) {
@@ -37,11 +36,15 @@ function doSubmitProduct() {
     }
     if ($('#productId').val() == '') {
         showConfirmDialog('Bạn có chắc chắn muốn tạo sản phẩm này không?', function () {
-            createProduct(formData, btnSubmit);
+            btn.text('Đang tạo...');
+            btn.prop('disabled', true);
+            createProduct(formData, btn);
         });
     } else {
         showConfirmDialog('Bạn có chắc chắn muốn cập nhật sản phẩm này?', function () {
-            updateProduct(formData, btnSubmit);
+            btn.text('Đang cập nhật...');
+            btn.prop('disabled', true);
+            updateProduct(formData, btn);
         });
     }
 }
@@ -79,6 +82,7 @@ function createProduct(data, btn) {
             notiError();
         }
     }).always(function () {
+        btn.text('Lưu');
         btn.prop('disabled', false);
     })
 }
@@ -117,6 +121,7 @@ function updateProduct(data, btn) {
             notiError();
         }
     }).always(function () {
+        btn.text('Lưu');
         btn.prop('disabled', false);
     })
 }
@@ -240,8 +245,24 @@ $(document).ready(function () {
         $(this).hide();
     });
 
+    // Click to submit the product
+    $('#btnSubmitProduct').click(function (e) {
+        e.preventDefault();
+        doSubmitProduct($(this));
+    });
+
+    // Press enter to submit the product
+    $('#updateProductModal').on('keypress', function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            const btnSubmitProduct = $('#btnSubmitProduct');
+            doSubmitProduct(btnSubmitProduct);
+        }
+    });
+
     // Event show product modal
     $('#updateProductModal').on('shown.bs.modal', function (e) {
+        $('#productName').focus();
         const data = $(e.relatedTarget).data('item');
         if (data) {
             const arrayDataImages = JSON.parse(data.images);
