@@ -3069,10 +3069,10 @@ input[type=number] {
 .blog__details__content {
 	position: relative;
 }
-.blog__details__content .image img {
+.blog__details__content img {
 	width: 100%!important;
 	height: 400px!important;
-	object-fit: cover!important;
+	object-fit: contain!important;
 	border-radius: 10px!important;
 }
 
