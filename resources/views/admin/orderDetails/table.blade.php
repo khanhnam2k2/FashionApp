@@ -38,7 +38,7 @@
 </table>
 <div class="row">
     <div class="table-footer" style="padding: 10px 15px  0px 0px;width:100%">
-        {{ $data->links('admin.order.paging') }}
+        {{ $data->links('admin.orderDetails.paging') }}
     </div>
 </div>
 <style>

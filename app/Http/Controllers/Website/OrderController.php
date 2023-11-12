@@ -46,7 +46,7 @@ class OrderController extends Controller
      */
     public function searchDetails(Request $request)
     {
-        $data = $this->orderService->searchDetailsOrder($request->orderId);
+        $data = $this->orderService->searchDetailsOrder($request->orderId, null, $request->paginate);
         return view('website.order.orderDetailsList', ['data' => $data]);
     }
 }

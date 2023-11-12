@@ -142,7 +142,7 @@ class OrderService extends BaseService
      * Get order details list paginate
      * @return Array order details list
      */
-    public function searchDetailsOrder($orderId, $searchName = null)
+    public function searchDetailsOrder($orderId, $searchName = null, $paginate = 3)
     {
         try {
             $order = Order::findOrFail($orderId);
@@ -155,7 +155,11 @@ class OrderService extends BaseService
                 $orderDetail = $orderDetail->where('products.name', 'LIKE', '%' . $searchName . '%');
             }
 
-            $orderDetail = $orderDetail->paginate(3);
+            if ($paginate != null && $paginate != '') {
+                $orderDetail = $orderDetail->paginate($paginate);
+            } else {
+                $orderDetail = $orderDetail->get();
+            }
 
             return $orderDetail;
         } catch (Exception $e) {

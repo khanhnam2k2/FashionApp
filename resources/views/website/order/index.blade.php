@@ -111,6 +111,7 @@
                 },
                 data: {
                     orderId: orderId,
+                    paginate: null,
                 }
             }).done(function(data) {
                 $('#orderDetails_' + orderId).html(data);
