@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
@@ -102,6 +103,14 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::prefix('orders/details')->group(function () {
         Route::get('/{id}', [AdminOrderController::class, 'details'])->name('admin.order.details');
         Route::post('/search', [AdminOrderController::class, 'searchDetails'])->name('admin.order.searchDetails');
+    });
+
+    Route::prefix('banner')->group(function () {
+        Route::get('/', [AdminBannerController::class, 'index'])->name('admin.banner.index');
+        Route::post('/search', [AdminBannerController::class, 'search'])->name('admin.banner.search');
+        Route::post('/create', [AdminBannerController::class, 'create'])->name('admin.banner.create');
+        Route::post('/update', [AdminBannerController::class, 'update'])->name('admin.banner.update');
+        Route::delete('/delete/{id}', [AdminBannerController::class, 'delete'])->name('admin.banner.delete');
     });
 
     Route::prefix('profile')->group(function () {

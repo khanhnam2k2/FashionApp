@@ -75,6 +75,14 @@
                         <span class="hide-menu">Quản lý khách hàng</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('admin.banner.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="fa-solid fa-panorama"></i>
+                        </span>
+                        <span class="hide-menu">Quản lý ảnh bìa</span>
+                    </a>
+                </li>
             </ul>
 
         </nav>
