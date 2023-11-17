@@ -27,7 +27,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
-                <button id="btnSaveCategory" type="button" onclick="doSubmitCategory()" class="btn btn-primary">Lưu
+                <button id="btnSubmitCategory" type="button" class="btn btn-primary">Lưu
                 </button>
             </div>
         </div>
@@ -133,7 +133,7 @@
     $(document).ready(function() {
 
         // Click to submit the category
-        $('#btnSaveCategory').click(function(e) {
+        $('#btnSubmitCategory').click(function(e) {
             e.preventDefault();
             doSubmitCategory($(this));
         });
@@ -142,7 +142,7 @@
         $('#updateCategoryModal').on('keypress', function(e) {
             if (e.which === 13) {
                 e.preventDefault();
-                const btnSubmitCategory = $('#btnSaveCategory');
+                const btnSubmitCategory = $('#btnSubmitCategory');
                 doSubmitCategory(btnSubmitCategory);
             }
         });
