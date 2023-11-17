@@ -10,21 +10,20 @@ use Illuminate\Support\Facades\Log;
 class BannerService extends BaseService
 {
 
-
-    // /**
-    //  * Get category list limit
-    //  * @return Array category list
-    //  */
-    // public function getLimitCategories()
-    // {
-    //     try {
-    //         $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->take(3)->get();
-    //         return $categories;
-    //     } catch (Exception $e) {
-    //         Log::error($e);
-    //         return response()->json($e, 500);
-    //     }
-    // }
+    /**
+     * Get banner list limit
+     * @return Array banner list
+     */
+    public function getLimitBanner($limit = 3)
+    {
+        try {
+            $banners = Banner::where('status', Status::ON)->orderBy('id', 'asc')->take($limit)->get();
+            return $banners;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
 
     /**
      * Get banner list paginate

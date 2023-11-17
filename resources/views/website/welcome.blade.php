@@ -4,52 +4,29 @@
     <!-- Hero Section Begin -->
     <section class="hero">
         <div class="hero__slider owl-carousel">
-            <div class="hero__items set-bg" data-setbg="{{ asset('img/hero/hero-1.jpg') }}">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-7 col-md-8">
-                            <div class="hero__text">
-                                <h6>Bộ sưu tập mùa hè</h6>
-                                <h2>Bộ sưu tập Thu – Đông 2030</h2>
-                                <p>Một nhãn hiệu chuyên tạo ra những sản phẩm thiết yếu sang trọng. Được tạo ra một cách có
-                                    đạo đức với một thái độ kiên định
-                                    cam kết chất lượng vượt trội.</p>
-                                <a href="{{ route('shop.index') }}" class="primary-btn">Mua sắm ngay bây giờ <span
-                                        class="arrow_right"></span></a>
-                                <div class="hero__social">
-                                    <a href="#"><i class="fa-brands fa-facebook"></i></i></a>
-                                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                                    <a href="#"><i class="fa-brands fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            @foreach ($bannerLimit as $banner)
+                <div class="hero__items set-bg" data-setbg="{{ Storage::url($banner->image) }}">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-5 col-lg-7 col-md-8">
+                                <div class="hero__text">
+                                    <h2 class="text-white">{{ $banner->title }}</h2>
+                                    <p class="text-white">{{ $banner->description }}</p>
+                                    <a href="{{ route('shop.index') }}" class="primary-btn">Mua sắm ngay bây giờ <span
+                                            class="arrow_right"></span></a>
+                                    <div class="hero__social">
+                                        <a href="#"><i class="fa-brands fa-facebook"></i></i></a>
+                                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                                        <a href="#"><i class="fa-brands fa-pinterest"></i></a>
+                                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="hero__items set-bg" data-setbg="{{ asset('img/hero/hero-2.jpg') }}">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-7 col-md-8">
-                            <div class="hero__text">
-                                <h6>Bộ sưu tập mùa hè</h6>
-                                <h2>Bộ sưu tập Thu – Đông 2030</h2>
-                                <p>Một nhãn hiệu chuyên tạo ra những sản phẩm thiết yếu sang trọng. Được tạo ra một cách có
-                                    đạo đức với một thái độ kiên định
-                                    cam kết chất lượng vượt trội.</p>
-                                <a href="{{ route('shop.index') }}" class="primary-btn">Mua sắm ngay bây giờ <span
-                                        class="arrow_right"></span></a>
-                                <div class="hero__social">
-                                    <a href="#"><i class="fa-brands fa-facebook"></i></i></a>
-                                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                                    <a href="#"><i class="fa-brands fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
+
         </div>
     </section>
     <!-- Hero Section End -->
