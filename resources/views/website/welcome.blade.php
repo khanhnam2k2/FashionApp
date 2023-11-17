@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Male Fashion - Your Wardrobe, Your Way')
+@section('title', 'Male Fashion - Thay đổi phong cách, thay đổi cuộc sống.')
 @section('content')
     <!-- Hero Section Begin -->
     <section class="hero">
