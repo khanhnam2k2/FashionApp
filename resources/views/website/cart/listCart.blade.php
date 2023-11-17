@@ -27,5 +27,10 @@
         </div>
     </div>
 @else
-    <div class="text-center">Không có sản phẩm nào trong giỏ hàng</div>
+    <div class="text-center p-5">
+        <div class="">
+            <p>Không có sản phẩm nào trong giỏ hàng <i class="fa-regular fa-face-frown"></i></p>
+            <a href="{{ route('shop.index') }}" class="btn btn-dark">Mua sắm ngay</a>
+        </div>
+    </div>
 @endif
