@@ -106,15 +106,23 @@
 
     $(document).ready(function() {
 
-        // hover to show cart list
-        $('#cartIcon,#cart_list').mouseenter(function() {
-            $('#cart_list').show();
-            searchCartList();
-        })
+        // Hover cart icon
+        $('#cartIcon').hover(
+            function() {
+                $('#cart_list').show();
+                searchCartList();
+            },
+            function() {
+                if (!$('#cart_list').is(":hover")) {
+                    $('#cart_list').hide();
+                }
+            }
+        );
 
         // move leave to hide cart list
-        $("#cartIcon, #cart_list").mouseleave(function() {
+        $("#cart_list").mouseleave(function() {
             $('#cart_list').hide();
         });
+
     })
 </script>
