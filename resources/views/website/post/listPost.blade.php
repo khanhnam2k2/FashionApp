@@ -9,7 +9,7 @@
                 </div>
                 <div class="blog__item__text">
                     <span><img src="{{ asset('img/icon/calendar.png') }}" alt="">
-                        {{ $item->created_at->format('d F Y') }}
+                        {{ $item->created_at->format('d - m - Y') }}
                     </span>
                     <h5>{{ $item->title }}</h5>
                     <a href="{{ route('post.details', $item->id) }}">Đọc thêm</a>

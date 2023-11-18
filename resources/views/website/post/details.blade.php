@@ -10,7 +10,8 @@
                         <h2>{{ $post->title }}</h2>
                         <ul>
                             <li><i class="fa-solid fa-user mr-2"></i> {{ $post->author }}</li>
-                            <li><i class="fa-solid fa-calendar mr-2"></i>{{ $post->created_at->format('d F Y') }}</li>
+                            <li><i class="fa-solid fa-calendar mr-2"></i>{{ $post->created_at->format('d - m - Y') }}
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -38,7 +38,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <h6>_ {{ $item->author }} _</h6>
 
-            <span>{{ $item->created_at->format('d F Y') }}</span>
+            <span>{{ $item->created_at->format('d - m - Y') }}</span>
         </div>
     </div>
 @endforeach
