@@ -329,8 +329,6 @@ ol {
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
-	background-position: center;
-	background-size: cover;
 }
 #cart_list{
 	display: none;
