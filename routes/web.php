@@ -131,6 +131,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('order.index');
         Route::post('/search', [OrderController::class, 'search'])->name('order.search');
         Route::post('/searchDetails', [OrderController::class, 'searchDetails'])->name('order.searchDetails');
+        Route::post('/updateStatus', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
     });
 
     Route::prefix('cart')->group(function () {

@@ -91,7 +91,6 @@ class OrderService extends BaseService
             $order = Order::findOrFail($request->orderId);
             $orderItems = $this->getOrderDetails($order->id);
             $currentStatus = $order->status;
-
             if ($newStatus == StatusOrder::cancelOrder) {
                 if ($user->role == UserRole::ADMIN || $order->status == StatusOrder::orderPlaced) {
                     $order->status = $newStatus;
@@ -99,11 +98,12 @@ class OrderService extends BaseService
                     Mail::to($order->email)->send(new OrderCancel($order, $orderItems));
                     return response()->json(['success' => 'Hủy bỏ đơn hàng thành công']);
                 } else {
-                    return response()->json(['error' => 'Bạn không có quyền cập nhật trạng thái cho đơn đặt hàng này!']);
+                    return response()->json(['error' => 'Bạn không thể hủy đơn hàng này khi đã đơn hàng đã được xác nhận!']);
                 }
             } elseif ($newStatus >= $currentStatus && $newStatus <= ($currentStatus + 1)) {
                 $order->status = $newStatus;
                 $order->save();
+
                 if ($newStatus == StatusOrder::successfulDelivery) {
                     Mail::to($order->email)->send(new OrderSuccess($order, $orderItems));
                 }
@@ -147,9 +147,25 @@ class OrderService extends BaseService
         try {
             $order = Order::findOrFail($orderId);
 
-            $orderDetail = OrderItem::select('order_items.*', 'products.name as productName', 'products.images as productImages')
+            $orderDetail = OrderItem::select(
+                'order_items.order_id',
+                'order_items.quantity',
+                'order_items.price',
+                'order_items.size',
+                'products.name as productName',
+                'products.images as productImages'
+            )
+                ->selectRaw('SUM(order_items.quantity * order_items.price) as total')
                 ->join('products', 'products.id', '=', 'order_items.product_id')
-                ->where('order_id', $order->id);
+                ->where('order_id', $order->id)
+                ->groupBy(
+                    'order_items.order_id',
+                    'order_items.quantity',
+                    'order_items.price',
+                    'order_items.size',
+                    'products.name',
+                    'products.images'
+                );
 
             if ($searchName != null && $searchName != '') {
                 $orderDetail = $orderDetail->where('products.name', 'LIKE', '%' . $searchName . '%');
@@ -160,7 +176,6 @@ class OrderService extends BaseService
             } else {
                 $orderDetail = $orderDetail->get();
             }
-
             return $orderDetail;
         } catch (Exception $e) {
             Log::error($e);

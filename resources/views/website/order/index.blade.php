@@ -131,7 +131,7 @@
         function updateStatusOrder(orderId, status, btn, message = null) {
             $.ajax({
                 type: "POST",
-                url: "{{ route('admin.order.updateStatus') }}",
+                url: "{{ route('order.updateStatus') }}",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -150,9 +150,6 @@
                 }
             }).fail(function() {
                 notiError();
-            }).always(function() {
-                btn.prop('disabled', false);
-                btn.text('Cancel order');
             });
         }
         $(document).ready(function() {

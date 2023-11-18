@@ -49,4 +49,15 @@ class OrderController extends Controller
         $data = $this->orderService->searchDetailsOrder($request->orderId, null, $request->paginate);
         return view('website.order.orderDetailsList', ['data' => $data]);
     }
+
+    /**
+     * Update status order
+     * @param Request $request
+     * @return response data message status
+     */
+    public function updateStatus(Request $request)
+    {
+        $data = $this->orderService->updateStatusOrder($request);
+        return response()->json(['data' => $data]);
+    }
 }

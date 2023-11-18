@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-4 " style="text-align: end">
             <p class="p-3">Thành tiền
-                <span class="text-danger">: {{ number_format($item->price, 0, ',', '.') }}đ</span>
+                <span class="text-danger">: {{ number_format($item->total, 0, ',', '.') }}đ</span>
             </p>
         </div>
     </div>
