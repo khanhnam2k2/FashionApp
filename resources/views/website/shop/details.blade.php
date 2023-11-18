@@ -278,7 +278,7 @@
 
             $('#addToCart').on('click', function(e) {
                 e.preventDefault();
-                $(this).prop('disabled', true)
+                $(this).prop('disabled', true);
                 const selectedSize = $('input[name="size"]:checked');
                 const sizeValue = selectedSize.val();
                 const productId = {{ $product->id }};
