@@ -15,7 +15,7 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" autofocus class="form-control" id="email"
+                                <input type="text" name="email" autofocus class="form-control" id="email"
                                     aria-describedby="emailHelp">
                                 @error('email')
                                     <div class="text-danger">{{ $message }}</div>
