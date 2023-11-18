@@ -14,9 +14,11 @@
 <body>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
+        data-sidebar-position="fixed" data-header-position="fixed"
+        style="background-image:url({{ asset('img/about/about-us.jpg') }});background-position: center;background-size: cover">
         <div
-            class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+            class="position-relative
+        overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
             @yield('content')
         </div>
     </div>
