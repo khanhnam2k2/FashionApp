@@ -22,13 +22,18 @@
                                                 @php
                                                     $imagesArray = json_decode($item->productImage, true);
                                                 @endphp
-                                                <img src="{{ Storage::url($imagesArray[0]) }}"
-                                                    style="width: 90px;height:90px;object-fit:cover;border-radius:5px"
-                                                    alt="">
+                                                <a href="{{ route('shop.details', $item->productId) }}">
+                                                    <img src="{{ Storage::url($imagesArray[0]) }}"
+                                                        style="width: 90px;height:90px;object-fit:cover;border-radius:5px"
+                                                        alt="product">
+                                                </a>
                                             </div>
                                             <div class="product__cart__item__text">
-                                                <h6>{{ $item->productName }}</h6>
-                                                <h5>{{ number_format($item->productPrice, 0, ',', '.') }}đ</h5>
+                                                <a href="{{ route('shop.details', $item->productId) }}"
+                                                    class="text-dark"
+                                                    style="font-weight:bold;font-size:19px">{{ $item->productName }}</a>
+                                                <h6 class="mt-2">
+                                                    {{ number_format($item->productPrice, 0, ',', '.') }}đ</h6>
                                             </div>
                                         </td>
                                         <td class="size__item">
@@ -57,8 +62,9 @@
                                         </td>
                                         <td class="cart__price">{{ number_format($item->total, 0, ',', '.') }}đ</td>
                                         <td class="cart__close"><span class="remove-from-cart"
-                                                data-product-id="{{ $item->productId }}" data-size="{{ $item->size }}"
-                                                style="cursor: pointer"><i class="fa fa-close"></i></span></td>
+                                                data-product-id="{{ $item->productId }}"
+                                                data-size="{{ $item->size }}" style="cursor: pointer"><i
+                                                    class="fa fa-close"></i></span></td>
                                     </tr>
                                 @endforeach
                             </tbody>

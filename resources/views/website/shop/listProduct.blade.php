@@ -6,17 +6,13 @@
                     $imagesArray = json_decode($item->images, true);
                 @endphp
                 @if (!empty($imagesArray))
-                    <div class="product__item__pic"
-                        style="background-image: url({{ Storage::url($imagesArray[0]) }});background-repeat: no-repeat;
-                background-size: cover;
-                background-position: top center;">
-                        <ul class="product__hover">
-                            <li><a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a></li>
-                            <li><a href="{{ route('shop.details', $item->id) }}"><img
-                                        src="{{ asset('img/icon/search.png') }}" alt=""></a>
-                            </li>
-                        </ul>
-                    </div>
+                    <a href="{{ route('shop.details', $item->id) }}">
+                        <div class="product__item__pic"
+                            style="background-image: url({{ Storage::url($imagesArray[0]) }});background-repeat: no-repeat;
+                                background-size: cover;
+                                background-position: top center;">
+                        </div>
+                    </a>
                 @endif
                 <div class="product__item__text">
                     <h6>{{ $item->name }}</h6>
