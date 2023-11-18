@@ -45,7 +45,8 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll" id="categoryContainer">
-                                                    <li class="mb-3 "><span class="categoryProduct" data-id="">Tất
+                                                    <li class="mb-3 "><span class="categoryProduct active"
+                                                            data-id="">Tất
                                                             cả</span>
                                                     </li>
                                                     @foreach ($categories as $category)
