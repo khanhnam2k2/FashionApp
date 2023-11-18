@@ -66,7 +66,7 @@ class CartService extends BaseService
                 ->where('product_id', $product->id)
                 ->where('size', $request->size)
                 ->first();
-            $newQuantity = $request->quantity;
+            $newQuantity = intval($request->quantity);
             if ($existingCartItem) {
                 if ($existingCartItem->quantity >= $productSizeQuantity->quantity) {
                     return response()->json(['error' => 'Số lượng sản phẩm trong giỏ hàng vượt quá số lượng trong kho. Xin lỗi vì sự bất tiện này']);

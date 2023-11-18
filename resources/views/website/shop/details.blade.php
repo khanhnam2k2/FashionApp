@@ -282,7 +282,7 @@
                 const selectedSize = $('input[name="size"]:checked');
                 const sizeValue = selectedSize.val();
                 const productId = {{ $product->id }};
-                const quantity = $('#quantityProduct').val();
+                const quantity = parseInt($('#quantityProduct').val());
                 addToCart(productId, quantity, sizeValue, $(this));
             });
 
