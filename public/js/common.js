@@ -44,13 +44,13 @@ function showConfirmDialog(message, preConfirmCallback) {
  * @param {String} mess
  * @param {Function} callback function call back when notification done
  */
-function notiSuccess(mess = 'Thành công', position = 'top-end', callback = function () { }) {
+function notiSuccess(mess = 'Thành công', position = 'top-end', callback = function () { }, timer = 2000) {
     $('#alert-error').addClass('d-none');
     const Toast = Swal.mixin({
         toast: true,
         position: position,
         showConfirmButton: false,
-        timer: 2000,
+        timer: timer,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
