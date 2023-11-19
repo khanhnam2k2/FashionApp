@@ -46,6 +46,13 @@
 </head>
 
 <body>
+    @if (session('success'))
+        <div>
+            <script>
+                notiSuccess("{{ session('success') }}", "center", "", 3000);
+            </script>
+        </div>
+    @endif
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>

@@ -5,15 +5,22 @@ namespace App\Services;
 use App\Enums\StatusOrder;
 use App\Enums\UserRole;
 use App\Mail\OrderCancel;
+use App\Mail\OrderNotification;
 use App\Mail\OrderSuccess;
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\ProductSizeQuantity;
+
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class OrderService extends BaseService
 {
@@ -208,6 +215,174 @@ class OrderService extends BaseService
             }
 
             return $monthlyTotalOrders;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
+     * process order
+     * @param Obecjt $order data
+     * @return Array array total order in year
+     */
+    public function processOrder($order)
+    {
+        $cart = Cart::where('user_id', Auth::id())->first();
+
+        $cartItems = CartItem::select('cart_items.*', 'products.price as productPrice')
+            ->where('cart_id', $cart->id)
+            ->join('products', 'cart_items.product_id', '=', 'products.id')
+            ->get();
+
+        $orderItemData = [];
+        foreach ($cartItems as $item) {
+            $productSizeQuantity = ProductSizeQuantity::where('product_id', $item->product_id)
+                ->where('size', $item->size)
+                ->first();
+            if (!$productSizeQuantity || $productSizeQuantity->quantity < $item->quantity) {
+                DB::rollBack();
+                return response()->json(['error' => 'Không đủ số lượng sản phẩm cho một số sản phẩm. Vui lòng kiểm tra lại']);
+            }
+
+            $orderItemData[] = [
+                'order_id' => $order->id,
+                'product_id' => $item->product_id,
+                'price' => $item->productPrice,
+                'size' => $item->size,
+                'quantity' => $item->quantity
+            ];
+
+            $productSizeQuantity->quantity -= $item->quantity;
+            $productSizeQuantity->save();
+        }
+
+        DB::table('order_items')->insert($orderItemData);
+        CartItem::where('cart_id', $cart->id)->delete();
+        $adminEmails = User::where('role', UserRole::ADMIN)->pluck('email')->toArray();
+        $orderItems = $this->getOrderDetails($order->id);
+
+        Mail::to($adminEmails)->send(new OrderNotification($order, $orderItems));
+    }
+
+    /**
+     * Order
+     * @param $request
+     */
+    public function placeOrder($request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user  = Auth::user();
+            $orderCode = $this->generateRandomCode();
+            $orderData = [
+                'full_name' => $request->full_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'message' => $request->message,
+                'user_id' => $user->id,
+                'code' => $orderCode,
+                'total_order' => $request->total_order
+            ];
+
+            if ($request->paymet_method == 1) {
+                Session::put('orders', $orderData);
+                $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+                $vnp_Returnurl = "http://127.0.0.1:8000/vnpay-return";
+                $vnp_TmnCode = "7W9NWV1X"; //Mã website tại VNPAY 
+                $vnp_HashSecret = "OJKLRBTXCAVUZECPJSFIZZUUFMTOQYPI"; //Chuỗi bí mật
+
+                $vnp_TxnRef = $orderCode; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+                $vnp_OrderInfo = "Thanh toán hóa đơn";
+                $vnp_OrderType = "Male Shop";
+                $vnp_Amount = $request->total_order * 100;
+                $vnp_Locale = "VN";
+                $vnp_BankCode = "NCB";
+                $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+
+
+                $inputData = array(
+                    "vnp_Version" => "2.1.0",
+                    "vnp_TmnCode" => $vnp_TmnCode,
+                    "vnp_Amount" => $vnp_Amount,
+                    "vnp_Command" => "pay",
+                    "vnp_CreateDate" => date('YmdHis'),
+                    "vnp_CurrCode" => "VND",
+                    "vnp_IpAddr" => $vnp_IpAddr,
+                    "vnp_Locale" => $vnp_Locale,
+                    "vnp_OrderInfo" => $vnp_OrderInfo,
+                    "vnp_OrderType" => $vnp_OrderType,
+                    "vnp_ReturnUrl" => $vnp_Returnurl,
+                    "vnp_TxnRef" => $vnp_TxnRef,
+                );
+
+                if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+                    $inputData['vnp_BankCode'] = $vnp_BankCode;
+                }
+                if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+                    $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+                }
+
+                ksort($inputData);
+                $query = "";
+                $i = 0;
+                $hashdata = "";
+                foreach ($inputData as $key => $value) {
+                    if ($i == 1) {
+                        $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+                    } else {
+                        $hashdata .= urlencode($key) . "=" . urlencode($value);
+                        $i = 1;
+                    }
+                    $query .= urlencode($key) . "=" . urlencode($value) . '&';
+                }
+
+                $vnp_Url = $vnp_Url . "?" . $query;
+                if (isset($vnp_HashSecret)) {
+                    $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+                    $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+                }
+
+                // Chuyển hướng người dùng đến trang thanh toán VNPay
+                return response()->json(['redirect_url' => $vnp_Url]);
+            } else {
+                $order = Order::create($orderData);
+                $this->processOrder($order, $request);
+                DB::commit();
+                return response()->json(['success' => 'Đặt hàng thành công! Vui lòng kiểm tra đơn mua của bạn']);
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
+     * handle Vnpay return 
+     * @param $request
+     * @return boolean
+     */
+    public function handleVnPayReturn($request)
+    {
+        try {
+            $vnp_ResponseCode = $request->get('vnp_ResponseCode');
+            if ($vnp_ResponseCode == '00') {
+                // Successful payment by vnpay
+                $orderData = Session::get('orders');
+                $order = Order::create($orderData);
+                if ($order) {
+                    $order->payment_method = 'vnpay';
+                    $order->payment_status = 'success';
+                    $order->save();
+                    $this->processOrder($order);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);

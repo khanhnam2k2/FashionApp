@@ -2,19 +2,14 @@
 
 namespace App\Services;
 
-use App\Enums\UserRole;
-use App\Mail\OrderNotification;
 use App\Models\Cart;
 use App\Models\CartItem;
-use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductSizeQuantity;
-use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class CartService extends BaseService
 {
@@ -343,76 +338,6 @@ class CartService extends BaseService
                     return response()->json(['error' => 'Số lượng mới vượt quá số lượng sản phẩm trong kho. Vui lòng chọn lại']);
                 }
             }
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error($e);
-            return response()->json($e, 500);
-        }
-    }
-
-    /**
-     * Order
-     * @param $request
-     */
-    public function placeOrder($request)
-    {
-        DB::beginTransaction();
-
-        try {
-            $user  = Auth::user();
-
-            $orderData = [
-                'full_name' => $request->full_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'message' => $request->message,
-                'user_id' => $user->id,
-                'code' => $this->generateRandomCode(),
-                'total_order' => $request->total_order
-            ];
-
-            $order = Order::create($orderData);
-
-            $cart = Cart::where('user_id', $user->id)->first();
-
-            $cartItems = CartItem::select('cart_items.*', 'products.price as productPrice')
-                ->where('cart_id', $cart->id)
-                ->join('products', 'cart_items.product_id', '=', 'products.id')
-                ->get();
-
-            $orderItemData = [];
-            foreach ($cartItems as  $item) {
-                $productSizeQuantity = ProductSizeQuantity::where('product_id', $item->product_id)
-                    ->where('size', $item->size)
-                    ->first();
-                if (!$productSizeQuantity || $productSizeQuantity->quantity < $item->quantity) {
-                    DB::rollBack();
-                    return response()->json(['error' => 'Không đủ số lượng sản phẩm cho một số sản phẩm. Vui lòng kiểm tra lại']);
-                }
-
-                $orderItemData[] = [
-                    'order_id' => $order->id,
-                    'product_id' => $item->product_id,
-                    'price' => $item->productPrice,
-                    'size' => $item->size,
-                    'quantity' => $item->quantity
-                ];
-
-                $productSizeQuantity->quantity -= $item->quantity;
-                $productSizeQuantity->save();
-            }
-
-            DB::table('order_items')->insert($orderItemData);
-            CartItem::where('cart_id', $cart->id)->delete();
-
-            $adminEmails = User::where('role', UserRole::ADMIN)->pluck('email')->toArray();
-            $orderItems = $this->getOrderDetails($order->id);
-
-            Mail::to($adminEmails)->send(new OrderNotification($order, $orderItems));
-            DB::commit();
-
-            return response()->json(['success' => 'Đặt hàng thành công! Vui lòng kiểm tra đơn mua của bạn']);
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);

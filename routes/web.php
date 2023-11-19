@@ -145,6 +145,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/placeOrder', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+    Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('vnpayReturn');
 
     Route::prefix('comment')->group(function () {
         Route::post('/create', [CommentController::class, 'create'])->name('comment.create');

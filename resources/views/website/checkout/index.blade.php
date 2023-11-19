@@ -101,8 +101,20 @@
                                                 id="total_order">{{ number_format($totalCarts, 0, ',', '.') }}<span><span>đ</span>
                                         </li>
                                     </ul>
-                                    <p> <i class="fa-solid fa-truck-fast"></i> Miễn phí giao hàng - Thanh toán khi nhận hàng
-                                        (COD)</p>
+                                    <div class="checkout__input__checkbox">
+                                        <label for="paypal">
+                                            Thanh toán bằng ví VnPay
+                                            <input type="checkbox" name="vnpay" id="paypal">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="checkout__input__checkbox">
+                                        <label for="cod">
+                                            Thanh toán khi nhận hàng
+                                            <input type="checkbox" checked name="cod" id="cod">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
                                     <button type="button" id="btn-order" class="site-btn">Đặt hàng</button>
                                 </div>
                             </div>
@@ -111,7 +123,7 @@
                 </div>
             @else
                 <div class="text-center">
-                    <h2>Your shopping cart is empty! Please check your cart again.</h2>
+                    <h2>Giỏ hàng của bạn đang trống! Vui lòng kiểm tra lại giỏ hàng của bạn.</h2>
                 </div>
             @endif
 
@@ -140,7 +152,9 @@
                     data: data,
                 }).done(function(res) {
                     const data = res.data.original;
-                    if (data.success) {
+                    if (data.redirect_url) {
+                        window.location.href = data.redirect_url;
+                    } else if (data.success) {
                         notiSuccess(data.success, 'center', function() {
                             window.location.href = "{{ route('order.index') }}";
                         });
@@ -160,20 +174,35 @@
                     btn.prop('disabled', false);
                 })
             }
+            //Handle checkboxes payment method
+            $('input[type="checkbox"]').change(function() {
+                if ($(this).prop('checked')) {
+                    $('input[type="checkbox"]').not(this).prop('checked', false);
+                }
+            });
 
             // click to order 
             $('#btn-order').click(function(e) {
                 e.preventDefault();
                 const btnOrder = $(this);
                 let formData = new FormData($('form#form_order')[0]);
+                formData.append('paymet_method', $('#paypal').is(':checked') ? 1 : 0);
                 const spanContent = $("#total_order").text();
                 const totalOrder = parseFloat(spanContent.replace(/\./g, ''));
                 formData.append('total_order', totalOrder);
-                showConfirmDialog('Bạn có chắc chắn muốn đặt đơn hàng này không?', function() {
-                    btnOrder.text('Đang đặt hàng...');
-                    btnOrder.prop('disabled', true);
-                    createOrder(formData, btnOrder);
-                });
+                if ($('#paypal').prop('checked')) {
+                    showConfirmDialog('Bạn có chắc chắn muốn thanh toán bằng ví VnPay không?', function() {
+                        btnOrder.text('Đang tiến hành...');
+                        btnOrder.prop('disabled', true);
+                        createOrder(formData, btnOrder);
+                    });
+                } else {
+                    showConfirmDialog('Bạn có chắc chắn muốn đặt đơn hàng này không?', function() {
+                        btnOrder.text('Đang đặt hàng...');
+                        btnOrder.prop('disabled', true);
+                        createOrder(formData, btnOrder);
+                    });
+                }
             })
         })
     </script>
