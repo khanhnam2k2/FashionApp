@@ -24,6 +24,8 @@ class UserSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'danghanam2k2@gmail.com',
             'password' => Hash::make('12345678'),
+            'address' => 'KTX 2 - Đại học Vinh - TP Vinh',
+            'phone' => '0947837222',
             'email_verified_at' => now(),
             'created_at' => Carbon::now()
         ]);
