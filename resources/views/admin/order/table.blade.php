@@ -7,8 +7,8 @@
             <th>Mã đơn hàng</th>
             <th>Tên người đặt</th>
             <th>Ngày đặt</th>
-            <th>SDT liên hệ</th>
             <th>Địa chỉ giao hàng</th>
+            <th>Thanh toán</th>
             <th>Tổng tiền</th>
             <th>Trạng thái</th>
             <th>Tùy chọn</th>
@@ -20,8 +20,17 @@
                 <td>{{ $item->code }}</td>
                 <td>{{ $item->full_name }}</td>
                 <td>{{ $item->created_at->format('d-m-Y') }}</td>
-                <td>{{ $item->phone }}</td>
                 <td>{{ $item->address }}</td>
+                <td>
+                    @if ($item->payment_method == 'vnpay')
+                        <span class="">VnPay</span>
+                        @if ($item->payment_status == 'success')
+                            <span class="text-primary"> - Đã thanh toán</span>
+                        @endif
+                    @else
+                        <span class="">Khi nhận hàng</span>
+                    @endif
+                </td>
                 <td>{{ number_format($item->total_order, 0, ',', '.') }}đ</td>
                 <td>
                     @switch($item->status)

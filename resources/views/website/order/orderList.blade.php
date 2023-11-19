@@ -4,87 +4,65 @@
 @foreach ($data as $item)
     <div class="p-3 mb-3" style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
         <div class="border-bottom mb-3">
-            @switch($item->status)
-                @case(StatusOrder::cancelOrder)
-                    <div class="d-flex align-items-center justify-content-between mb-2 ">
-                        <div class="d-flex flex-column">
-                            <p><span class="text-danger">Mã đơn hàng:</span> {{ $item->code }}</p>
-                            <p><span class="text-danger">Thời gian đặt:</span> {{ $item->created_at }}</p>
-                            <p><span class="text-danger">Tổng tiền:</span>: {{ number_format($item->total_order, 0, ',', '.') }}đ
-                            </p>
-                            <p><span class="text-danger">Hủy đơn hàng vào:</span>: {{ $item->updated_at }}</p>
-                        </div>
+            <div class="d-flex align-items-center justify-content-between mb-2 ">
+                <div class="d-flex flex-column">
+                    <p><span class="text-danger">Mã đơn hàng:</span> {{ $item->code }}</p>
+                    <p><span class="text-danger">Thời gian đặt:</span> {{ $item->created_at }}</p>
+                    <p><span class="text-danger">Tổng tiền:</span> {{ number_format($item->total_order, 0, ',', '.') }}đ
+                    </p>
+                    @if ($item->status == StatusOrder::cancelOrder)
+                        <p><span class="text-danger">Hủy đơn hàng vào:</span>: {{ $item->updated_at }}</p>
+                    @endif
+                    <p><span class="text-danger">Thanh toán bằng:</span>
+                        @if ($item->payment_method == 'vnpay')
+                            <span class="">VnPay</span>
+                            @if ($item->payment_status == 'success')
+                                <span class="text-primary"> - Đã thanh toán</span>
+                            @endif
+                        @else
+                            <span class="">Khi nhận hàng</span>
+                        @endif
+                    </p>
+                </div>
+                @switch($item->status)
+                    @case(StatusOrder::cancelOrder)
                         <div class="">
                             <i class="fa-solid fa-ban text-danger mr-2"></i>
                             <span class="text-start">Hủy đơn hàng</span>
                         </div>
-                    </div>
-                @break
+                    @break
 
-                @case(StatusOrder::orderPlaced)
-                    <div class="d-flex align-items-center justify-content-between mb-2 ">
-                        <div class="d-flex flex-column">
-                            <p><span class="text-danger">Mã đơn hàng:</span> {{ $item->code }}</p>
-                            <p><span class="text-danger">Thời gian đặt:</span> {{ $item->created_at }}</p>
-                            <p><span class="text-danger">Tổng tiền:</span>:
-                                {{ number_format($item->total_order, 0, ',', '.') }}đ
-                            </p>
-                        </div>
+                    @case(StatusOrder::orderPlaced)
                         <div class="">
                             <i class="fa-solid fa-receipt text-dark mr-2"></i>
                             <span class="text-start">Chờ xác nhận</span>
                         </div>
-                    </div>
-                @break
+                    @break
 
-                @case(StatusOrder::confirmInformation)
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="d-flex flex-column">
-                            <p><span class="text-danger">Mã đơn hàng:</span> {{ $item->code }}</p>
-                            <p><span class="text-danger">Thời gian đặt:</span> {{ $item->created_at }}</p>
-                            <p><span class="text-danger">Tổng tiền:</span>:
-                                {{ number_format($item->total_order, 0, ',', '.') }}đ
-                            </p>
-                        </div>
+                    @case(StatusOrder::confirmInformation)
                         <div class="">
                             <i class="fa-solid fa-circle-dollar-to-slot text-primary mr-2"></i>
                             <span class="text-start">Xác nhận thành công</span>
                         </div>
-                    </div>
-                @break
+                    @break
 
-                @case(StatusOrder::delivering)
-                    <div class="d-flex align-items-center justify-content-between mb-2 ">
-                        <div class="d-flex flex-column">
-                            <p><span class="text-danger">Mã đơn hàng:</span> {{ $item->code }}</p>
-                            <p><span class="text-danger">Thời gian đặt:</span> {{ $item->created_at }}</p>
-                            <p><span class="text-danger">Tổng tiền:</span>:
-                                {{ number_format($item->total_order, 0, ',', '.') }}đ
-                            </p>
-                        </div>
+                    @case(StatusOrder::delivering)
                         <div class="">
                             <i class="fa-solid fa-truck text-warning mr-2"></i>
                             <span class="text-start">Đang giao</span>
                         </div>
-                    </div>
-                @break
+                    @break
 
-                @case(StatusOrder::successfulDelivery)
-                    <div class="d-flex align-items-center justify-content-between mb-2 ">
-                        <div class="d-flex flex-column">
-                            <p><span class="text-danger">Mã đơn hàng:</span> {{ $item->code }}</p>
-                            <p><span class="text-danger">Thời gian đặt:</span> {{ $item->created_at }}</p>
-                            <p><span class="text-danger">Tổng tiền:</span>:
-                                {{ number_format($item->total_order, 0, ',', '.') }}đ
-                            </p>
-                        </div>
+                    @case(StatusOrder::successfulDelivery)
                         <div class="">
                             <i class="fa-solid fa-circle-check text-success mr-2"></i>
                             <span class="text-start">Hoàn thành</span>
                         </div>
-                    </div>
-                @break
-            @endswitch
+                    @break
+                @endswitch
+
+            </div>
+
         </div>
         <div class="" id="orderDetails_{{ $item->id }}">
 

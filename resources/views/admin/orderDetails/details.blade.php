@@ -7,7 +7,10 @@
             <div class="form-search d-flex algin-items-center gap-2">
                 <input type="text" id="txtSearchOrderDetails" placeholder="Tìm kiếm ở đây..." class="form-control"
                     name="orderDeitals">
-
+            </div>
+            <div class="">
+                <a href="{{ route('admin.order.index') }}" class="btn btn-danger"><i
+                        class="fa-solid fa-circle-arrow-left me-2"></i>Quay lại</a>
             </div>
         </div>
         <div class="mt-3">
