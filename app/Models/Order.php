@@ -18,6 +18,8 @@ class Order extends Model
         'address',
         'message',
         'status',
-        'code'
+        'code',
+        'payment_status',
+        'payment_method',
     ];
 }
