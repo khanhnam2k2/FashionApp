@@ -85,6 +85,7 @@ class OrderService extends BaseService
         }
     }
 
+
     /**
      * Update status order
      * @param @request
@@ -266,6 +267,77 @@ class OrderService extends BaseService
     }
 
     /**
+     * url payment vnpay
+     * @param String $code code order
+     * @param String $total total amount order
+     * @return String url payment vnpay
+     */
+    public function vnPayUrlAction($code, $total)
+    {
+        try {
+            $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+            $vnp_Returnurl = "http://127.0.0.1:8000/vnpay-return";
+            $vnp_TmnCode = "7W9NWV1X"; //Mã website tại VNPAY 
+            $vnp_HashSecret = "OJKLRBTXCAVUZECPJSFIZZUUFMTOQYPI"; //Chuỗi bí mật
+
+            $vnp_TxnRef = $code; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+            $vnp_OrderInfo = "Thanh toán hóa đơn";
+            $vnp_OrderType = "Male Shop";
+            $vnp_Amount = $total * 100;
+            $vnp_Locale = "vn";
+            $vnp_BankCode = "NCB";
+            $vnp_IpAddr = "http://127.0.0.1";
+
+            $inputData = array(
+                "vnp_Version" => "2.1.0",
+                "vnp_TmnCode" => $vnp_TmnCode,
+                "vnp_Amount" => $vnp_Amount,
+                "vnp_Command" => "pay",
+                "vnp_CreateDate" => date('YmdHis'),
+                "vnp_CurrCode" => "VND",
+                "vnp_IpAddr" => $vnp_IpAddr,
+                "vnp_Locale" => $vnp_Locale,
+                "vnp_OrderInfo" => $vnp_OrderInfo,
+                "vnp_OrderType" => $vnp_OrderType,
+                "vnp_ReturnUrl" => $vnp_Returnurl,
+                "vnp_TxnRef" => $vnp_TxnRef,
+            );
+
+            if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+                $inputData['vnp_BankCode'] = $vnp_BankCode;
+            }
+            if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+                $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+            }
+
+            ksort($inputData);
+            $query = "";
+            $i = 0;
+            $hashdata = "";
+            foreach ($inputData as $key => $value) {
+                if ($i == 1) {
+                    $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+                } else {
+                    $hashdata .= urlencode($key) . "=" . urlencode($value);
+                    $i = 1;
+                }
+                $query .= urlencode($key) . "=" . urlencode($value) . '&';
+            }
+
+            $vnp_Url = $vnp_Url . "?" . $query;
+            if (isset($vnp_HashSecret)) {
+                $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+                $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+            }
+
+            return $vnp_Url;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
      * Order
      * @param $request
      */
@@ -276,6 +348,7 @@ class OrderService extends BaseService
         try {
             $user  = Auth::user();
             $orderCode = $this->generateRandomCode();
+
             $orderData = [
                 'full_name' => $request->full_name,
                 'email' => $request->email,
@@ -287,65 +360,14 @@ class OrderService extends BaseService
                 'total_order' => $request->total_order
             ];
 
+            // Check payment method
             if ($request->paymet_method == 1) {
-                Session::put('orders', $orderData);
-                $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                $vnp_Returnurl = "http://127.0.0.1:8000/vnpay-return";
-                $vnp_TmnCode = "7W9NWV1X"; //Mã website tại VNPAY 
-                $vnp_HashSecret = "OJKLRBTXCAVUZECPJSFIZZUUFMTOQYPI"; //Chuỗi bí mật
 
-                $vnp_TxnRef = $orderCode; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-                $vnp_OrderInfo = "Thanh toán hóa đơn";
-                $vnp_OrderType = "Male Shop";
-                $vnp_Amount = $request->total_order * 100;
-                $vnp_Locale = "VN";
-                $vnp_BankCode = "NCB";
-                $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+                Session::put('orders', $orderData); //Save order data into session
 
+                $vnp_Url = $this->vnPayUrlAction($orderCode, $request->total_order);
 
-                $inputData = array(
-                    "vnp_Version" => "2.1.0",
-                    "vnp_TmnCode" => $vnp_TmnCode,
-                    "vnp_Amount" => $vnp_Amount,
-                    "vnp_Command" => "pay",
-                    "vnp_CreateDate" => date('YmdHis'),
-                    "vnp_CurrCode" => "VND",
-                    "vnp_IpAddr" => $vnp_IpAddr,
-                    "vnp_Locale" => $vnp_Locale,
-                    "vnp_OrderInfo" => $vnp_OrderInfo,
-                    "vnp_OrderType" => $vnp_OrderType,
-                    "vnp_ReturnUrl" => $vnp_Returnurl,
-                    "vnp_TxnRef" => $vnp_TxnRef,
-                );
-
-                if (isset($vnp_BankCode) && $vnp_BankCode != "") {
-                    $inputData['vnp_BankCode'] = $vnp_BankCode;
-                }
-                if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-                    $inputData['vnp_Bill_State'] = $vnp_Bill_State;
-                }
-
-                ksort($inputData);
-                $query = "";
-                $i = 0;
-                $hashdata = "";
-                foreach ($inputData as $key => $value) {
-                    if ($i == 1) {
-                        $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
-                    } else {
-                        $hashdata .= urlencode($key) . "=" . urlencode($value);
-                        $i = 1;
-                    }
-                    $query .= urlencode($key) . "=" . urlencode($value) . '&';
-                }
-
-                $vnp_Url = $vnp_Url . "?" . $query;
-                if (isset($vnp_HashSecret)) {
-                    $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
-                    $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
-                }
-
-                // Chuyển hướng người dùng đến trang thanh toán VNPay
+                // Redirect users to VNPay payment page
                 return response()->json(['redirect_url' => $vnp_Url]);
             } else {
                 $order = Order::create($orderData);
@@ -369,15 +391,20 @@ class OrderService extends BaseService
     {
         try {
             $vnp_ResponseCode = $request->get('vnp_ResponseCode');
+            $vnp_TransactionNo  = $request->get('vnp_TransactionNo');
             if ($vnp_ResponseCode == '00') {
                 // Successful payment by vnpay
-                $orderData = Session::get('orders');
+                $orderData = Session::get('orders'); // get order data from session
                 $order = Order::create($orderData);
                 if ($order) {
                     $order->payment_method = 'vnpay';
                     $order->payment_status = 'success';
+                    $order->transaction = $vnp_TransactionNo;
                     $order->save();
                     $this->processOrder($order);
+
+                    Session::forget('orders'); // clear session
+
                     return true;
                 } else {
                     return false;
