@@ -171,15 +171,6 @@
             doSubmitPost($(this));
         });
 
-        // Press enter to submit the post
-        $('#updatePostModal').on('keypress', function(e) {
-            if (e.which === 13) {
-                e.preventDefault();
-                const btnSubmitPost = $('#btnSubmitPost');
-                doSubmitPost(btnSubmitPost);
-            }
-        });
-
         // Event show post modal
         $('#updatePostModal').on('shown.bs.modal', function(e) {
             $('#titlePost').focus();
