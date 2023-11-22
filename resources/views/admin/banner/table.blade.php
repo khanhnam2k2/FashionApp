@@ -25,8 +25,11 @@
                         <p class="text-break">
                             {{ $item->description }}</p>
                     </td>
-                    <td><button style="cursor: unset"
-                            class="btn btn-{{ $item->status == Status::ON ? 'primary' : 'danger' }}">{{ $item->status == Status::ON ? 'ON' : 'OFF' }}</button>
+                    <td><label class="toggle">
+                            <input type="checkbox" value="{{ $item->id }}" class="cbBannerStatus"
+                                {{ $item->status == Status::ON ? 'checked' : '' }} />
+                            <span class="labels" data-on="ON" data-off="OFF"></span>
+                        </label>
                     </td>
                     <td>
                         <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}"

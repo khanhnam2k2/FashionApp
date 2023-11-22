@@ -68,6 +68,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/search', [AdminCategoryController::class, 'search'])->name('admin.category.search');
         Route::post('/create', [AdminCategoryController::class, 'create'])->name('admin.category.create');
         Route::post('/update', [AdminCategoryController::class, 'update'])->name('admin.category.update');
+        Route::put('/updateStatus', [AdminCategoryController::class, 'updateStatus'])->name('admin.category.updateStatus');
         Route::delete('/delete/{id}', [AdminCategoryController::class, 'delete'])->name('admin.category.delete');
     });
 
@@ -76,6 +77,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/search', [AdminProductController::class, 'search'])->name('admin.product.search');
         Route::post('/create', [AdminProductController::class, 'create'])->name('admin.product.create');
         Route::post('/update', [AdminProductController::class, 'update'])->name('admin.product.update');
+        Route::put('/updateStatus', [AdminProductController::class, 'updateStatus'])->name('admin.product.updateStatus');
         Route::delete('/delete/{id}', [AdminProductController::class, 'delete'])->name('admin.product.delete');
     });
 
@@ -84,6 +86,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/search', [AdminPostController::class, 'search'])->name('admin.post.search');
         Route::post('/create', [AdminPostController::class, 'create'])->name('admin.post.create');
         Route::post('/update', [AdminPostController::class, 'update'])->name('admin.post.update');
+        Route::put('/updateStatus', [AdminPostController::class, 'updateStatus'])->name('admin.post.updateStatus');
         Route::delete('/delete/{id}', [AdminPostController::class, 'delete'])->name('admin.post.delete');
     });
 
@@ -110,6 +113,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/search', [AdminBannerController::class, 'search'])->name('admin.banner.search');
         Route::post('/create', [AdminBannerController::class, 'create'])->name('admin.banner.create');
         Route::post('/update', [AdminBannerController::class, 'update'])->name('admin.banner.update');
+        Route::put('/updateStatus', [AdminBannerController::class, 'updateStatus'])->name('admin.banner.updateStatus');
         Route::delete('/delete/{id}', [AdminBannerController::class, 'delete'])->name('admin.banner.delete');
     });
 

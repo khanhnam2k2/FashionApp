@@ -15,13 +15,17 @@
             <tr>
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $item->name }}</td>
-                <td><button style="cursor: unset"
-                        class="btn btn-{{ $item->status == Status::ON ? 'primary' : 'danger' }}">{{ $item->status == Status::ON ? 'ON' : 'OFF' }}</button>
+                <td><label class="toggle">
+                        <input type="checkbox" value="{{ $item->id }}" class="cbCateStatus"
+                            {{ $item->status == Status::ON ? 'checked' : '' }} />
+                        <span class="labels" data-on="ON" data-off="OFF"></span>
+                    </label>
                 </td>
                 <td>
                     <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}"
                         data-bs-target="#updateCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                        class="btn btn-success m-1 me-4"><i class="fa-solid fa-pen-to-square me-2"></i>Chỉnh sửa</button>
+                        class="btn btn-success m-1 me-4"><i class="fa-solid fa-pen-to-square me-2"></i>Chỉnh
+                        sửa</button>
                     <button id="btnDeleteCate" data-id="{{ $item->id }}" class="btn btn-danger"><i
                             class="fa-solid fa-trash-can me-2"></i>Xóa</button>
                 </td>

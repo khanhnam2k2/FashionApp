@@ -58,7 +58,7 @@
                 }
             }, 500));
 
-            // delete category
+            // delete banner
             $(document).on('click', '#btnDeleteBanner', function() {
                 let categoryId = $(this).data('id');
                 showConfirmDialog('Bạn có chắc chắn muốn xóa ảnh bìa này không?', function() {
@@ -84,7 +84,30 @@
                         }
                     })
                 })
-            })
+            });
+
+            // update status banner
+            $(document).on('change', '.cbBannerStatus', function() {
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('admin.category.updateStatus') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        bannerId: this.value,
+                        status: this.checked ? 1 : 0,
+                    }
+                }).done(function(res) {
+                    if (res == 'ok') {
+                        notiSuccess('Cập nhật trạng thái thành công');
+                    } else {
+                        notiError('Cập nhật không thành công');
+                    }
+                }).fail(function() {
+                    notiError('Cập nhật không thành công');
+                })
+            });
 
         });
     </script>

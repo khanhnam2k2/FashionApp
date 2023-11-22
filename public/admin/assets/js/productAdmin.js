@@ -192,6 +192,29 @@ $(document).ready(function () {
         })
     });
 
+    // Update status product
+    $(document).on('change', '.cbProductStatus', function () {
+        $.ajax({
+            type: "PUT",
+            url: globalRouter.urlUpdateStatusProduct,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                productId: this.value,
+                status: this.checked ? 1 : 0,
+            }
+        }).done(function (res) {
+            if (res == 'ok') {
+                notiSuccess('Cập nhật trạng thái thành công');
+            } else {
+                notiError('Cập nhật không thành công');
+            }
+        }).fail(function () {
+            notiError('Cập nhật không thành công');
+        })
+    });
+
     // Add new row size to product
     $('#addSize').click(function (e) {
         e.preventDefault();

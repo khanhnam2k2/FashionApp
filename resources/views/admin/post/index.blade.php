@@ -99,6 +99,29 @@
                 })
             });
 
+            // update status category
+            $(document).on('change', '.cbPostStatus', function() {
+                $.ajax({
+                    type: "PUT",
+                    url: "{{ route('admin.post.updateStatus') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        postId: this.value,
+                        status: this.checked ? 1 : 0,
+                    }
+                }).done(function(res) {
+                    if (res == 'ok') {
+                        notiSuccess('Cập nhật trạng thái thành công');
+                    } else {
+                        notiError('Cập nhật không thành công');
+                    }
+                }).fail(function() {
+                    notiError('Cập nhật không thành công');
+                })
+            });
+
 
 
         });

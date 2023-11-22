@@ -114,6 +114,27 @@ class PostService extends BaseService
     }
 
     /**
+     * Update status post
+     * @param $request
+     * @return true
+     */
+    public function updateStatusPost($request)
+    {
+        try {
+            $post = Post::findOrFail($request->postId);
+
+            $post->update([
+                'status' => $request->status
+            ]);
+
+            return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
      * Delete post
      * @param number $id id of post
      * @return true

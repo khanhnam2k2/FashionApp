@@ -42,6 +42,7 @@
             urlDeleteProduct: "{{ route('admin.product.delete', ['id' => ':id']) }}",
             urlCreateProduct: "{{ route('admin.product.create') }}",
             urlUpdateProduct: "{{ route('admin.product.update') }}",
+            urlUpdateStatusProduct: "{{ route('admin.product.updateStatus') }}",
         }
     </script>
     <script src="{{ asset('admin/assets/js/productAdmin.js') }}"></script>

@@ -66,6 +66,18 @@ class ProductController extends Controller
     }
 
     /**
+     * Update status product 
+     * @param Request $request 
+     * @return response ok
+     */
+    public function updateStatus(Request $request)
+    {
+        $this->productService->updateStatusProduct($request);
+        return response()->json('ok');
+    }
+
+
+    /**
      * Delete product 
      * @param number $id id of product 
      * @return response ok

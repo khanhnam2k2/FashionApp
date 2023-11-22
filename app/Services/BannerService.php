@@ -101,6 +101,27 @@ class BannerService extends BaseService
     }
 
     /**
+     * Update status banner
+     * @param $request
+     * @return true
+     */
+    public function updateStatusBanner($request)
+    {
+        try {
+            $banner = Banner::findOrFail($request->bannerId);
+
+            $banner->update([
+                'status' => $request->status
+            ]);
+
+            return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
      * Delete banner
      * @param number $id id of banner
      * @return true

@@ -64,6 +64,17 @@ class PostController extends Controller
     }
 
     /**
+     * Update status post 
+     * @param Request $request 
+     * @return response ok
+     */
+    public function updateStatus(Request $request)
+    {
+        $this->postService->updateStatusPost($request);
+        return response()->json('ok');
+    }
+
+    /**
      * Delete post 
      * @param number $id id of post 
      * @return response ok

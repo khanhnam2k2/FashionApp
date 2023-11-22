@@ -252,6 +252,26 @@ class ProductService extends BaseService
     }
 
     /**
+     * Update status category
+     * @param $request
+     * @return true
+     */
+    public function updateStatusProduct($request)
+    {
+        try {
+            $product = Product::findOrFail($request->productId);
+
+            $product->update([
+                'status' => $request->status
+            ]);
+
+            return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+    /**
      * Delete product
      * @param number $id id of product
      * @return true

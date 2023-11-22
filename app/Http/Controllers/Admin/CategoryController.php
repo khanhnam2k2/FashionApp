@@ -63,6 +63,17 @@ class CategoryController extends Controller
     }
 
     /**
+     * Update status category 
+     * @param Request $request 
+     * @return response ok
+     */
+    public function updateStatus(Request $request)
+    {
+        $this->categoryService->updateStatusCategory($request);
+        return response()->json('ok');
+    }
+
+    /**
      * Delete category 
      * @param number $id id of category 
      * @return response ok

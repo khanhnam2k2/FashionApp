@@ -64,6 +64,17 @@ class BannerController extends Controller
     }
 
     /**
+     * Update status banner 
+     * @param Request $request 
+     * @return response ok
+     */
+    public function updateStatus(Request $request)
+    {
+        $this->bannerService->updateStatusBanner($request);
+        return response()->json('ok');
+    }
+
+    /**
      * Delete banner 
      * @param number $id id of banner 
      * @return response ok

@@ -109,6 +109,27 @@ class CategoryService
     }
 
     /**
+     * Update status category
+     * @param $request
+     * @return true
+     */
+    public function updateStatusCategory($request)
+    {
+        try {
+            $category = Category::findOrFail($request->categoryId);
+
+            $category->update([
+                'status' => $request->status
+            ]);
+
+            return true;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
      * Delete category
      * @param number $id id of category
      * @return true
