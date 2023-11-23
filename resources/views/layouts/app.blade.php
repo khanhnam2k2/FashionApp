@@ -49,7 +49,7 @@
     @if (session('success'))
         <div>
             <script>
-                notiSuccess("{{ session('success') }}", "center", "", 3000);
+                notiSuccess("{{ session('success') }}", "center", function() {}, 3000);
             </script>
         </div>
     @endif
