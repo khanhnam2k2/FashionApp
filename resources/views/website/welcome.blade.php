@@ -172,8 +172,8 @@
                         <div class="blog__item">
                             <div class="blog__item__pic set-bg" data-setbg="{{ Storage::url($post->image) }}"></div>
                             <div class="blog__item__text">
-                                <span><img src="{{ asset('img/icon/calendar.png') }}" alt=""> 16 February
-                                    2020</span>
+                                <span><img src="{{ asset('img/icon/calendar.png') }}" alt="">
+                                    {{ $post->created_at->format('d - m - Y') }}</span>
                                 <h5>{{ $post->title }}</h5>
                                 <a href="{{ route('post.details', $post->id) }}">Đọc thêm</a>
                             </div>
