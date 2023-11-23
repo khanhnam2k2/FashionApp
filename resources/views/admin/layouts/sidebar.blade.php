@@ -68,11 +68,11 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('admin.customer.index') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('admin.account.index') }}" aria-expanded="false">
                         <span>
                             <i class="fa-solid fa-users"></i>
                         </span>
-                        <span class="hide-menu">Quản lý khách hàng</span>
+                        <span class="hide-menu">Quản lý tài khoản</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

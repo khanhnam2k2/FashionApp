@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountController as AdminAccountController;
 use App\Http\Controllers\Admin\BannerController as AdminBannerController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
-use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
@@ -57,10 +57,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::post('/getTotalOrderInYear', [DashboardController::class, 'getTotalOrderInYear'])->name('admin.getTotalOrderInYear');
     });
 
-    Route::prefix('customer')->group(function () {
-        Route::get('/', [AdminCustomerController::class, 'index'])->name('admin.customer.index');
-        Route::post('/search', [AdminCustomerController::class, 'search'])->name('admin.customer.search');
-        Route::delete('/delete/{id}', [AdminCustomerController::class, 'delete'])->name('admin.customer.delete');
+    Route::prefix('account')->group(function () {
+        Route::get('/', [AdminAccountController::class, 'index'])->name('admin.account.index');
+        Route::post('/search', [AdminAccountController::class, 'search'])->name('admin.account.search');
+        Route::post('/create', [AdminAccountController::class, 'create'])->name('admin.account.create');
+        Route::put('/updateToAdmin', [AdminAccountController::class, 'updateToAdmin'])->name('admin.account.updateToAdmin');
+        Route::delete('/delete/{id}', [AdminAccountController::class, 'delete'])->name('admin.account.delete');
     });
 
     Route::prefix('category')->group(function () {

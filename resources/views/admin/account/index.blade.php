@@ -2,10 +2,15 @@
 @section('content')
     <div class="customer-container container">
         <div class="d-flex justify-content-between">
-            <h2>Danh sách tài khoản khách hàng</h2>
+            <h2>Danh sách tài khoản</h2>
             <div class="form-search d-flex algin-items-center gap-2">
                 <input type="text" id="txtSearchCustomer" placeholder="Tìm kiếm ở đây..." class="form-control"
                     name="nameCategory">
+            </div>
+            <div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAccountModal"
+                    data-bs-backdrop="static" data-bs-keyboard="false"><i class="fa-solid fa-plus me-2"></i>Tạo tài khoản
+                    mới</button>
             </div>
         </div>
         <div class="mt-3">
@@ -16,10 +21,11 @@
             </div>
         </div>
     </div>
+    @include('admin.account.create_account_modal')
 @endsection
 @section('web-script')
     <script>
-        const urlDeleteCustomer = "{{ route('admin.customer.delete', ['id' => ':id']) }}";
+        const urlDeleteCustomer = "{{ route('admin.account.delete', ['id' => ':id']) }}";
 
         /**
          * Load customer list
@@ -27,7 +33,7 @@
          */
         function searchCustomer(page = 1, searchName = '') {
             $.ajax({
-                url: '<?= route('admin.customer.search') ?>?page=' + page,
+                url: '<?= route('admin.account.search') ?>?page=' + page,
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -58,7 +64,7 @@
             // delete customer 
             $(document).on('click', '#btnDeleteCustomer', function() {
                 let customerId = $(this).data('id');
-                showConfirmDialog('Bạn có chắc chắn muốn xóa tài khoản khách hàng này?', function() {
+                showConfirmDialog('Bạn có chắc chắn muốn xóa tài khoản này?', function() {
                     $.ajax({
                         url: urlDeleteCustomer.replace(':id', customerId),
                         type: "DELETE",
@@ -67,13 +73,41 @@
                         },
                     }).done(function(res) {
                         if (res == 'ok') {
-                            notiSuccess("Đã xóa tài khoản khách hàng thành công");
+                            notiSuccess("Đã xóa tài khoản thành công");
                             searchCustomer();
                         }
                     }).fail(function() {
                         notiError();
                     })
                 })
+            });
+
+            $(document).on('click', '.btnUpdateToAdmin', function(e) {
+                e.preventDefault();
+                let accountId = $(this).data('id');
+                showConfirmDialog('Bạn có chắc chắn muốn nâng cấp tài khoản này lên admin không?',
+                    function() {
+                        $.ajax({
+                            url: "{{ route('admin.account.updateToAdmin') }}",
+                            type: "PUT",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                accountId: accountId,
+                            }
+                        }).done(function(res) {
+                            const data = res.data.original;
+                            if (data.success) {
+                                notiSuccess(data.success);
+                                searchCustomer();
+                            } else {
+                                notiError(data.error);
+                            }
+                        }).fail(function() {
+                            notiError();
+                        })
+                    })
             })
         });
     </script>

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
-class CustomerController extends Controller
+class AccountController extends Controller
 {
     protected $userService;
 
@@ -25,7 +26,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('admin.customer.index');
+        return view('admin.account.index');
     }
 
     /**
@@ -36,7 +37,29 @@ class CustomerController extends Controller
     public function search(Request $request)
     {
         $data = $this->userService->searchCustomer($request->searchName);
-        return view('admin.customer.table', ['data' => $data]);
+        return view('admin.account.table', ['data' => $data]);
+    }
+
+    /**
+     * Create a new account
+     * @param RegisterRequest $request
+     * @return response message
+     */
+    public function create(RegisterRequest $request)
+    {
+        $data = $this->userService->createAccount($request);
+        return response()->json(['data' => $data]);
+    }
+
+    /**
+     * Update account to admin role
+     * @param Request $request
+     * @return response message
+     */
+    public function updateToAdmin(Request $request)
+    {
+        $data = $this->userService->updateAccountToAdmin($request);
+        return response()->json(['data' => $data]);
     }
 
     /**

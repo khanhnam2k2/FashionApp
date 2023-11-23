@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Enums\UserRole;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserService
@@ -23,7 +25,7 @@ class UserService
                 $customers = $customers->where('users.name', 'LIKE', '%' . $searchName . '%');
             }
 
-            $customers = $customers->where('role', UserRole::USER)->latest()->paginate(5);
+            $customers = $customers->latest()->paginate(5);
 
             return $customers;
         } catch (Exception $e) {
@@ -31,6 +33,63 @@ class UserService
             return response()->json($e, 500);
         }
     }
+
+    /**
+     * Create new account 
+     * @param Request $request
+     * @return true
+     */
+    public function createAccount($request)
+    {
+        try {
+            $userCurrent = Auth::user();
+            if ($userCurrent->role == UserRole::ADMIN) {
+                User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'address' => $request->address,
+                    'phone' => $request->phone,
+                    'role' => $request->role,
+                ]);
+                return response()->json(['success' => 'Tạo mới tài khoản thành công']);
+            } else {
+                return response()->json(['error' => 'Bạn không có quyền tạo mới tài khoản']);
+            }
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
+     * Update account to admin role
+     * @param Request $request
+     * @return true
+     */
+    public function updateAccountToAdmin($request)
+    {
+        try {
+            $userCurrent = Auth::user();
+            if ($userCurrent->role == UserRole::ADMIN) {
+                $id = $request->accountId;
+
+                $user = User::findOrFail($id);
+
+                $user->update([
+                    'role' => UserRole::ADMIN,
+                ]);
+
+                return response()->json(['success' => 'Nâng cấp tài khoản lên vai trò admin thành công']);
+            } else {
+                return response()->json(['error' => 'Bạn không có quyền nâng cấp tài khoản']);
+            }
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
 
     /**
      * Delete customer
