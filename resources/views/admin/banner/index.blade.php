@@ -90,7 +90,7 @@
             $(document).on('change', '.cbBannerStatus', function() {
                 $.ajax({
                     type: "PUT",
-                    url: "{{ route('admin.category.updateStatus') }}",
+                    url: "{{ route('admin.banner.updateStatus') }}",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
