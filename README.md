@@ -1,6 +1,6 @@
 # Đồ án chuyên ngành năm 4: Webite bán quần áo bằng Laravel
-# Giáo viên hướng dẫn: Thầy Đặng Hồng Lĩnh
-# Sinh viên thực hiện: Đặng Hà Nam
+## Giáo viên hướng dẫn: Thầy Đặng Hồng Lĩnh
+## Sinh viên thực hiện: Đặng Hà Nam
 ## Công nghệ
 1. Laravel 10x (PHP v8.1.17)
     - Documentation: https://laravel.com/docs/9.x
