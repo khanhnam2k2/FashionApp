@@ -1,4 +1,6 @@
 # Đồ án chuyên ngành năm 4: Webite bán quần áo bằng Laravel
+# Giáo viên hướng dẫn: Thầy Đặng Hồng Lĩnh
+# Sinh viên thực hiện: Đặng Hà Nam
 ## Công nghệ
 1. Laravel 10x (PHP v8.1.17)
     - Documentation: https://laravel.com/docs/9.x
@@ -14,8 +16,10 @@
     - https://lokeshdhakar.com/projects/lightbox2/
 7. Jquery
     - https://jquery.com/
+8. Chartjs
+    - https://www.chartjs.org/
     
-## Setup Website
+## Thiết lập trang web
 - Bước 1: Tạo file `.env` cho API, và file tham khảo `.env.example`
     ```
     cp .env.example .env
