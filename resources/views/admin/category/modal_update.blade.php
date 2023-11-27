@@ -101,7 +101,7 @@
     /**
      * Update form cateogry
      */
-    function updateCategory(data, btn) {
+    function updateCategory(data, btn, form) {
         $.ajax({
             type: "POST",
             url: "{{ route('admin.category.update') }}",
@@ -119,11 +119,15 @@
 
             }
         }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
+            const errors = xhr.responseJSON.errors;
+            if (xhr.status === 400 && errors) {
+                // Loop through the errors and display them
+                $.each(errors, function(key, value) {
+                    const inputField = form.find('[name="' + key + '"]');
+                    inputField.addClass('is-invalid');
+                    inputField.after('<div class="invalid-feedback">' + value[0] +
+                        '</div>');
+                });
             } else {
                 notiError();
             }
