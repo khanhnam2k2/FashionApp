@@ -25,7 +25,7 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|max:100',
+            'name' => 'nullable|string|max:30',
             'avatar' => 'nullable|image|mimes:jpeg,jpg,png,gif',
             'phone' => 'nullable|regex:/^[0-9]{10}$/',
             'address' => 'nullable|string',
@@ -36,9 +36,11 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             'name.string' => 'Tên không hợp lệ',
-            'name.max' => 'Tên không được vượt quá 100 ký tự',
+            'name.max' => 'Tên không được vượt quá 30 ký tự',
             'phone.regex' => 'Số điện thoại không hợp lệ',
             'address.string' => 'Địa chỉ không hợp lệ',
+            'avatar.image' => 'Ảnh đại diện phải là định dạng ảnh',
+            'avatar.mimes' => 'Ảnh đại diện phải có định dạng: jpeg, jpg, png, gif'
         ];
     }
 
