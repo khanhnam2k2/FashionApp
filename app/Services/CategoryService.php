@@ -72,7 +72,7 @@ class CategoryService
         try {
             $category = [
                 'name' => $request->name,
-                'status' => $request->status,
+                'status' => $request->statusCategory,
             ];
 
             Category::create($category);
@@ -96,7 +96,7 @@ class CategoryService
 
             $category = [
                 'name' => $request->name,
-                'status' => $request->status,
+                'status' => $request->statusCategory,
             ];
 
             $data->update($category);

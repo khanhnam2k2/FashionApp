@@ -39,21 +39,20 @@
      * Submit form cateogry
      */
     function doSubmitCategory(btn) {
-        let formData = new FormData();
-        formData.append('categoryId', $('#categoryId').val());
-        formData.append('name', $('#categoryName').val());
-        formData.append('status', $('#cbStatusCate').is(':checked') ? 1 : 0);
+        const formCategory = $('form#form_category');
+        let formData = new FormData($('form#form_category')[0]);
+        formData.append('statusCategory', $('#cbStatusCate').is(':checked') ? 1 : 0);
         if ($('#categoryId').val() == '') {
             showConfirmDialog('Bạn có chắc chắn muốn tạo danh mục này không?', function() {
                 btn.text('Đang tạo...');
                 btn.prop('disabled', true);
-                createCategory(formData, btn);
+                createCategory(formData, btn, formCategory);
             });
         } else {
             showConfirmDialog('Bạn có chắc chắn muốn cập nhật danh mục này không?', function() {
                 btn.text('Đang cập nhật...');
                 btn.prop('disabled', true);
-                updateCategory(formData, btn);
+                updateCategory(formData, btn, formCategory);
             });
         }
     }
@@ -61,7 +60,7 @@
     /**
      * Create form cateogry
      */
-    function createCategory(data, btn) {
+    function createCategory(data, btn, form) {
         $.ajax({
             type: "POST",
             url: "{{ route('admin.category.create') }}",
@@ -80,11 +79,15 @@
 
             }
         }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
+            const errors = xhr.responseJSON.errors;
+            if (xhr.status === 400 && errors) {
+                // Loop through the errors and display them
+                $.each(errors, function(key, value) {
+                    const inputField = form.find('[name="' + key + '"]');
+                    inputField.addClass('is-invalid');
+                    inputField.after('<div class="invalid-feedback">' + value[0] +
+                        '</div>');
+                });
             } else {
                 notiError();
             }
