@@ -23,6 +23,8 @@
 
         /**
          * Load contact list
+         * @param page current page
+         * @param searchName name of the search
          */
         function searchContact(page = 1, searchName = '') {
             $.ajax({
@@ -42,9 +44,10 @@
         }
 
         $(document).ready(function() {
+
             searchContact();
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchContact').keyup(debounce(function(e) {
                 let search = e.currentTarget.value ?? '';
                 if (search != '') {
@@ -54,7 +57,7 @@
                 }
             }, 500));
 
-            // delete contact
+            // Delete contact
             $(document).on('click', '#btnDeleteContact', function() {
                 let contactId = $(this).data('id');
                 showConfirmDialog('Bạn có chắc chắn muốn xóa địa chỉ liên hệ này không?', function() {
