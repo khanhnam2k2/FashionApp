@@ -22,6 +22,7 @@
 @endsection
 @section('web-script')
     <script>
+        // Use Ckeditor
         var myEditor;
         ClassicEditor
             .create(document.querySelector('#editor'), {
@@ -39,6 +40,8 @@
 
         /**
          * Load cagtegory list
+         * @param page current page
+         * @param searchName name of the search
          */
         function searchPost(page = 1, searchName = '') {
             $.ajax({
@@ -61,7 +64,7 @@
 
             searchPost();
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchPost').keyup(debounce(function(e) {
                 let search = e.currentTarget.value ?? '';
                 if (search != '') {
@@ -99,7 +102,7 @@
                 })
             });
 
-            // update status category
+            // Update status category
             $(document).on('change', '.cbPostStatus', function() {
                 $.ajax({
                     type: "PUT",
@@ -121,9 +124,6 @@
                     notiError('Cập nhật không thành công');
                 })
             });
-
-
-
         });
     </script>
 @endsection

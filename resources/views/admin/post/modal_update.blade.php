@@ -65,30 +65,39 @@
 <script type="text/javascript">
     /**
      * Submit form post
+     * @param btn button submit
      */
     function doSubmitPost(btn) {
-        let formData = new FormData($('form#form_post')[0]);
+        const formPost = $('form#form_post');
+        let formData = new FormData(formPost[0]);
         formData.append('statusPost', $('#cbStatusPost').is(':checked') ? 1 : 0);
         formData.append('contentPost', myEditor.getData());
         if ($('#postId').val() == '') {
             showConfirmDialog('Bạn có chắc chắn muốn tạo bài viết này?', function() {
                 btn.text('Đang tạo...');
                 btn.prop('disabled', true);
-                createPost(formData, btn);
+                createPost(formData, btn, formPost);
             });
         } else {
             showConfirmDialog('Bạn có chắc chắn muốn cập nhật bài viết này?', function() {
                 btn.text('Đang cập nhật...');
                 btn.prop('disabled', true);
-                updatePost(formData, btn);
+                updatePost(formData, btn, formPost);
             });
         }
     }
 
     /**
-     * Create form post
+     * Create post
+     * @param data data to create post
+     * @param btn button create post
+     * @param form form create post
      */
-    function createPost(data, btn) {
+    function createPost(data, btn, form) {
+        // Remove previous error messages and classes
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').remove();
+        form.find('.text-danger').remove();
         $.ajax({
             type: "POST",
             url: "{{ route('admin.post.create') }}",
@@ -98,7 +107,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: data,
-
         }).done(function(res) {
             if (res == 'ok') {
                 notiSuccess('Bài viết được tạo thành công');
@@ -106,11 +114,22 @@
                 $('#updatePostModal').modal('toggle');
             }
         }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
+            const errors = xhr.responseJSON.errors;
+            if (xhr.status === 400 && errors) {
+                // Loop through the errors and display them
+                $.each(errors, function(key, value) {
+                    if (key == 'contentPost') {
+                        const contentPost = form.find('.ck-editor');
+                        contentPost.after('<div style="font-size:0.875em" class="text-danger">' + value[
+                                0] +
+                            '</div>');
+                    }
+                    const inputField = form.find('[name="' + key + '"]');
+                    inputField.addClass('is-invalid');
+                    inputField.after('<div  class="invalid-feedback">' + value[
+                            0] +
+                        '</div>');
+                });
             } else {
                 notiError();
             }
@@ -118,13 +137,18 @@
             btn.text('Lưu');
             btn.prop('disabled', false);
         })
-
     }
 
     /**
-     * Update form post
+     * Update post
+     * @param data data to update post
+     * @param btn button update post
+     * @param form form update post
      */
-    function updatePost(data, btn) {
+    function updatePost(data, btn, form) {
+        // Remove previous error messages and classes
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').remove();
         $.ajax({
             type: "POST",
             url: "{{ route('admin.post.update') }}",
@@ -140,14 +164,24 @@
                 notiSuccess('Đã cập nhật bài đăng thành công');
                 searchPost();
                 $('#updatePostModal').modal('toggle');
-
             }
         }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
+            const errors = xhr.responseJSON.errors;
+            if (xhr.status === 400 && errors) {
+                // Loop through the errors and display them
+                $.each(errors, function(key, value) {
+                    if (key == 'contentPost') {
+                        const contentPost = form.find('.ck-editor');
+                        contentPost.after('<div style="font-size:0.875em" class="text-danger">' + value[
+                                0] +
+                            '</div>');
+                    }
+                    const inputField = form.find('[name="' + key + '"]');
+                    inputField.addClass('is-invalid');
+                    inputField.after('<div  class="invalid-feedback">' + value[
+                            0] +
+                        '</div>');
+                });
             } else {
                 notiError();
             }
@@ -158,7 +192,6 @@
     }
 
     $(document).ready(function() {
-
 
         // Add/change image for post
         $('#postImage').on('change', function() {
@@ -187,12 +220,9 @@
             } else {
                 imagePreviewHtml =
                     `<img src="{{ asset('img/default-img.png') }}" id="imagePostPreview" />`;
-                $("#postId").val('');
-                $("#titlePost").val('');
+                $('form#form_post')[0].reset();
                 myEditor.setData('');
-                $("#postImage").val('');
                 $('#imagePostPreviewContainer').html(imagePreviewHtml);
-                $('#cbStatusPost').prop('checked', true);
                 $('#titlePostModal').html('Tạo mới bài viết');
             }
         });
