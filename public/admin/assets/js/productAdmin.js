@@ -27,7 +27,8 @@ function searchProduct(page = 1, searchName = '', categoryId = null) {
  * Submit product
  */
 function doSubmitProduct(btn) {
-    let formData = new FormData($('form#form_product')[0]);
+    const formProduct = $('form#form_product');
+    let formData = new FormData(formProduct[0]);
     formData.append('statusProduct', $('#cbStatusProduct').is(':checked') ? 1 : 0);
     if (arrayImagesUpload.length > 0) {
         for (let i = 0; i < arrayImagesUpload.length; i++) {
@@ -38,13 +39,13 @@ function doSubmitProduct(btn) {
         showConfirmDialog('Bạn có chắc chắn muốn tạo sản phẩm này không?', function () {
             btn.text('Đang tạo...');
             btn.prop('disabled', true);
-            createProduct(formData, btn);
+            createProduct(formData, btn, formProduct);
         });
     } else {
         showConfirmDialog('Bạn có chắc chắn muốn cập nhật sản phẩm này?', function () {
             btn.text('Đang cập nhật...');
             btn.prop('disabled', true);
-            updateProduct(formData, btn);
+            updateProduct(formData, btn, formProduct);
         });
     }
 }
@@ -53,9 +54,12 @@ function doSubmitProduct(btn) {
  * Create product
  * @param {FormData} data data product send server to create new product
  * @param {Element} btn button to submit
+ * @param {Element} form form create new product
  */
-function createProduct(data, btn) {
-    btn.prop('disabled', true);
+function createProduct(data, btn, form) {
+    // Remove previous error messages and classes
+    form.find('.is-invalid').removeClass('is-invalid');
+    form.find('.invalid-feedback').remove();
     $.ajax({
         type: 'POST',
         url: globalRouter.urlCreateProduct,
@@ -73,11 +77,15 @@ function createProduct(data, btn) {
             arrayImagesUpload = [];
         }
     }).fail(function (xhr) {
-        if (xhr.status === 400 && xhr.responseJSON.errors) {
-            const errorMessages = xhr.responseJSON.errors;
-            for (let fieldName in errorMessages) {
-                notiError(errorMessages[fieldName][0]);
-            }
+        const errors = xhr.responseJSON.errors;
+        if (xhr.status === 400 && errors) {
+            // Loop through the errors and display them
+            $.each(errors, function (key, value) {
+                const inputField = form.find('[name="' + key + '"]');
+                inputField.addClass('is-invalid');
+                inputField.after('<div class="invalid-feedback">' + value[0] +
+                    '</div>');
+            });
         } else {
             notiError();
         }
@@ -91,9 +99,12 @@ function createProduct(data, btn) {
  * Update product
  * @param {FormData} data data product send server to update product
  * @param {Element} btn button to submit
+ * @param {Element} form form update product
  */
-function updateProduct(data, btn) {
-    btn.prop('disabled', true);
+function updateProduct(data, btn, form) {
+    // Remove previous error messages and classes
+    form.find('.is-invalid').removeClass('is-invalid');
+    form.find('.invalid-feedback').remove();
     $.ajax({
         type: 'POST',
         url: globalRouter.urlUpdateProduct,
@@ -112,11 +123,15 @@ function updateProduct(data, btn) {
             arrayImagesUpload = [];
         }
     }).fail(function (xhr) {
-        if (xhr.status === 400 && xhr.responseJSON.errors) {
-            const errorMessages = xhr.responseJSON.errors;
-            for (let fieldName in errorMessages) {
-                notiError(errorMessages[fieldName][0]);
-            }
+        const errors = xhr.responseJSON.errors;
+        if (xhr.status === 400 && errors) {
+            // Loop through the errors and display them
+            $.each(errors, function (key, value) {
+                const inputField = form.find('[name="' + key + '"]');
+                inputField.addClass('is-invalid');
+                inputField.after('<div class="invalid-feedback">' + value[0] +
+                    '</div>');
+            });
         } else {
             notiError();
         }
@@ -340,15 +355,10 @@ $(document).ready(function () {
             $('#cbStatusProduct').prop('checked', data.status == 1);
             $('#titleCategoryModal').html('Cập nhật sản phẩm');
         } else {
-            $('#productId').val('');
-            $('#productName').val('');
-            $('#productPrice').val('');
-            $('#productQuantity').val('');
-
+            $('form#form_product')[0].reset(); // reset form
             $('#titleImage').text('Chọn ảnh (tối đa 4)');
-            $('#productImage').val('');
             arrayImagesUpload = [];
-
+            $('#imageProductPreviewContainer').html('');
             $('#sizeAndQuantityFields').html(
                 `<div>
                     <div class="row">
@@ -370,12 +380,6 @@ $(document).ready(function () {
                     </div>
                 </div>`
             );
-
-            $('#productDescription').val('');
-            $('#productSku').val('');
-            $('#sizes').val('');
-            $('#imageProductPreviewContainer').html('');
-            $('#cbStatusProduct').prop('checked', true);
             $('#titleCategoryModal').html('Tạo sản phẩm mới');
         }
     });
