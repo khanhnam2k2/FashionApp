@@ -3404,7 +3404,6 @@ input[type=number] {
 	padding-left: 20px;
 	font-size: 15px;
 	color: #b7b7b7;
-	margin-bottom: 30px;
 }
 
 .contact__form input::-webkit-input-placeholder {
@@ -3435,7 +3434,6 @@ input[type=number] {
 	padding-top: 12px;
 	font-size: 15px;
 	color: #b7b7b7;
-	margin-bottom: 24px;
 	resize: none;
 }
 

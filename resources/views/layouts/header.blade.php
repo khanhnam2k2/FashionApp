@@ -62,7 +62,7 @@
                         <li class="{{ request()->is('post') ? 'active' : '' }}"><a
                                 href="{{ route('post.index') }}">Bài viết</a></li>
                         <li class="{{ request()->is('contacts') ? 'active' : '' }}"><a
-                                href="{{ route('contact.show') }}">Liên hệ</a></li>
+                                href="{{ route('contact.index') }}">Liên hệ</a></li>
                     </ul>
                 </nav>
             </div>

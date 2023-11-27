@@ -36,15 +36,17 @@
                     <div class="contact__form">
                         <form id="form_contact">
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <input type="text" name="name" placeholder="Tên của bạn">
+                                <div class="col-lg-6 mb-3">
+                                    <input type="text" class="form-control" name="name" placeholder="Tên của bạn">
                                 </div>
-                                <div class="col-lg-6">
-                                    <input type="email" name="email" placeholder="Email">
+                                <div class="col-lg-6 mb-3">
+                                    <input type="email" class="form-control" name="email" placeholder="Email">
                                 </div>
-                                <div class="col-lg-12">
-                                    <textarea name="message" placeholder="Nội dung liên hệ"></textarea>
-                                    <button id="btnSubmitContact" class="site-btn">Gửi</button>
+                                <div class="col-lg-12 mb-3">
+                                    <textarea name="message" class="form-control" placeholder="Nội dung liên hệ"></textarea>
+                                </div>
+                                <div class="p-3 w-100">
+                                    <button id="btnSubmitContact" class="site-btn w-100">Gửi</button>
                                 </div>
                             </div>
                         </form>
@@ -60,7 +62,12 @@
         $(document).ready(function() {
             $('#btnSubmitContact').on('click', function(e) {
                 e.preventDefault();
-                let formData = new FormData($('form#form_contact')[0]);
+                const formContact = $('form#form_contact');
+                let formData = new FormData(formContact[0]);
+
+                // Remove previous error messages and classes
+                formContact.find('.is-invalid').removeClass('is-invalid');
+                formContact.find('.invalid-feedback').remove();
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('contact.create') }}",
@@ -72,16 +79,19 @@
                     data: formData,
                 }).done(function(data) {
                     if (data == 'ok') {
-                        notiSuccess('Cảm ơn phản hồi của bạn.', 'center', function() {
-                            window.location.reload();
-                        })
+                        notiSuccess('Cảm ơn phản hồi của bạn.', 'center');
+                        formContact[0].reset();
                     }
                 }).fail(function(xhr) {
-                    if (xhr.status === 400 && xhr.responseJSON.errors) {
-                        const errorMessages = xhr.responseJSON.errors;
-                        for (let fieldName in errorMessages) {
-                            notiError(errorMessages[fieldName][0]);
-                        }
+                    const errors = xhr.responseJSON.errors;
+                    if (xhr.status === 400 && errors) {
+                        // Loop through the errors and display them
+                        $.each(errors, function(key, value) {
+                            const inputField = formContact.find('[name="' + key + '"]');
+                            inputField.addClass('is-invalid');
+                            inputField.after('<div class="invalid-feedback">' + value[0] +
+                                '</div>');
+                        });
                     } else {
                         notiError();
                     }

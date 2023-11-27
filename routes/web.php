@@ -40,7 +40,7 @@ Route::prefix('shop')->group(function () {
 });
 
 Route::prefix('contacts')->group(function () {
-    Route::get('/', [ContactController::class, 'showContact'])->name('contact.show');
+    Route::get('/', [ContactController::class, 'index'])->name('contact.index');
     Route::post('/create', [ContactController::class, 'create'])->name('contact.create');
 });
 
@@ -126,6 +126,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 
     Route::post('ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 });
+
 Route::middleware('auth')->group(function () {
 
     Route::prefix('profile')->group(function () {

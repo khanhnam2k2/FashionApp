@@ -23,9 +23,9 @@ class ContactController extends Controller
      * Show contact page 
      * @return view contact page
      */
-    public function showContact()
+    public function index()
     {
-        return view('website.contact.index');
+        return view('website.contact');
     }
 
     /**

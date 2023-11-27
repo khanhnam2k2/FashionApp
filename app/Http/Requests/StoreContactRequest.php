@@ -36,6 +36,7 @@ class StoreContactRequest extends FormRequest
         return [
             'name.required' => 'Vui lòng nhập tên của bạn',
             'email.required' => 'Vui lòng nhập địa chỉ email',
+            'email.email' => 'Địa chỉ email không hợp lệ',
             'message.required' => 'Vui lòng nhập nội dụng liên hệ',
         ];
     }
