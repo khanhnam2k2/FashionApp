@@ -29,7 +29,8 @@
 
         /**
          * Load customer list
-         * @param page 
+         * @param page current page
+         * @param searchName name of the search
          */
         function searchCustomer(page = 1, searchName = '') {
             $.ajax({
@@ -49,9 +50,10 @@
         }
 
         $(document).ready(function() {
+
             searchCustomer();
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchCustomer').keyup(debounce(function(e) {
                 let search = e.currentTarget.value ?? '';
                 if (search != '') {
@@ -61,7 +63,7 @@
                 }
             }, 500));
 
-            // delete customer 
+            // Delete customer 
             $(document).on('click', '#btnDeleteCustomer', function() {
                 let customerId = $(this).data('id');
                 showConfirmDialog('Bạn có chắc chắn muốn xóa tài khoản này?', function() {
@@ -82,6 +84,7 @@
                 })
             });
 
+            // Update account to admin role
             $(document).on('click', '.btnUpdateToAdmin', function(e) {
                 e.preventDefault();
                 let accountId = $(this).data('id');

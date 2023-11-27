@@ -71,18 +71,25 @@
      * Submit form 
      */
     function doSubmitAccount(btn) {
-        let formData = new FormData($('form#form_create_account')[0]);
+        const formCreateAccount = $('form#form_create_account');
+        let formData = new FormData(formCreateAccount[0]);
         showConfirmDialog('Bạn có chắc chắn muốn tạo mới tài khoản này không?', function() {
             btn.text('Đang tạo...');
             btn.prop('disabled', true);
-            createAccount(formData, btn);
+            createAccount(formData, btn, formCreateAccount);
         });
     }
 
     /**
      * Create account
+     * @param data data to create account
+     * @param btn button create account
+     * @param form form create account
      */
-    function createAccount(data, btn) {
+    function createAccount(data, btn, form) {
+        // Remove previous error messages and classes
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').remove();
         $.ajax({
             type: "POST",
             url: "{{ route('admin.account.create') }}",
@@ -99,13 +106,17 @@
                 notiError(response.error);
             }
         }).fail(function(xhr) {
-            if (xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
+            const errors = xhr.responseJSON.errors;
+            if (errors) {
+                // Loop through the errors and display them
+                $.each(errors, function(key, value) {
+                    const inputField = form.find('[name="' + key + '"]');
+                    inputField.addClass('is-invalid');
+                    inputField.after('<div class="invalid-feedback">' + value[0] +
+                        '</div>');
+                });
             } else {
-                notiError('ok');
+                notiError();
             }
         }).always(function() {
             btn.text('Lưu');
@@ -132,8 +143,7 @@
 
         // Reset form create account
         $('#createAccountModal').on('shown.bs.modal', function(e) {
-            const formAccount = $('form#form_create_account');
-            formAccount[0].reset();
+            $('form#form_create_account')[0].reset();
         });
     })
 </script>
