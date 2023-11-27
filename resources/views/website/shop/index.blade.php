@@ -59,6 +59,29 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseFour">Size</a>
+                                    </div>
+                                    <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__size">
+                                                <label for="all">Tất cả
+                                                    <input type="radio" value="" id="all">
+                                                </label>
+                                                <label for="S">s
+                                                    <input type="radio" value="S" id="S">
+                                                </label>
+                                                <label for="M">m
+                                                    <input type="radio" value="M" id="M">
+                                                </label>
+                                                <label for="L">l
+                                                    <input type="radio" value="L" id="L">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,7 +120,17 @@
     <script>
         var statusON = {{ Status::ON }};
 
-        function searchProductShop(page = 1, searchName = '', sortByPrice = null, categoryId = null, status) {
+        /**
+         * Load product list
+         * @param page current page number
+         * @param searchName name of the search 
+         * @param sortByPrice type sort price
+         * @param categoryId id of category
+         * @param status status of product
+         * @param size size of product
+         */
+        function searchProductShop(page = 1, searchName = '', sortByPrice = null, categoryId = null, status = null, size =
+            null) {
             $.ajax({
                 url: '<?= route('shop.search') ?>?page=' + page,
                 type: "POST",
@@ -108,7 +141,8 @@
                     searchName: searchName,
                     sortByPrice: sortByPrice,
                     categoryId: categoryId,
-                    status: status ?? statusON
+                    status: status ?? statusON,
+                    size: size
                 }
             }).done(function(data) {
                 $('#listProduct').html(data);
@@ -116,46 +150,74 @@
                 notiError();
             });
         }
+
         $(document).ready(function() {
+
             searchProductShop();
 
-            // list products sort by price
+            // List products sort by price
             $('#sortByPrice').change(function() {
                 let sortByPrice = $(this).val();
                 let categoryId = $('#categoryContainer').find('.active').data('id');
-                searchProductShop(page = 1, '', sortByPrice, categoryId ?? null);
+                let size = $('.shop__sidebar__size .active').find('input[type="radio"]').val();
+                let searchName = $('#txtSearchProduct').val();
+                searchProductShop(1, searchName ?? '', sortByPrice, categoryId ?? null, statusON, size);
             });
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchProduct').keyup(debounce(function(e) {
-                let search = e.currentTarget.value ?? '';
+                let searchName = e.currentTarget.value ?? '';
                 let categoryId = $('#categoryContainer').find('.active').data('id');
-                if (search != '') {
-                    searchProductShop(1, search, $('#sortByPrice').val() ?? null, categoryId ?? null);
+                let size = $('.shop__sidebar__size .active').find('input[type="radio"]').val();
+                if (searchName != '') {
+                    searchProductShop(1, searchName, $('#sortByPrice').val() ?? null, categoryId ??
+                        null,
+                        statusON,
+                        size);
                 } else {
-                    searchProductShop(1, '', $('#sortByPrice').val() ?? null, categoryId ?? null);
-
+                    searchProductShop(1, '', $('#sortByPrice').val() ?? null, categoryId ?? null,
+                        statusON,
+                        size);
                 }
             }, 500));
 
-            // list product show by category
+            // List product show by category
             $('.categoryProduct').on('click', function() {
                 let categoryId = $(this).data('id');
                 let sortByPrice = $('#sortByPrice').val();
+                let size = $('.shop__sidebar__size .active').find('input[type="radio"]').val();
+                let searchName = $('#txtSearchProduct').val();
                 $('.categoryProduct').removeClass('active');
                 $(this).addClass('active');
-                searchProductShop(page = 1, searchName = null, sortByPrice = sortByPrice ?? null,
-                    categoryId = categoryId);
+                searchProductShop(1, searchName ?? '', sortByPrice ?? null, categoryId, statusON, size);
             });
 
+            // List product show by size
+            $('.shop__sidebar__size input[type="radio"]').on('click', function() {
+                let selectedSize = $(this).val();
+                let sortByPrice = $('#sortByPrice').val();
+                let categoryId = $('#categoryContainer').find('.active').data('id');
+                let searchName = $('#txtSearchProduct').val();
+                searchProductShop(1, searchName ?? '', sortByPrice ?? null,
+                    categoryId ?? null, statusON, selectedSize);
+            });
+
+            // Add to cart
             $(document).on('click', '.add-cart', function() {
                 $(this).prop('disabled', true);
                 const id = $(this).data('id');
                 const productId = $(this).data('product-id');
                 const sizeValue = $(`#size-group-${id}`).find(".active input[type='radio']").val();
+                let searchName = $('#txtSearchProduct').val();
+                let sortByPrice = $('#sortByPrice').val();
+                let categoryId = $('#categoryContainer').find('.active').data('id');
+                let size = $('.shop__sidebar__size .active').find('input[type="radio"]').val();
+
                 addToCart(productId, 1, sizeValue, $(this));
-                searchProductShop();
-            })
+                searchProductShop(1, searchName ?? '', sortByPrice ?? null, categoryId ?? null, statusON,
+                    size);
+            });
+
         })
     </script>
 @endsection

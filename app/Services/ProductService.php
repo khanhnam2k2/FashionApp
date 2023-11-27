@@ -86,7 +86,7 @@ class ProductService extends BaseService
      * @param number $status status product
      * @return Array product list
      */
-    public function searchProduct($searchName = null, $sortByPrice = null, $categoryId = null, $status = null)
+    public function searchProduct($searchName = null, $sortByPrice = null, $categoryId = null, $status = null, $size = null)
     {
         try {
             $products = Product::select(
@@ -111,6 +111,10 @@ class ProductService extends BaseService
 
             if ($status != null && $status != '') {
                 $products = $products->where('products.status', '=', $status);
+            }
+
+            if ($size != null && $size != '') {
+                $products = $products->where('product_size_quantities..size', '=', $size);
             }
 
             if ($searchName != null && $searchName != '') {
