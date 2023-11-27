@@ -61,6 +61,9 @@
      * Create form cateogry
      */
     function createCategory(data, btn, form) {
+        // Remove previous error messages and classes
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').remove();
         $.ajax({
             type: "POST",
             url: "{{ route('admin.category.create') }}",
@@ -102,6 +105,9 @@
      * Update form cateogry
      */
     function updateCategory(data, btn, form) {
+        // Remove previous error messages and classes
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').remove();
         $.ajax({
             type: "POST",
             url: "{{ route('admin.category.update') }}",
@@ -157,16 +163,14 @@
         // Event show category modal
         $('#updateCategoryModal').on('shown.bs.modal', function(e) {
             $('#categoryName').focus();
-            var data = $(e.relatedTarget).data('item');
+            const data = $(e.relatedTarget).data('item');
             if (data) {
                 $("#categoryId").val(data.id);
                 $("#categoryName").val(data.name);
                 $('#cbStatusCate').prop('checked', data.status == 1);
                 $('#titleCategoryModal').html('Cập nhật danh mục');
             } else {
-                $("#categoryId").val("");
-                $("#categoryName").val("");
-                $('#cbStatusCate').prop('checked', true);
+                $('form#form_category')[0].reset(); // reset form
                 $('#titleCategoryModal').html('Thêm mới danh mục');
             }
         });
