@@ -58,7 +58,7 @@
     }
 
     /**
-     * Create cateogry
+     * Create category
      * @param data data to create category
      * @param btn button create category
      * @param form form create category
@@ -105,7 +105,7 @@
     }
 
     /**
-     * Update cateogry
+     * Update category
      * @param data data to update category
      * @param btn button update category
      * @param form form update category
