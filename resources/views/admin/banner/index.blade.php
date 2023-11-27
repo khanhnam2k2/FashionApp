@@ -27,6 +27,8 @@
 
         /**
          * Load banner list
+         * @param page current page
+         * @param searchName name of the search 
          */
         function searchBanner(page = 1, searchName = '') {
             $.ajax({
@@ -46,9 +48,10 @@
         }
 
         $(document).ready(function() {
+
             searchBanner();
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchBanner').keyup(debounce(function(e) {
                 let search = e.currentTarget.value ?? '';
                 if (search != '') {
@@ -58,7 +61,7 @@
                 }
             }, 500));
 
-            // delete banner
+            // Delete banner
             $(document).on('click', '#btnDeleteBanner', function() {
                 let categoryId = $(this).data('id');
                 showConfirmDialog('Bạn có chắc chắn muốn xóa ảnh bìa này không?', function() {
@@ -86,7 +89,7 @@
                 })
             });
 
-            // update status banner
+            // Update status banner
             $(document).on('change', '.cbBannerStatus', function() {
                 $.ajax({
                     type: "PUT",

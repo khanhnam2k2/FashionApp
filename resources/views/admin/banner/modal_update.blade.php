@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="updateBannerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -57,30 +56,38 @@
 </style>
 <script>
     /**
-     * Submit form cateogry
+     * Submit form banner
+     * @param btn button submit
      */
     function doSubmitBanner(btn) {
-        let formData = new FormData($('form#form_banner')[0]);
+        const formBanner = $('form#form_banner');
+        let formData = new FormData(formBanner[0]);
         formData.append('statusBanner', $('#cbStatusBanner').is(':checked') ? 1 : 0);
         if ($('#bannerId').val() == '') {
             showConfirmDialog('Bạn có chắc chắn muốn tạo ảnh bìa này không?', function() {
                 btn.text('Đang tạo...');
                 btn.prop('disabled', true);
-                createBanner(formData, btn);
+                createBanner(formData, btn, formBanner);
             });
         } else {
             showConfirmDialog('Bạn có chắc chắn muốn cập nhật ảnh bìa này không?', function() {
                 btn.text('Đang cập nhật...');
                 btn.prop('disabled', true);
-                updateBanner(formData, btn);
+                updateBanner(formData, btn, formBanner);
             });
         }
     }
 
     /**
-     * Create form banner
+     * Create banner
+     * @param data data to create banner
+     * @param btn button create banner
+     * @param form form create banner
      */
-    function createBanner(data, btn) {
+    function createBanner(data, btn, form) {
+        // Remove previous error messages and classes
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').remove();
         $.ajax({
             type: "POST",
             url: "{{ route('admin.banner.create') }}",
@@ -99,11 +106,15 @@
 
             }
         }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
+            const errors = xhr.responseJSON.errors;
+            if (xhr.status === 400 && errors) {
+                // Loop through the errors and display them
+                $.each(errors, function(key, value) {
+                    const inputField = form.find('[name="' + key + '"]');
+                    inputField.addClass('is-invalid');
+                    inputField.after('<div class="invalid-feedback">' + value[0] +
+                        '</div>');
+                });
             } else {
                 notiError();
             }
@@ -115,9 +126,15 @@
     }
 
     /**
-     * Update form banner
+     * Update category
+     * @param data data to update category
+     * @param btn button update category
+     * @param form form update category
      */
-    function updateBanner(data, btn) {
+    function updateBanner(data, btn, form) {
+        // Remove previous error messages and classes
+        form.find('.is-invalid').removeClass('is-invalid');
+        form.find('.invalid-feedback').remove();
         $.ajax({
             type: "POST",
             url: "{{ route('admin.banner.update') }}",
@@ -135,11 +152,15 @@
 
             }
         }).fail(function(xhr) {
-            if (xhr.status === 400 && xhr.responseJSON.errors) {
-                const errorMessages = xhr.responseJSON.errors;
-                for (let fieldName in errorMessages) {
-                    notiError(errorMessages[fieldName][0]);
-                }
+            const errors = xhr.responseJSON.errors;
+            if (xhr.status === 400 && errors) {
+                // Loop through the errors and display them
+                $.each(errors, function(key, value) {
+                    const inputField = form.find('[name="' + key + '"]');
+                    inputField.addClass('is-invalid');
+                    inputField.after('<div class="invalid-feedback">' + value[0] +
+                        '</div>');
+                });
             } else {
                 notiError();
             }
@@ -186,15 +207,10 @@
                 $('#cbStatusBanner').prop('checked', data.status == 1);
                 $('#titleBannerModal').html('Cập nhật ảnh bìa');
             } else {
+                $('form#form_banner')[0].reset(); // reset form
                 imagePreviewHtml =
                     `<img src="{{ asset('img/default-img.png') }}" id="imageBannerPreview" />`;
                 $('#imageBannerPreviewContainer').html(imagePreviewHtml);
-
-                $("#bannerId").val("");
-                $("#titleBanner").val("");
-                $("#imageBanner").val("");
-                $("#descriptionBanner").val("");
-                $('#cbStatusBanner').prop('checked', true);
                 $('#titleBannerModal').html('Thêm mới ảnh bìa');
             }
         });
