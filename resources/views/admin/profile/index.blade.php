@@ -71,7 +71,9 @@
 
                 data: data,
             }).done(function(res) {
-                notiSuccess('Cập nhật hồ sơ thành công');
+                notiSuccess('Cập nhật hồ sơ thành công', 'center', function() {
+                    window.location.reload();
+                }, 1000);
             }).fail(function(xhr) {
                 const errors = xhr.responseJSON.errors;
                 if (xhr.status === 400 && errors) {

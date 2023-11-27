@@ -34,11 +34,6 @@ function showConfirmDialog(message, preConfirmCallback) {
 }
 
 
-
-
-
-
-
 /**
  * show success message
  * @param {String} mess

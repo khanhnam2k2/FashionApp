@@ -94,25 +94,34 @@
     <script>
         /*
          * Update profile user
-         *param data data to update profile
-         *param btn button to update
+         * @param data data to update profile
+         * @param btn button to update
+         * @param form form update
          */
-        function updateProfile(data, btn) {
+        function updateProfile(data, btn, form) {
+            // Remove previous error messages and classes
+            form.find('.is-invalid').removeClass('is-invalid');
+            form.find('.invalid-feedback').remove();
             $.ajax({
                 type: "POST",
                 url: "{{ route('profile.updateProfile') }}",
                 contentType: false,
                 processData: false,
-
                 data: data,
             }).done(function(res) {
-                notiSuccess('Cập nhật hồ sơ thành công');
+                notiSuccess('Cập nhật hồ sơ thành công', 'center', function() {
+                    window.location.reload();
+                }, 1000);
             }).fail(function(xhr) {
-                if (xhr.status === 400 && xhr.responseJSON.errors) {
-                    const errorMessages = xhr.responseJSON.errors;
-                    for (let fieldName in errorMessages) {
-                        notiError(errorMessages[fieldName][0]);
-                    }
+                const errors = xhr.responseJSON.errors;
+                if (xhr.status === 400 && errors) {
+                    // Loop through the errors and display them
+                    $.each(errors, function(key, value) {
+                        const inputField = form.find('[name="' + key + '"]');
+                        inputField.addClass('is-invalid');
+                        inputField.after('<div class="invalid-feedback">' + value[0] +
+                            '</div>');
+                    });
                 } else {
                     notiError();
                 }
@@ -123,21 +132,22 @@
         }
         $(document).ready(function() {
 
-            // change image profile
+            // Change image profile
             $('#avatar_user').change(function() {
                 handleImageUpload(this, $('#avatar_img'));
             });
 
-            // click to update profile
+            // Click to update profile
             $('#btnUpdateProfile').click(function(e) {
                 e.preventDefault();
                 const btnUpdateProfile = $(this);
-                let formData = new FormData($('form#form_update_profile')[0]);
+                const formUpdateProfile = $('form#form_update_profile');
+                let formData = new FormData(formUpdateProfile[0]);
                 showConfirmDialog('Bạn chắc chắn muốn cập nhật hồ sơ của bạn?', function() {
                     btnUpdateProfile.prop('disabled', true);
                     btnUpdateProfile.text('Đang cập nhật...');
-                    updateProfile(formData, btnUpdateProfile);
-                })
+                    updateProfile(formData, btnUpdateProfile, formUpdateProfile);
+                });
             })
         })
     </script>
