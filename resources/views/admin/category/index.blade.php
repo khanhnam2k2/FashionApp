@@ -27,6 +27,8 @@
 
         /**
          * Load cagtegory list
+         * @param page current page
+         * @param searchName name of the search
          */
         function searchCategory(page = 1, searchName = '') {
             $.ajax({
@@ -48,7 +50,7 @@
         $(document).ready(function() {
             searchCategory();
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchCategory').keyup(debounce(function(e) {
                 let search = e.currentTarget.value ?? '';
                 if (search != '') {
@@ -58,7 +60,7 @@
                 }
             }, 500));
 
-            // delete category
+            // Delete category
             $(document).on('click', '#btnDeleteCate', function() {
                 let categoryId = $(this).data('id');
                 showConfirmDialog('Bạn có chắc chắn muốn xóa danh mục này không?', function() {
@@ -86,7 +88,7 @@
                 })
             });
 
-            // update status category
+            // Update status category
             $(document).on('change', '.cbCateStatus', function() {
                 $.ajax({
                     type: "PUT",

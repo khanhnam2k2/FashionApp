@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="updateCategoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -37,6 +36,7 @@
 <script>
     /**
      * Submit form cateogry
+     * @param btn button submit
      */
     function doSubmitCategory(btn) {
         const formCategory = $('form#form_category');
@@ -58,7 +58,10 @@
     }
 
     /**
-     * Create form cateogry
+     * Create cateogry
+     * @param data data to create category
+     * @param btn button create category
+     * @param form form create category
      */
     function createCategory(data, btn, form) {
         // Remove previous error messages and classes
@@ -102,7 +105,10 @@
     }
 
     /**
-     * Update form cateogry
+     * Update cateogry
+     * @param data data to update category
+     * @param btn button update category
+     * @param form form update category
      */
     function updateCategory(data, btn, form) {
         // Remove previous error messages and classes
