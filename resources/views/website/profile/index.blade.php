@@ -31,6 +31,9 @@
                                     href="{{ route('profile.index') }}"><i class="fa-regular fa-user mr-2"></i>Trang cá
                                     nhân</a>
                             </li>
+                            <li class="mb-4">
+                                <a class="pl-4" href="{{ route('account.changePasswordForm') }}">Đổi mật khẩu</a>
+                            </li>
                             <li>
                                 <a class="{{ request()->is('order') ? 'active' : '' }}" href="{{ route('order.index') }}"><i
                                         class="fa-solid fa-receipt mr-2"></i>Đơn mua</a>

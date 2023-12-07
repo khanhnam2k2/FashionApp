@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\Website\CartController;
 use App\Http\Controllers\Website\CheckoutController;
@@ -158,6 +159,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/create', [CommentController::class, 'create'])->name('comment.create');
         Route::post('/update', [CommentController::class, 'update'])->name('comment.update');
         Route::delete('/delete/{id}', [CommentController::class, 'delete'])->name('comment.delete');
+    });
+
+    Route::prefix('account')->group(function () {
+        Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('account.changePasswordForm');
+        Route::post('/change-password', [ChangePasswordController::class, 'changePassword'])->name('account.changePassword');
     });
 });
 

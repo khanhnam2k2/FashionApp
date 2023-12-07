@@ -90,6 +90,27 @@ class UserService
         }
     }
 
+    /**
+     * Change password
+     * @param Request $request
+     * @return response
+     */
+    public function changePassword($request)
+    {
+        try {
+            $user = User::findOrFail(auth()->user()->id);
+            if (Hash::check($request->current_password, $user->password)) {
+                $user->password = bcrypt($request->new_password);
+                $user->save();
+                return response()->json(['success' => 'Đổi mật khẩu thành công']);
+            } else {
+                return response()->json(['error' => 'Mật khẩu hiện tại không chính xác']);
+            }
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
 
     /**
      * Delete customer
