@@ -7,7 +7,8 @@
                     @php
                         $imagesArray = json_decode($item->productImage, true);
                     @endphp
-                    <img src="{{ Storage::url($imagesArray[0]) }}" width="50" height="50" alt="">
+                    <img src="{{ Storage::url($imagesArray[0]) }}" width="50" height="50" style="object-fit: cover"
+                        alt="">
                 </div>
                 <div class="d-flex flex-column">
                     <p class="text-overflow m-0">{{ $item->productName }} @if ($item->quantity > $item->quantityAvailable)
