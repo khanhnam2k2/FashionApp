@@ -20,7 +20,8 @@
                 <td>{{ $item->code }}</td>
                 <td>{{ $item->full_name }}</td>
                 <td>{{ $item->created_at->format('d-m-Y') }}</td>
-                <td>{{ $item->address }}</td>
+                <td class="text-break">{{ $item->city }} - {{ $item->district }} - {{ $item->ward }} -
+                    {{ $item->address_details }} </td>
                 <td>
                     @if ($item->payment_method == 'vnpay')
                         <span class="">VnPay</span>

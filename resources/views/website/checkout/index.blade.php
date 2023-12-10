@@ -44,16 +44,39 @@
                                             <input type="text" value="{{ Auth::user()->phone ?? '' }}" name="phone">
                                         </div>
                                     </div>
+
                                     <div class="col-lg-6">
                                         <div class="checkout__input">
                                             <p>Địa chỉ Email<span>*</span></p>
                                             <input type="email" name="email" value="{{ Auth::user()->email ?? '' }}">
                                         </div>
                                     </div>
+
+                                </div>
+                                <p>Địa chỉ giao hàng<span>*</span></p>
+                                <div class="row mb-3">
+                                    <div class="col-lg-6">
+                                        <select id="city" name="city" class="form-control">
+                                            <option value="" selected>Chọn tỉnh thành</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <select id="district" name="district" class="form-control">
+                                            <option value="" selected>Chọn quận huyện</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-lg-12">
+                                        <select id="ward" name="ward" class="form-control">
+                                            <option value="" selected>Chọn phường xã</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="checkout__input mb-2">
-                                    <p>Địa chỉ giao hàng<span>*</span></p>
-                                    <textarea name="address" style="color:#000" class="form-control">{{ Auth::user()->address ?? '' }}</textarea>
+                                    <p>Địa chỉ chi tiết<span>*</span></p>
+                                    <textarea name="address_details" style="color:#000" class="form-control">{{ Auth::user()->address ?? '' }}</textarea>
                                 </div>
                                 <div class="checkout__input">
                                     <p>Mô tả thêm</p>
@@ -135,6 +158,63 @@
 @section('web-script')
     <script>
         $(document).ready(function() {
+            const host = "https://provinces.open-api.vn/api/";
+
+            /**
+             * Call api list city viet nam
+             * @param api 
+             * */
+            function callAPI(api) {
+                $.get(api, function(data) {
+                    renderData(data, "city");
+                })
+            }
+
+            callAPI(host + '?depth=1');
+
+            /**
+             * Call api list district 
+             * @param api 
+             * */
+            function callApiDistrict(api) {
+                $.get(api, function(data) {
+                    renderData(data.districts, "district");
+                })
+            }
+
+            /**
+             * Call api list ward 
+             * @param api 
+             * */
+            function callApiWard(api) {
+                $.get(api, function(data) {
+                    renderData(data.wards, "ward");
+                })
+            }
+
+            /**
+             * Render data html address
+             * @param array data address 
+             * @param string name element select
+             * */
+            function renderData(array, select) {
+                let row = '<option disable value="">Chọn</option>';
+                $.each(array, function(index, element) {
+                    row +=
+                        `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`;
+                });
+                $("#" + select).html(row);
+            }
+
+            $("#city").change(() => {
+                callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+            });
+
+            $("#district").change(() => {
+                callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
+            });
+
+
             /**
              * Create new orer
              * @praram {formData} data - data to create new order

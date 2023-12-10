@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('email');
             $table->string('phone');
-            $table->text('address');
+            $table->string('city');
+            $table->string('district');
+            $table->string('ward');
+            $table->text('address_details');
             $table->text('message')->nullable();
             $table->string('code')->nullable();
             $table->string('payment_status')->nullable();

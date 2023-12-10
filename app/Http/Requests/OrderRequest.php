@@ -26,7 +26,10 @@ class OrderRequest extends FormRequest
     {
         return [
             'full_name' => 'required',
-            'address' => 'required',
+            'address_details' => 'required',
+            'city' => 'required',
+            'district' => 'required',
+            'ward' => 'required',
             'phone' => 'required|regex:/^[0-9]{10}$/',
             'email' => 'required|email',
         ];
@@ -36,7 +39,10 @@ class OrderRequest extends FormRequest
     {
         return [
             'full_name.required' => 'Vui lòng nhập họ và tên của bạn',
-            'address.required' => 'Vui lòng nhập địa chỉ giao hàng',
+            'address_details.required' => 'Vui lòng nhập địa chỉ giao hàng',
+            'city.required' => 'Vui lòng chọn thành phố',
+            'district.required' => 'Vui lòng chọn quận huyện',
+            'ward.required' => 'Vui lòng chọn phường xã',
             'phone.required' => 'Vui lòng nhập số điện thoại liên hệ',
             'phone.regex' => 'Số điện thoại không hợp lệ',
             'email.required' => 'Vui lòng nhập địa chỉ email',
