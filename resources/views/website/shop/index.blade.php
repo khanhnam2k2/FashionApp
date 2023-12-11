@@ -99,11 +99,14 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__right">
                                     <p>Sắp xếp theo giá:</p>
-                                    <select id="sortByPrice">
+                                    <select id="sortByPrice"
+                                        style="padding: 3px 5px;
+                                    border-radius: 10px">
                                         <option value="" disabled selected>Chọn sắp xếp kiểu</option>
                                         <option value="asc">Thấp đến cao</option>
                                         <option value="desc">Cao đến thấp</option>
                                     </select>
+
                                 </div>
                             </div>
                         </div>
