@@ -1,3 +1,6 @@
+@php
+    use App\Enums\UserRole;
+@endphp
 <header class="header">
     <div class="header__top">
         <div class="container">
@@ -18,6 +21,12 @@
                             <div class="header__top__hover">
                                 <span>{{ Auth::user()->name }} <i class="arrow_carrot-down"></i></span>
                                 <ul style="text-align: start">
+                                    @if (Auth::user()->role === UserRole::ADMIN)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i
+                                                    class="fa-brands fa-slack mr-2"></i>Trang quản trị</a>
+                                        </li>
+                                    @endif
                                     <li>
                                         <a class="dropdown-item" href="{{ route('profile.index') }}"><i
                                                 class="fa-regular fa-user mr-2"></i>Hồ sơ</a>
