@@ -155,7 +155,7 @@
     <!-- Checkout Section End -->
 @endsection
 <style>
-    .nice-select {
+    #form_order .nice-select {
         display: none !important;
 
     }
