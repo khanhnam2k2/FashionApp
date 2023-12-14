@@ -29,7 +29,7 @@ class OrderNotification extends Mailable
     public function build()
     {
         return $this->view('emails.notificationOrder')
-            ->subject('New Order Notification')
+            ->subject('Thông báo đơn hàng mới')
             ->with(['orderItems' => $this->orderItems, 'order' => $this->order]);
     }
 }

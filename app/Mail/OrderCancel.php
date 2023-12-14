@@ -29,7 +29,7 @@ class OrderCancel extends Mailable
     public function build()
     {
         return $this->view('emails.orderCancel')
-            ->subject('Cancel order')
+            ->subject('Hủy đơn hàng')
             ->with(['orderItems' => $this->orderItems, 'order' => $this->order]);
     }
 }

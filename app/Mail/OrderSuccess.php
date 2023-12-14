@@ -30,7 +30,7 @@ class OrderSuccess extends Mailable
     public function build()
     {
         return $this->view('emails.orderSuccess')
-            ->subject('Successful delivery')
+            ->subject('Giao hàng thành công')
             ->with(['orderItems' => $this->orderItems, 'order' => $this->order]);
     }
 }
