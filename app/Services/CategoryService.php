@@ -31,7 +31,7 @@ class CategoryService
     public function getLimitCategories()
     {
         try {
-            $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->take(3)->get();
+            $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->take(4)->get();
             return $categories;
         } catch (Exception $e) {
             Log::error($e);
