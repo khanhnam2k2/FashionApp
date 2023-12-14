@@ -181,8 +181,6 @@
                 })
             }
 
-            callAPI(host + '?depth=1');
-
             /**
              * Call api list district 
              * @param api 
@@ -217,14 +215,18 @@
                 $("#" + select).html(row);
             }
 
+            // Call api to render data list city
+            callAPI(host + '?depth=1');
+
+            // When city changes, call api to render data list district
             $("#city").change(() => {
                 callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
             });
 
+            // When district changes, call api to render data list ward
             $("#district").change(() => {
                 callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
             });
-
 
             /**
              * Create new orer
@@ -265,14 +267,15 @@
                     btn.prop('disabled', false);
                 })
             }
-            //Handle checkboxes payment method
+
+            // Handle checkboxes payment method
             $('input[type="checkbox"]').change(function() {
                 if ($(this).prop('checked')) {
                     $('input[type="checkbox"]').not(this).prop('checked', false);
                 }
             });
 
-            // click to order 
+            // Click to order 
             $('#btn-order').click(function(e) {
                 e.preventDefault();
                 const btnOrder = $(this);

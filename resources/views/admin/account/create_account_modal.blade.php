@@ -126,13 +126,13 @@
 
     $(document).ready(function() {
 
-        // Click to submit the category
+        // Click to submit
         $('#btnSubmitAccount').click(function(e) {
             e.preventDefault();
             doSubmitAccount($(this));
         });
 
-        // Press enter to submit the category
+        // Press enter to submit
         $('#createAccountModal').on('keypress', function(e) {
             if (e.which === 13) {
                 e.preventDefault();

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Order Cancel</title>
+    <title>Đơn hàng bị hủy</title>
     <style type="text/css">
         body {
             font-family: Arial, sans-serif;

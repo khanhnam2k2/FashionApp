@@ -27,6 +27,8 @@
 
         /**
          * Load cagtegory list
+         * @param page - current page
+         * @param searchName - name of the search
          */
         function searchOrderAdmin(page = 1, searchName = '') {
             $.ajax({
@@ -48,7 +50,7 @@
         $(document).ready(function() {
             searchOrderAdmin();
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchOrder').keyup(debounce(function(e) {
                 let search = e.currentTarget.value ?? '';
                 if (search != '') {
@@ -58,7 +60,7 @@
                 }
             }, 500));
 
-            // delete category
+            // Delete category
             $(document).on('click', '#btnDeleteOrder', function() {
                 let orderId = $(this).data('id');
                 showConfirmDialog('Bạn có chắc chắn muốn xóa đơn hàng này không?', function() {

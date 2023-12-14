@@ -60,6 +60,8 @@
 @section('web-script')
     <script>
         $(document).ready(function() {
+
+            // Click to submit contact
             $('#btnSubmitContact').on('click', function(e) {
                 e.preventDefault();
                 const formContact = $('form#form_contact');

@@ -59,6 +59,10 @@
     <script>
         const urlDeleteComment = "{{ route('comment.delete', ['id' => ':id']) }}";
 
+        /**
+         * Show file
+         * @param input
+         * */
         function showFile(input) {
             if (input.files && input.files[0]) {
                 let file = input.files[0];
@@ -73,6 +77,10 @@
             }
         }
 
+        /**
+         * Delete file comment 
+         * @param btn
+         * */
         function deleteFileComment(btn) {
             $('#file').val('');
             $('#previewFileCommentPost').empty();
@@ -80,6 +88,10 @@
             btn.hide();
         }
 
+        /**
+         * Load list comment
+         * @param page
+         * */
         function searchCommentPost(page = 1) {
             $.ajax({
                 url: '<?= route('comment.searchCommentPost') ?>?page=' + page,
@@ -97,6 +109,12 @@
             });
         }
 
+        /**
+         * Create comment
+         * @param data data to create
+         * @param btn button to create
+         * @param form form create
+         * */
         function createComment(data, btn, form) {
             $.ajax({
                 type: "POST",
@@ -130,6 +148,12 @@
             })
         }
 
+        /**
+         * Update comment
+         * @param data data to update
+         * @param btn button to update
+         * @param form form update
+         * */
         function updateComment(data, btn, form) {
             $.ajax({
                 type: "POST",
@@ -171,7 +195,7 @@
             searchCommentPost();
 
 
-            // create comment post
+            // Create comment post
             $('#btn-comment-post').click(function(e) {
                 e.preventDefault();
                 $(this).prop('disabled', true);
@@ -185,16 +209,17 @@
                 }
             });
 
-            // chang file comment post
+            // Chang file comment post
             $('#file').change(function() {
                 showFile(this);
             });
 
-            // delete file comment post
+            // Delete file comment post
             $('#deleteFileCommentPost').click(function() {
                 deleteFileComment($(this))
             });
 
+            // Event show model create/update comment
             $('#modalCommentPost').on('shown.bs.modal', function(e) {
                 const data = $(e.relatedTarget).data('item');
                 let filePreviewHtml = '';
@@ -224,7 +249,7 @@
                 }
             });
 
-            // delete comment
+            // Delete comment
             $(document).on('click', '.delete-comment-post', function() {
                 let commentId = $(this).data('id');
                 showConfirmDialog('Bạn có chắc chắn muốn xoá bình luận này không?', function() {

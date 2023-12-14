@@ -124,6 +124,11 @@
         const urlGetQuantityOfSize = "{{ route('shop.getQuantityOfSize', ['size' => ':size']) }}";
         const urlDeleteComment = "{{ route('comment.delete', ['id' => ':id']) }}";
 
+        /**
+         * Get quantity of size
+         * @param size - name size
+         * @param productId - id of product
+         */
         function getQuantityOfSize(size, productId) {
             $.ajax({
                 type: "GET",
@@ -140,6 +145,10 @@
             })
         }
 
+        /**
+         * Show file
+         * @param input
+         */
         function showFile(input) {
             if (input.files && input.files[0]) {
                 let file = input.files[0];
@@ -154,6 +163,10 @@
             }
         }
 
+        /**
+         * Delete file
+         * @param btn
+         */
         function deleteFileComment(btn) {
             $('#file').val('');
             $('#previewFileCommentProduct').empty();
@@ -161,6 +174,10 @@
             btn.hide();
         }
 
+        /**
+         * Load list comment
+         * @param page - current page
+         */
         function searchCommentProduct(page = 1) {
             $.ajax({
                 url: '<?= route('comment.searchCommentProduct') ?>?page=' + page,
@@ -178,6 +195,12 @@
             });
         }
 
+        /**
+         * Create comment
+         * @param data data to create
+         * @param btn button to create
+         * @param form form create
+         * */
         function createComment(data, btn, form) {
             $.ajax({
                 type: "POST",
@@ -211,6 +234,12 @@
             })
         }
 
+        /**
+         * Update comment
+         * @param data data to update
+         * @param btn button to update
+         * @param form form update
+         * */
         function updateComment(data, btn, form) {
             $.ajax({
                 type: "POST",
@@ -251,7 +280,7 @@
         $(document).ready(function() {
             searchCommentProduct();
 
-            // create review product
+            // Create review product
             $('#btn-comment-product').click(function(e) {
                 e.preventDefault();
                 $(this).prop('disabled', true);
@@ -265,16 +294,17 @@
                 }
             });
 
-            // chang file review product in shop
+            // Chang file review product in shop
             $('#file').change(function() {
                 showFile(this);
             });
 
-            // delete file review product
+            // Delete file review product
             $('#deleteFileCommentProduct').click(function() {
                 deleteFileComment($(this))
             });
 
+            // Click to add product from cart
             $('#addToCart').on('click', function(e) {
                 e.preventDefault();
                 $(this).prop('disabled', true);
@@ -285,6 +315,7 @@
                 addToCart(productId, quantity, sizeValue, $(this));
             });
 
+            // When size change, update quantity of size
             $('input[name="size"]').on('change', function(e) {
                 const size = $(this).val();
                 const productId = {{ $product->id }};
@@ -321,7 +352,7 @@
                 }
             });
 
-            // delete comment
+            // Delete comment
             $(document).on('click', '.delete-comment-product', function() {
                 let commentId = $(this).data('id');
                 showConfirmDialog('Bạn có chắc chắn muốn xóa đánh giá này?', function() {

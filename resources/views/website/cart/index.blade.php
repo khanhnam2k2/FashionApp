@@ -45,7 +45,7 @@
 
         /**
          * Update cart
-         * @param data
+         * @param data - data to update
          */
         function updateCart(data) {
             $.ajax({

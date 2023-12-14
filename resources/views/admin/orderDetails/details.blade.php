@@ -27,6 +27,8 @@
     <script>
         /**
          * Load order details list
+         * @param page - current page
+         * @param searchName - name of the search
          */
         function searchOrderDetailsAdmin(page = 1, searchName = '') {
             $.ajax({
@@ -49,7 +51,7 @@
         $(document).ready(function() {
             searchOrderDetailsAdmin();
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchOrderDetails').keyup(debounce(function(e) {
                 let search = e.currentTarget.value ?? '';
                 if (search != '') {

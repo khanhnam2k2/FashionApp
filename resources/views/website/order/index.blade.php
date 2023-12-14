@@ -155,7 +155,7 @@
         $(document).ready(function() {
             searchOrder();
 
-            // show order
+            // Show order
             $('.btn-show-order').on('click', function(e) {
                 e.preventDefault();
                 $('.btn-show-order').removeClass('active');
@@ -164,14 +164,14 @@
                 searchOrder(1, statusOrder);
             });
 
-            // show order details
+            // Show order details
             $(document).on('click', '.btn-order-details', function(e) {
                 e.preventDefault();
                 const orderId = $(this).data('order-id');
                 searchOrderDetails(1, orderId, $(this));
             });
 
-            // click to cancel order
+            // Click to cancel order
             $(document).on('click', '.btn-cancel-order', function(e) {
                 e.preventDefault();
                 const orderId = $(this).data('order-id');
@@ -185,7 +185,7 @@
                 });
             });
 
-            // click to repurchase order
+            // Click to repurchase order
             $(document).on('click', '.btn-repurchase', function(e) {
                 e.preventDefault();
                 const orderId = $(this).data('order-id');

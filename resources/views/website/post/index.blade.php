@@ -36,8 +36,10 @@
     <script>
         /**
          * Load cagtegory list
+         * @param page current page
+         * @param searchName name of the search
          */
-        function searchPostWeb(page = 1, searhName = '') {
+        function searchPostWeb(page = 1, searchName = '') {
             $.ajax({
                 url: '<?= route('post.search') ?>?page=' + page,
                 type: "POST",
@@ -45,7 +47,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    searchName: searhName,
+                    searchName: searchName,
                     paginate: 3,
                     status: {{ Status::ON }}
                 },
@@ -58,7 +60,7 @@
         $(document).ready(function() {
             searchPostWeb();
 
-            // event enter keyword search
+            // Event enter keyword search
             $('#txtSearchPostWeb').keyup(debounce(function(e) {
                 let search = e.currentTarget.value ?? '';
                 if (search != '') {
