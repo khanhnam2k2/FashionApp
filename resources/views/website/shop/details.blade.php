@@ -53,7 +53,6 @@
                         <div class="product__details__text">
                             <h4>{{ $product->name }}</h4>
                             <h3>{{ number_format($product->price, 0, ',', '.') }}đ</h3>
-                            <p>{{ $product->description }}</p>
                             <div class="product__details__option">
                                 <div class="product__details__option__size">
                                     <span>Size:</span>
