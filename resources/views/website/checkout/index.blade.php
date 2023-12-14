@@ -154,7 +154,18 @@
     </section>
     <!-- Checkout Section End -->
 @endsection
+<style>
+    .nice-select {
+        display: none !important;
 
+    }
+
+    #city,
+    #district,
+    #ward {
+        display: block !important;
+    }
+</style>
 @section('web-script')
     <script>
         $(document).ready(function() {
