@@ -46,19 +46,4 @@ class CheckoutController extends Controller
         $data = $this->orderService->placeOrder($request);
         return response()->json(['data' => $data]);
     }
-
-    /**
-     * Vnpay Payment
-     * @param Request $request
-     * @return view
-     */
-    public function vnpayReturn(Request $request)
-    {
-        $data = $this->orderService->handleVnPayReturn($request);
-        if ($data == true) {
-            return redirect()->route('home')->with('success', 'Thanh toán bằng ví thành công! Vui lòng kiểm tra đơn mua của bạn để biết thêm thông tin');
-        } else {
-            return redirect()->route('home')->with('error', 'Thanh toán bằng ví thất bại! Vui lòng thử lại');
-        }
-    }
 }

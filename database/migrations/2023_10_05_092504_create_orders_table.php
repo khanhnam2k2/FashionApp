@@ -23,8 +23,6 @@ return new class extends Migration
             $table->text('address_details');
             $table->text('message')->nullable();
             $table->string('code')->nullable();
-            $table->string('payment_status')->nullable();
-            $table->string('payment_method')->nullable();
 
             $table->tinyInteger('status')->default(1);
             $table->double('total_order', 15, 0)->nullable();

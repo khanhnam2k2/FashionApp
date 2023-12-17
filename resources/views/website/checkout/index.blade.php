@@ -124,18 +124,10 @@
                                                 id="total_order">{{ number_format($totalCarts, 0, ',', '.') }}<span><span>đ</span>
                                         </li>
                                     </ul>
-                                    <div class="checkout__input__checkbox">
-                                        <label for="paypal">
-                                            Thanh toán bằng ví VnPay
-                                            <input type="checkbox" name="vnpay" id="paypal">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
+
                                     <div class="checkout__input__checkbox">
                                         <label for="cod">
                                             Thanh toán khi nhận hàng
-                                            <input type="checkbox" checked name="cod" id="cod">
-                                            <span class="checkmark"></span>
                                         </label>
                                     </div>
                                     <button type="button" id="btn-order" class="site-btn">Đặt hàng</button>
@@ -280,7 +272,6 @@
                 e.preventDefault();
                 const btnOrder = $(this);
                 let formData = new FormData($('form#form_order')[0]);
-                formData.append('paymet_method', $('#paypal').is(':checked') ? 1 : 0);
                 const spanContent = $("#total_order").text();
                 const totalOrder = parseFloat(spanContent.replace(/\./g, ''));
                 formData.append('total_order', totalOrder);

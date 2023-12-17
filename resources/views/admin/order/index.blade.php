@@ -3,9 +3,6 @@
     <div class="order-container container">
         <div class="d-flex justify-content-between">
             <h2>Danh sách đặt hàng</h2>
-            <div class="">
-                <a href="https://sandbox.vnpayment.vn/merchantv2/" target="_blank" class="btn btn-primary">Xem ví VNPAY</a>
-            </div>
             <div class="form-search d-flex algin-items-center gap-2">
                 <input type="text" id="txtSearchOrder" placeholder="Tìm kiếm ở đây..." class="form-control"
                     name="nameCategory">
