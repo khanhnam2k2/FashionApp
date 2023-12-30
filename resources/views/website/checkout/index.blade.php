@@ -33,7 +33,8 @@
                                     <div class="col-lg-12">
                                         <div class="checkout__input">
                                             <p>Tên của bạn<span>*</span></p>
-                                            <input type="text" name="full_name" value="{{ Auth::user()->name ?? '' }}">
+                                            <input type="text" class="form-control" name="full_name"
+                                                value="{{ Auth::user()->name ?? '' }}">
                                         </div>
                                     </div>
                                 </div>
@@ -41,14 +42,16 @@
                                     <div class="col-lg-6">
                                         <div class="checkout__input">
                                             <p>Số liên hệ<span>*</span></p>
-                                            <input type="text" value="{{ Auth::user()->phone ?? '' }}" name="phone">
+                                            <input type="text" class="form-control"
+                                                value="{{ Auth::user()->phone ?? '' }}" name="phone">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6">
                                         <div class="checkout__input">
                                             <p>Địa chỉ Email<span>*</span></p>
-                                            <input type="email" name="email" value="{{ Auth::user()->email ?? '' }}">
+                                            <input type="email" class="form-control" name="email"
+                                                value="{{ Auth::user()->email ?? '' }}">
                                         </div>
                                     </div>
 
@@ -86,7 +89,11 @@
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="checkout__order">
-                                    <h4 class="order__title">Đơn hàng của bạn</h4>
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="order__title">Đơn hàng của bạn</h4>
+                                        <a class="text-dark" href="{{ route('cart.index') }}"><i
+                                                class="fa-solid fa-bag-shopping mr-2"></i>Giỏ hàng</a>
+                                    </div>
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -126,9 +133,10 @@
                                     </ul>
 
                                     <div class="checkout__input__checkbox">
-                                        <label for="cod">
-                                            Thanh toán khi nhận hàng
-                                        </label>
+                                        <p for="cod">
+                                            <i class="fa-solid fa-truck-fast mr-2"></i>Thanh toán khi giao hàng (COD)
+                                        </p>
+                                        <p>Male Fashion cảm ơn bạn đã tin tưởng.</p>
                                     </div>
                                     <button type="button" id="btn-order" class="site-btn">Đặt hàng</button>
                                 </div>
@@ -225,7 +233,10 @@
              * @praram {formData} data - data to create new order
              * @praram {Element} btn - button click create order
              */
-            function createOrder(data, btn) {
+            function createOrder(data, btn, form) {
+                // Remove previous error messages and classes
+                form.find('.is-invalid').removeClass('is-invalid');
+                form.find('.invalid-feedback').remove();
                 $.ajax({
                     type: "POST",
                     url: "{{ route('checkout.placeOrder') }}",
@@ -247,15 +258,20 @@
                         notiError(data.error);
                     }
                 }).fail(function(xhr) {
-                    if (xhr.status === 400 && xhr.responseJSON.errors) {
-                        const errorMessages = xhr.responseJSON.errors;
-                        for (let fieldName in errorMessages) {
-                            notiError(errorMessages[fieldName][0]);
-                        }
+                    const errors = xhr.responseJSON.errors;
+                    if (xhr.status === 400 && errors) {
+                        // Loop through the errors and display them
+                        $.each(errors, function(key, value) {
+                            const inputField = form.find('[name="' + key + '"]');
+                            inputField.addClass('is-invalid');
+                            inputField.after('<div class="invalid-feedback">' + value[0] +
+                                '</div>');
+                        });
                     } else {
                         notiError();
                     }
                 }).always(function() {
+                    btn.text('Đặt hàng');
                     btn.prop('disabled', false);
                 })
             }
@@ -271,23 +287,16 @@
             $('#btn-order').click(function(e) {
                 e.preventDefault();
                 const btnOrder = $(this);
-                let formData = new FormData($('form#form_order')[0]);
+                const formCreateOrder = $('form#form_order');
+                let formData = new FormData(formCreateOrder[0]);
                 const spanContent = $("#total_order").text();
                 const totalOrder = parseFloat(spanContent.replace(/\./g, ''));
                 formData.append('total_order', totalOrder);
-                if ($('#paypal').prop('checked')) {
-                    showConfirmDialog('Bạn có chắc chắn muốn thanh toán bằng ví VnPay không?', function() {
-                        btnOrder.text('Đang tiến hành...');
-                        btnOrder.prop('disabled', true);
-                        createOrder(formData, btnOrder);
-                    });
-                } else {
-                    showConfirmDialog('Bạn có chắc chắn muốn đặt đơn hàng này không?', function() {
-                        btnOrder.text('Đang đặt hàng...');
-                        btnOrder.prop('disabled', true);
-                        createOrder(formData, btnOrder);
-                    });
-                }
+                showConfirmDialog('Bạn có chắc chắn muốn đặt đơn hàng này không?', function() {
+                    btnOrder.text('Đang đặt hàng...');
+                    btnOrder.prop('disabled', true);
+                    createOrder(formData, btnOrder, formCreateOrder);
+                });
             })
         })
     </script>

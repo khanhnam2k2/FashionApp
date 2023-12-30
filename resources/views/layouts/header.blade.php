@@ -78,7 +78,7 @@
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a class="position-relative" id="cartIcon" href="{{ route('cart.index') }}"><img
-                            src="{{ asset('img/icon/cart.png') }}" alt="cart">
+                            src="{{ asset('img/icon/cart.png') }}" alt="cart"><span id="countProduct">0</span>
                     </a>
                     <div id="cart_list" class="position-absolute">
                     </div>
@@ -90,6 +90,23 @@
 </header>
 
 <script>
+    /*
+     * Get Total Product InCart
+     */
+    function getTotalProductInCart() {
+        $.ajax({
+            url: "{{ route('cart.getTotalProductInCart') }}",
+            type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+        }).done(function(res) {
+            $('#countProduct').text(res.data);
+        }).fail(function(xhr) {
+            notiError();
+        });
+    }
+
     /*
      * Load cart list
      */
@@ -114,6 +131,8 @@
     }
 
     $(document).ready(function() {
+
+        getTotalProductInCart();
 
         // Hover cart icon
         $('#cartIcon').hover(

@@ -264,6 +264,30 @@ class CartService extends BaseService
     }
 
     /**
+     * Get total product in cart
+     * @return Number total product in cart
+     */
+    public function getTotalProductInCart()
+    {
+        try {
+            $user  = Auth::user();
+            $cart = Cart::where('user_id', $user->id)->first();
+
+            if (!$cart) {
+                $cart = new Cart();
+                $cart->user_id = $user->id;
+                $cart->save();
+            }
+
+            $totalProductInCart = CartItem::where('cart_id', $cart->id)->count();
+            return $totalProductInCart;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
      * Remove products from cart
      * @param @request
      * @return response message 

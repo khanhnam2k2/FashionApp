@@ -100,6 +100,7 @@
                         if (data.success) {
                             notiSuccess(data.success);
                             searchCart();
+                            getTotalProductInCart();
                         } else if (data.error) {
                             notiError(data.error);
                         }

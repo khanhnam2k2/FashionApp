@@ -109,7 +109,7 @@ function addToCart(productId, quantity, size, btn) {
         if (data.success) {
             notiSuccess(data.success, 'center');
             $('#product-available').text(quantityAvailable);
-
+            getTotalProductInCart();
         } else if (data.error) {
             notiError(data.error);
         }

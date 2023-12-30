@@ -31,7 +31,6 @@ class CartController extends Controller
 
     /**
      * Show cart table in website
-     * @param Request $request
      * @return view cart table
      */
     public function search()
@@ -42,6 +41,11 @@ class CartController extends Controller
             'totalCarts' => $data['totalCarts'],
         ]);
     }
+
+    /**
+     * Show cart list in website
+     * @return view cart list
+     */
     public function searchLimit()
     {
         $data = $this->cartService->showCartLimit();
@@ -81,6 +85,12 @@ class CartController extends Controller
     public function updateCart(CartRequest $request)
     {
         $data = $this->cartService->updateCart($request);
+        return response()->json(['data' => $data]);
+    }
+
+    public function getTotalProductInCart()
+    {
+        $data = $this->cartService->getTotalProductInCart();
         return response()->json(['data' => $data]);
     }
 }

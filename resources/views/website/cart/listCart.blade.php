@@ -23,7 +23,7 @@
             </div>
         @endforeach
         <div class="d-flex justify-content-between align-items-center">
-            <p>{{ $countCart }} Thêm vào giỏ hàng</p>
+            <p>{{ $countCart - count($cartItemLimit) }} Thêm vào giỏ hàng</p>
             <a href="{{ route('cart.index') }}" class="btn btn-danger">Xem giỏ hàng</a>
         </div>
     </div>
