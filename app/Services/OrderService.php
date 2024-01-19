@@ -100,13 +100,19 @@ class OrderService extends BaseService
             $orderItems = $this->getOrderDetails($order->id);
             $currentStatus = $order->status;
             if ($newStatus == StatusOrder::cancelOrder) {
-                if ($user->role == UserRole::ADMIN || $order->status == StatusOrder::orderPlaced) {
-                    $order->status = $newStatus;
-                    $order->save();
-                    Mail::to($order->email)->send(new OrderCancel($order, $orderItems));
-                    return response()->json(['success' => 'Hủy bỏ đơn hàng thành công']);
+                $cancellationReason = $request->cancellationReason;
+                if ($cancellationReason == null || $cancellationReason == '') {
+                    return response()->json(['error' => 'Vui lòng nhập lý do hủy đơn hàng']);
                 } else {
-                    return response()->json(['error' => 'Bạn không thể hủy đơn hàng này khi đã đơn hàng đã được xác nhận!']);
+                    if ($user->role == UserRole::ADMIN || $order->status == StatusOrder::orderPlaced) {
+                        $order->status = $newStatus;
+                        $order->cancellationReason = $cancellationReason;
+                        $order->save();
+                        Mail::to($order->email)->send(new OrderCancel($order, $orderItems));
+                        return response()->json(['success' => 'Hủy bỏ đơn hàng thành công']);
+                    } else {
+                        return response()->json(['error' => 'Bạn không thể hủy đơn hàng này khi đã đơn hàng đã được xác nhận!']);
+                    }
                 }
             } elseif ($newStatus >= $currentStatus && $newStatus <= ($currentStatus + 1)) {
                 $order->status = $newStatus;
@@ -160,6 +166,7 @@ class OrderService extends BaseService
                 'order_items.quantity',
                 'order_items.price',
                 'order_items.size',
+                'products.id as productId',
                 'products.name as productName',
                 'products.images as productImages'
             )
@@ -171,6 +178,7 @@ class OrderService extends BaseService
                     'order_items.quantity',
                     'order_items.price',
                     'order_items.size',
+                    'products.id',
                     'products.name',
                     'products.images'
                 );

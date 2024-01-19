@@ -11,7 +11,8 @@
                     <p><span class="text-danger">Tổng tiền:</span> {{ number_format($item->total_order, 0, ',', '.') }}đ
                     </p>
                     @if ($item->status == StatusOrder::cancelOrder)
-                        <p><span class="text-danger">Hủy đơn hàng vào:</span>: {{ $item->updated_at }}</p>
+                        <p><span class="text-danger">Hủy đơn hàng vào:</span> {{ $item->updated_at }}</p>
+                        <p><span class="text-danger">Lý do hủy:</span> {{ $item->cancellationReason }}</p>
                     @endif
                     <p><span class="text-danger">Thanh toán bằng:</span>
 
@@ -71,7 +72,8 @@
                 <button data-order-id="{{ $item->id }}" class="btn btn-danger btn-success-delivering">Đã nhận được
                     hàng</button>
             @elseif($item->status == StatusOrder::orderPlaced)
-                <button data-order-id="{{ $item->id }}" class="btn btn-danger btn-cancel-order">Hủy đơn</button>
+                <button data-order-id="{{ $item->id }}" data-target="#cancelOrderModal" data-toggle="modal"
+                    class="btn btn-danger btn-cancel-order">Hủy đơn</button>
             @endif
         </div>
     </div>

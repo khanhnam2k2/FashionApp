@@ -67,6 +67,7 @@
     </section>
     <!-- About Section End -->
 
+    @include('website.order.modal_cacel_order')
 
 @endsection
 
@@ -129,7 +130,7 @@
          * @param status - status order
          * @param btn - button to update status
          */
-        function updateStatusOrder(orderId, status, btn, message = null) {
+        function updateStatusOrder(orderId, status, btn, message = null, cancellationReason = null) {
             $.ajax({
                 type: "POST",
                 url: "{{ route('order.updateStatus') }}",
@@ -139,6 +140,8 @@
                 data: {
                     orderId: orderId,
                     status: status,
+                    cancellationReason: cancellationReason
+
                 },
             }).done(function(res) {
                 const data = res.data.original;
@@ -151,6 +154,11 @@
                 }
             }).fail(function() {
                 notiError();
+            }).always(function() {
+                btn.prop('disabled', false);
+                if (status == statusCancelOrder) {
+                    btn.text('Hủy');
+                }
             });
         }
         $(document).ready(function() {
@@ -172,19 +180,21 @@
                 searchOrderDetails(1, orderId, $(this));
             });
 
-            // Click to cancel order
-            $(document).on('click', '.btn-cancel-order', function(e) {
-                e.preventDefault();
-                const orderId = $(this).data('order-id');
-                const btnCancel = $(this);
-                const messageSuccess = 'Đơn hàng đã được hủy thành công!'
-                showConfirmDialog('Bạn có chắc chắn muốn hủy đơn hàng này không?', function() {
-                    btnCancel.prop('disabled', true);
-                    btnCancel.text('Đang hủy...');
-                    updateStatusOrder(orderId, parseInt(statusCancelOrder), btnCancel,
-                        messageSuccess);
-                });
-            });
+
+
+            // // Click to cancel order
+            // $(document).on('click', '.btn-cancel-order', function(e) {
+            //     e.preventDefault();
+            //     const orderId = $(this).data('order-id');
+            //     const btnCancel = $(this);
+            //     const messageSuccess = 'Đơn hàng đã được hủy thành công!'
+            //     showConfirmDialog('Bạn có chắc chắn muốn hủy đơn hàng này không?', function() {
+            //         btnCancel.prop('disabled', true);
+            //         btnCancel.text('Đang hủy...');
+            //         updateStatusOrder(orderId, parseInt(statusCancelOrder), btnCancel,
+            //             messageSuccess);
+            //     });
+            // });
 
             // Click to repurchase order
             $(document).on('click', '.btn-repurchase', function(e) {

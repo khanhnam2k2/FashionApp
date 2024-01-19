@@ -21,15 +21,23 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <label for="statusOrder" class="form-label">Trạng thái đơn hàng<span
-                                    class="text-danger">*</span></label>
-                            <select name="status" class="form-select" id="statusOrder">
-                                <option value="1">Chờ xác nhận</option>
-                                <option value="2">Xác nhận thành công</option>
-                                <option value="3">Đang giao</option>
-                                <option value="4">Giao hàng thành công</option>
-                                <option value="0">Hủy đơn hàng</option>
-                            </select>
+                            <div class="mb-3">
+                                <label for="statusOrder" class="form-label">Trạng thái đơn hàng<span
+                                        class="text-danger">*</span></label>
+                                <select name="status" class="form-select" id="statusOrder">
+                                    <option value="1">Chờ xác nhận</option>
+                                    <option value="2">Xác nhận thành công</option>
+                                    <option value="3">Đang giao</option>
+                                    <option value="4">Giao hàng thành công</option>
+                                    <option value="0">Hủy đơn hàng</option>
+                                </select>
+                            </div>
+                            <div class="mb-3" id="cancellationReasonGroup" style="display: none;">
+                                <label class="form-label" for="cancellationReason">Lý do hủy<span
+                                        class="text-danger">*</span></label>
+                                <textarea id="cancellationReason" name="cancellationReason" class="form-control"></textarea>
+
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -127,5 +135,16 @@
                 notiError();
             }
         });
+
+
+        // Show textarea messsage cancel when status order = 0
+        $('#statusOrder').change(function() {
+            let selectValue = $(this).val();
+            if (selectValue === "0") {
+                $("#cancellationReasonGroup").show();
+            } else {
+                $("#cancellationReasonGroup").hide();
+            }
+        })
     })
 </script>

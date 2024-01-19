@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('ward');
             $table->text('address_details');
             $table->text('message')->nullable();
+            $table->text('cancellationReason')->nullable();
             $table->string('code')->nullable();
 
             $table->tinyInteger('status')->default(1);

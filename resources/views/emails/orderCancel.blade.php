@@ -33,6 +33,7 @@
             <h3>Thông tin đơn hàng</h3>
             <p>Mã đơn hàng: <span class="text-danger">{{ $order->code }}</span></p>
             <p>Ngày đặt: <span class="text-danger">{{ $order->created_at }}</span></p>
+            <p>Lý do hủy: <span class="text-danger">{{ $order->cancellationReason }}</span></p>
         </div>
 
         <p>Vui lòng liên hệ với chúng tôi nếu bạn có bất kỳ câu hỏi hoặc mối quan tâm nào.</p>
