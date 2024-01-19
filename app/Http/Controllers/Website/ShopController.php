@@ -51,7 +51,11 @@ class ShopController extends Controller
     public function details($id)
     {
         $product = $this->productService->getProductById($id);
-        return view('website.shop.details', compact('product'));
+        if ($product) {
+            return view('website.shop.details', compact('product'));
+        } else {
+            abort(404);
+        }
     }
 
     /**

@@ -74,6 +74,7 @@
     <script>
         var statusCancelOrder = {{ StatusOrder::cancelOrder }};
         var statusWatingCofirm = {{ StatusOrder::orderPlaced }};
+        var statusSuccessfulDelivery = {{ StatusOrder::successfulDelivery }}
 
         /**
          * Load order list
@@ -191,11 +192,26 @@
                 const orderId = $(this).data('order-id');
                 const btnRepurchase = $(this);
                 const messageSuccess =
-                    'Đã mua lại đơn hàng thành công! Vui lòng kiểm tra lại đơn mua của bạn'
+                    'Đã mua lại đơn hàng thành công! Vui lòng kiểm tra lại đơn mua của bạn';
                 showConfirmDialog('Bạn có chắc chắn muốn mua lại đơn đặt hàng này không?', function() {
                     btnRepurchase.prop('disabled', true);
                     btnRepurchase.text('Đang mua lại...');
                     updateStatusOrder(orderId, parseInt(statusWatingCofirm), btnRepurchase,
+                        messageSuccess);
+                });
+            });
+
+            $(document).on('click', '.btn-success-delivering', function(e) {
+                e.preventDefault();
+                const orderId = $(this).data('order-id');
+                const btnSuccessDelivering = $(this);
+                const messageSuccess =
+                    'Đã hoàn thành giao nhận hàng! Cảm ơn bạn đã tin tưởng chúng tôi!'
+                showConfirmDialog('Bạn có chắc chắn đã nhận được đơn hàng?', function() {
+                    btnSuccessDelivering.prop('disabled', true);
+                    btnSuccessDelivering.text('Đang xác nhận...');
+                    updateStatusOrder(orderId, parseInt(statusSuccessfulDelivery),
+                        btnSuccessDelivering,
                         messageSuccess);
                 });
             });

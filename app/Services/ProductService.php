@@ -51,7 +51,9 @@ class ProductService extends BaseService
                     'categories.name'
                 )
                 ->first();
-
+            if (!$product) {
+                return false;
+            }
             return $product;
         } catch (Exception $e) {
             Log::error($e);

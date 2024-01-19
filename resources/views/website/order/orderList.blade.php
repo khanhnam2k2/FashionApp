@@ -14,14 +14,9 @@
                         <p><span class="text-danger">Hủy đơn hàng vào:</span>: {{ $item->updated_at }}</p>
                     @endif
                     <p><span class="text-danger">Thanh toán bằng:</span>
-                        @if ($item->payment_method == 'vnpay')
-                            <span class="">VnPay</span>
-                            @if ($item->payment_status == 'success')
-                                <span class="text-primary"> - Đã thanh toán</span>
-                            @endif
-                        @else
-                            <span class="">Khi nhận hàng</span>
-                        @endif
+
+                        <span class="">Khi nhận hàng</span>
+
                     </p>
                 </div>
                 @switch($item->status)
@@ -72,6 +67,9 @@
                 tiết</button>
             @if ($item->status == StatusOrder::cancelOrder)
                 <button data-order-id="{{ $item->id }}" class="btn btn-danger btn-repurchase">Mua lại</button>
+            @elseif($item->status == StatusOrder::delivering)
+                <button data-order-id="{{ $item->id }}" class="btn btn-danger btn-success-delivering">Đã nhận được
+                    hàng</button>
             @elseif($item->status == StatusOrder::orderPlaced)
                 <button data-order-id="{{ $item->id }}" class="btn btn-danger btn-cancel-order">Hủy đơn</button>
             @endif

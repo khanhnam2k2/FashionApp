@@ -20,6 +20,9 @@
             <p class="p-3">Thành tiền
                 <span class="text-danger">: {{ number_format($item->total, 0, ',', '.') }}đ</span>
             </p>
+            <div class=""><a href="{{ route('shop.details', $item->productId) }}" class="btn btn-warning">Đánh
+                    giá</a></div>
+
         </div>
     </div>
 @endforeach
