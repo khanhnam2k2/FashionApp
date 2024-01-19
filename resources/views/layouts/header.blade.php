@@ -103,7 +103,11 @@
         }).done(function(res) {
             $('#countProduct').text(res.data);
         }).fail(function(xhr) {
-            notiError();
+            if (xhr.status === 401) {
+                $('#countProduct').text(0);
+            } else {
+                notiError();
+            }
         });
     }
 
