@@ -22,7 +22,6 @@ class Order extends Model
         'message',
         'status',
         'code',
-        'payment_status',
-        'payment_method',
+        'complete_date'
     ];
 }
