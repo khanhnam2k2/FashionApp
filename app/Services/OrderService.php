@@ -116,11 +116,13 @@ class OrderService extends BaseService
                 }
             } elseif ($newStatus >= $currentStatus && $newStatus <= ($currentStatus + 1)) {
                 $order->status = $newStatus;
-                $order->save();
 
                 if ($newStatus == StatusOrder::successfulDelivery) {
+                    $order->complete_date = now();
                     Mail::to($order->email)->send(new OrderSuccess($order, $orderItems));
                 }
+                $order->save();
+
                 return response()->json(['success' => 'Cập nhật trạng thái đơn hàng thành công']);
             } else {
                 return response()->json(['error' => 'Vui lòng cập nhật theo thứ tự']);
@@ -210,10 +212,10 @@ class OrderService extends BaseService
             $currentYear = Carbon::now()->year;
 
             $totalOrdersByMonth = DB::table('orders')
-                ->selectRaw('MONTH(created_at) as month, SUM(total_order) as total_order')
-                ->whereYear('created_at', $year ?? $currentYear)
+                ->selectRaw('MONTH(complete_date) as month, SUM(total_order) as total_order')
+                ->whereYear('complete_date', $year ?? $currentYear)
                 ->where('status', '=', 4)
-                ->groupBy(DB::raw('MONTH(created_at)'))
+                ->groupBy(DB::raw('MONTH(complete_date)'))
                 ->pluck('total_order', 'month')
                 ->all();
 
