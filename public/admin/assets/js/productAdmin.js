@@ -158,7 +158,41 @@ function innerHtmlImageUpload(array) {
     listFileUpload.html(htmlContainer);
 }
 
+/**
+ * Show renvenue product by id
+ * @param {Number} productId id of product
+ * @param {Date} month month 
+ * @param {Date} year year
+ */
+function showRevenue(productId, month = null, year = null) {
+    $.ajax({
+        url: globalRouter.url.replace(':id', productId),
+        type: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
+        success: function (response) {
+            let revenueContent = '';
 
+            if (response == '') {
+                revenueContent = `<p class="text-danger">Không tìm thấy doanh thu của sản phẩm này!</p>`;
+            } else {
+                revenueContent = `
+                <p>Tên sản phẩm: <span class="text-primary">${response.product_name}</span </p>
+                <p>Tổng số lượng đã bán: <span class="text-primary">${response.total_quantity_sold}</span </p>
+                <p>Tổng doanh thu: <span class="text-primary">${response.revenue}</span </p> 
+                `;
+            }
+
+            $('#box_revenue').html(revenueContent);
+            $('#revenueModal').modal('show');
+        },
+        error: function (error) {
+            notiError();
+        }
+    });
+}
 $(document).ready(function () {
     searchProduct();
 
@@ -383,5 +417,28 @@ $(document).ready(function () {
             $('#titleCategoryModal').html('Tạo sản phẩm mới');
         }
     });
+
+    // Event show modal renveue product
+    $(document).on('shown.bs.modal', '#revenueModal', function (e) {
+        const productId = $(e.relatedTarget).data('product-id')
+        $('#productId').val(productId);
+        $('form#form_time_revenue')[0].reset();
+    })
+
+    // Cilck to view revenue product
+    $(document).on('click', '.btn-view-revenue', function () {
+        const productId = $(this).data('product-id');
+        showRevenue(productId);
+    });
+
+    // View revenue product by month, year
+    $(document).on('change', '#selectMonth, #selectYear', function () {
+        const productId = $('#productId').val();
+        let selectedMonth = $('#selectMonth').val();
+        let selectedYear = $('#selectYear').val();
+        console.log(productId, selectedMonth, selectedYear);
+        showRevenue(productId, selectedMonth, selectedYear);
+    })
+
 });
 

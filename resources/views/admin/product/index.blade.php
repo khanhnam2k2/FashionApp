@@ -43,6 +43,8 @@
             urlCreateProduct: "{{ route('admin.product.create') }}",
             urlUpdateProduct: "{{ route('admin.product.update') }}",
             urlUpdateStatusProduct: "{{ route('admin.product.updateStatus') }}",
+            url: "{{ route('admin.product.getRevenueByProduct', ['id' => ':id']) }}",
+
         }
     </script>
     <script src="{{ asset('admin/assets/js/productAdmin.js') }}"></script>

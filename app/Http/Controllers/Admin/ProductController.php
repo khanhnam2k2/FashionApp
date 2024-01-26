@@ -87,4 +87,24 @@ class ProductController extends Controller
         $this->productService->deleteProduct($id);
         return response()->json('ok');
     }
+
+    /**
+     * Get the revenue of each product by id
+     * @param Request $request 
+     * @param number $id id of product 
+     * @return response data revenue
+     */
+    public function getRevenueByProduct(Request $request, $id)
+    {
+        $data = $this->productService->getRevenueByProduct($request, $id);
+        if (!empty($data)) {
+            return response()->json([
+                'product_id' => $data['product_id'],
+                'product_name' => $data['product_name'],
+                'revenue' => $data['revenue'],
+                'total_quantity_sold' => $data['total_quantity_sold'],
+                'total_orders' => $data['total_orders']
+            ]);
+        }
+    }
 }

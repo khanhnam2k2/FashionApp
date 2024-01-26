@@ -314,4 +314,54 @@ class ProductService extends BaseService
             return response()->json($e, 500);
         }
     }
+
+    /**
+     * Get the revenue of each product by id
+     * @param $request 
+     * @param number $id id of product 
+     * @return array data revenue
+     */
+    public function getRevenueByProduct($request, $id)
+    {
+        try {
+            $selectedMonth = $request->month;
+            $selectedYear = $request->year;
+            $productRevenue = Product::select(
+                'products.id as product_id',
+                'products.name as product_name',
+                DB::raw('SUM(order_items.quantity * order_items.price) as revenue'),
+                DB::raw('SUM(order_items.quantity) as total_quantity_sold'),
+                DB::raw('COUNT(DISTINCT orders.id) as total_orders')
+            )
+                ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+                ->leftJoin('orders', 'order_items.order_id', '=', 'orders.id')
+                ->where('orders.status', 4)
+                ->where('products.id', $id);
+
+            if ($selectedMonth && $selectedYear) {
+                $productRevenue->whereMonth('orders.complete_date', $selectedMonth)
+                    ->whereYear('orders.complete_date', $selectedYear);
+            }
+
+
+
+            $productRevenue = $productRevenue->groupBy('products.id', 'products.name')
+                ->first();
+
+            if (!$productRevenue) {
+                return [];
+            }
+
+            return [
+                'product_id' => $productRevenue->product_id,
+                'product_name' => $productRevenue->product_name,
+                'revenue' => $productRevenue->revenue,
+                'total_quantity_sold' => $productRevenue->total_quantity_sold,
+                'total_orders' => $productRevenue->total_orders
+            ];
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
 }
