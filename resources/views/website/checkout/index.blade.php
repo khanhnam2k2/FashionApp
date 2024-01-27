@@ -137,7 +137,7 @@
                                         <p for="cod">
                                             <i class="fa-solid fa-truck-fast mr-2"></i>Thanh toán khi giao hàng (COD)
                                         </p>
-                                        <p>Male Fashion cảm ơn bạn đã tin tưởng.</p>
+                                        <p>Male Fashion cảm ơn bạn đã tin tưởng</p>
                                     </div>
                                     <button type="button" id="btn-order" class="site-btn">Đặt hàng</button>
                                 </div>
