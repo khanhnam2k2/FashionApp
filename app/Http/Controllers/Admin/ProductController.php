@@ -107,4 +107,15 @@ class ProductController extends Controller
             ]);
         }
     }
+
+    /**
+     * Show revenue product table admin
+     * @param Request $request
+     * @return view revenue product table
+     */
+    public function searchRevenueProducts(Request $request)
+    {
+        $data = $this->productService->searchRevenueProducts($request);
+        return view('admin.product.tableRevenueProducts', compact('data'));
+    }
 }

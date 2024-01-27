@@ -338,9 +338,13 @@ class ProductService extends BaseService
                 ->where('orders.status', 4)
                 ->where('products.id', $id);
 
-            if ($selectedMonth && $selectedYear) {
-                $productRevenue->whereMonth('orders.complete_date', $selectedMonth)
-                    ->whereYear('orders.complete_date', $selectedYear);
+
+            if ($selectedMonth != null && $selectedMonth != '') {
+                $productRevenue->whereMonth('orders.complete_date', $selectedMonth);
+            }
+
+            if ($selectedYear != null && $selectedYear != '') {
+                $productRevenue->whereYear('orders.complete_date', $selectedYear);
             }
 
 
@@ -359,6 +363,44 @@ class ProductService extends BaseService
                 'total_quantity_sold' => $productRevenue->total_quantity_sold,
                 'total_orders' => $productRevenue->total_orders
             ];
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
+
+    /**
+     * Get list revenue product
+     * @param $request 
+     * @return array data list revenue products
+     */
+    public function searchRevenueProducts($request)
+    {
+        try {
+            $selectedMonth = $request->month;
+            $selectedYear = $request->year;
+            $productRevenue = Product::select(
+                'products.id as product_id',
+                'products.name as product_name',
+                'products.images as product_images',
+                DB::raw('SUM(order_items.quantity * order_items.price) as revenue'),
+                DB::raw('SUM(order_items.quantity) as total_quantity_sold'),
+            )
+                ->join('order_items', 'products.id', '=', 'order_items.product_id')
+                ->join('orders', 'order_items.order_id', '=', 'orders.id');
+
+            if ($selectedMonth != null && $selectedMonth != '') {
+                $productRevenue->whereMonth('orders.complete_date', $selectedMonth);
+            }
+
+            if ($selectedYear != null && $selectedYear != '') {
+                $productRevenue->whereYear('orders.complete_date', $selectedYear);
+            }
+
+            $productRevenue = $productRevenue->groupBy('products.id', 'products.name', 'products.images')
+                ->paginate(4);
+
+            return $productRevenue;
         } catch (Exception $e) {
             Log::error($e);
             return response()->json($e, 500);

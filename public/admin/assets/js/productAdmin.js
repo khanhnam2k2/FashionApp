@@ -166,7 +166,7 @@ function innerHtmlImageUpload(array) {
  */
 function showRevenue(productId, month = null, year = null) {
     $.ajax({
-        url: globalRouter.url.replace(':id', productId),
+        url: globalRouter.urlgetRevenueByProduct.replace(':id', productId),
         type: 'GET',
         data: {
             month: month,
@@ -421,7 +421,7 @@ $(document).ready(function () {
     // Event show modal renveue product
     $(document).on('shown.bs.modal', '#revenueModal', function (e) {
         const productId = $(e.relatedTarget).data('product-id')
-        $('#productId').val(productId);
+        $('#productrRevenueId').val(productId);
         $('form#form_time_revenue')[0].reset();
     })
 
@@ -431,14 +431,29 @@ $(document).ready(function () {
         showRevenue(productId);
     });
 
-    // View revenue product by month, year
-    $(document).on('change', '#selectMonth, #selectYear', function () {
-        const productId = $('#productId').val();
+    // View revenue product by month
+    $(document).on('change', '#selectMonth', function () {
+        const productId = $('#productrRevenueId').val();
         let selectedMonth = $('#selectMonth').val();
         let selectedYear = $('#selectYear').val();
-        console.log(productId, selectedMonth, selectedYear);
-        showRevenue(productId, selectedMonth, selectedYear);
-    })
+        if (selectedMonth == null || selectedMonth == '') {
+            showRevenue(productId, null, selectedYear);
+        } else {
+            showRevenue(productId, selectedMonth, selectedYear);
+        }
+    });
+
+    // View revenue product by year
+    $(document).on('change', '#selectYear', function () {
+        const productId = $('#productrRevenueId').val();
+        let selectedMonth = $('#selectMonth').val();
+        let selectedYear = $('#selectYear').val();
+        if (selectedYear == null || selectedYear == '') {
+            showRevenue(productId, selectedMonth, null);
+        } else {
+            showRevenue(productId, selectedMonth, selectedYear);
+        }
+    });
 
 });
 

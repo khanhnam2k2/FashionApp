@@ -23,184 +23,37 @@
             </div>
 
         </div>
-        {{-- <div class="row">
-            <div class="col-lg-4 d-flex align-items-stretch">
+        <div class="row">
+            <div class="col-lg-12 d-flex align-items-stretch">
                 <div class="card w-100">
                     <div class="card-body p-4">
-                        <div class="mb-4">
-                            <h5 class="card-title fw-semibold">Recent Transactions</h5>
+                        <div class="d-flex justify-content-between">
+                            <h5 class="card-title fw-semibold mb-4">Doanh thu của từng sản phẩm</h5>
+                            <div class="d-flex align-items-center">
+                                <select class="form-select me-3" id="selectMonth">
+                                    <option value="" disabled selected>Chọn tháng</option>
+                                    <option value="">Tất cả</option>
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <option value="{{ $i }}"> Tháng {{ $i }}</option>
+                                    @endfor
+                                </select>
+                                <select class="form-select" id="selectYear">
+                                    <option value="" selected disabled>Chọn năm</option>
+                                    <option value="">Tất cả</option>
+                                    @for ($year = date('Y'); $year >= date('Y') - 2; $year--)
+                                        <option value="{{ $year }}">
+                                            {{ $year }}</option>
+                                    @endfor
+                                </select>
+                            </div>
                         </div>
-                        <ul class="timeline-widget mb-0 position-relative mb-n5">
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">09:30</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border-primary flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment received from John Doe of $385.90
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">10:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border-info flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New sale recorded <a
-                                        href="javascript:void(0)" class="text-primary d-block fw-normal">#ML-3467</a>
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">12:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border-success flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment was made of $64.95 to Michael</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">09:30 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border-warning flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New sale recorded <a
-                                        href="javascript:void(0)" class="text-primary d-block fw-normal">#ML-3467</a>
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">09:30 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border-danger flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New arrival recorded
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">12:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border-success flex-shrink-0 my-8"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment Done</div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8 d-flex align-items-stretch">
-                <div class="card w-100">
-                    <div class="card-body p-4">
-                        <h5 class="card-title fw-semibold mb-4">Recent Transactions</h5>
-                        <div class="table-responsive">
-                            <table class="table text-nowrap mb-0 align-middle">
-                                <thead class="text-dark fs-4">
-                                    <tr>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Id</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Assigned</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Name</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Priority</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Budget</h6>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">1</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Sunil Joshi</h6>
-                                            <span class="fw-normal">Web Designer</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Elite Admin</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-primary rounded-3 fw-semibold">Low</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">2</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Andrew McDownland</h6>
-                                            <span class="fw-normal">Project Manager</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Real Homes WP Theme</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-secondary rounded-3 fw-semibold">Medium</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$24.5k</h6>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">3</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Christopher Jamil</h6>
-                                            <span class="fw-normal">Project Manager</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">MedicalPro WP Theme</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-danger rounded-3 fw-semibold">High</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$12.8k</h6>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">4</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Nirav Joshi</h6>
-                                            <span class="fw-normal">Frontend Engineer</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Hosting Press HTML</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-success rounded-3 fw-semibold">Critical</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$2.4k</h6>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div id="table_revenue_products">
+
                         </div>
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
 
         <div class="py-6 px-6 text-center">
             <p class="mb-0 fs-4">Thiết kế và phát triển bởi <a href="https://adminmart.com/" target="_blank"
@@ -212,6 +65,57 @@
 @section('web-script')
     <script>
         const urlGetTotalOrderInYear = "{{ route('admin.getTotalOrderInYear') }}";
+        const urlGetRevenueProduct = "{{ route('admin.product.searchRevenueProducts') }}";
+        const iconLoading = "{{ asset('admin/assets/images/loading.svg') }}";
+        /**
+         * Load revenue product list
+         */
+        function searchRevenueProduct(page = 1, month = null, year = null) {
+            $('#table_revenue_products').html(`<div class="d-flex justify-content-center">
+                                <img src="${iconLoading}" alt="">
+                            </div>`);
+            $.ajax({
+                url: urlGetRevenueProduct + '?page=' + page,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    month: month,
+                    year: year,
+                },
+            }).done(function(data) {
+                $('#table_revenue_products').html(data);
+            }).fail(function() {
+                notiError();
+            });
+        }
+
+        $(document).ready(function() {
+            searchRevenueProduct();
+
+            // View revenue products by month
+            $(document).on('change', '#selectMonth', function() {
+                let selectedMonth = $('#selectMonth').val();
+                let selectedYear = $('#selectYear').val();
+                if (selectedMonth == null || selectedMonth == '') {
+                    searchRevenueProduct(1, null, selectedYear);
+                } else {
+                    searchRevenueProduct(1, selectedMonth, selectedYear);
+                }
+            });
+
+            // View revenue products by year
+            $(document).on('change', '#selectYear', function() {
+                let selectedMonth = $('#selectMonth').val();
+                let selectedYear = $('#selectYear').val();
+                if (selectedYear == null || selectedYear == '') {
+                    searchRevenueProduct(1, selectedMonth, null);
+                } else {
+                    searchRevenueProduct(1, selectedMonth, selectedYear);
+                }
+            });
+        })
     </script>
     <script src="{{ asset('admin/assets/js/dashboard.js') }}"></script>
 @endsection

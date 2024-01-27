@@ -85,12 +85,13 @@
             </div>
             <div class="modal-body">
                 <div class="d-flex justify-content-around  align-items-center">
-                    <input type="hidden" name="productId" id="productId">
+                    <input type="hidden" name="productrRevenueId" id="productrRevenueId">
                     <h6>Xem doanh thu theo:</h6>
                     <form id="form_time_revenue" class="d-flex flex-column gap-2">
                         <div class="d-flex align-items-center ">
                             <select class="form-select" id="selectMonth">
                                 <option value="" disabled selected>Chọn tháng</option>
+                                <option value="">Tất cả</option>
                                 @for ($i = 1; $i <= 12; $i++)
                                     <option value="{{ $i }}"> Tháng {{ $i }}</option>
                                 @endfor
@@ -99,6 +100,7 @@
                         <div class="d-flex align-items-center">
                             <select class="form-select" id="selectYear">
                                 <option value="" selected disabled>Chọn năm</option>
+                                <option value="">Tất cả</option>
                                 @for ($year = date('Y'); $year >= date('Y') - 2; $year--)
                                     <option value="{{ $year }}">
                                         {{ $year }}</option>

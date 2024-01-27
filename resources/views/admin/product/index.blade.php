@@ -43,7 +43,7 @@
             urlCreateProduct: "{{ route('admin.product.create') }}",
             urlUpdateProduct: "{{ route('admin.product.update') }}",
             urlUpdateStatusProduct: "{{ route('admin.product.updateStatus') }}",
-            url: "{{ route('admin.product.getRevenueByProduct', ['id' => ':id']) }}",
+            urlgetRevenueByProduct: "{{ route('admin.product.getRevenueByProduct', ['id' => ':id']) }}",
 
         }
     </script>
