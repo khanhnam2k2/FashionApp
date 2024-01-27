@@ -18,6 +18,8 @@
     - https://jquery.com/
 8. Chartjs
     - https://www.chartjs.org/
+9. Composer
+    - https://getcomposer.org/
     
 ## Thiết lập trang web
 - Bước 1: Tạo file `.env` cho API, và file tham khảo `.env.example`
