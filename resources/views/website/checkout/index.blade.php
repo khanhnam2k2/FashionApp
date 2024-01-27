@@ -127,7 +127,8 @@
                                         </tbody>
                                     </table>
                                     <ul class="checkout__total__all">
-                                        <li>Tổng tiền đơn hàng: <span
+                                        <li>Tiền ship: <span>0đ</span></li>
+                                        <li>Tổng tiền thanh toán: <span
                                                 id="total_order">{{ number_format($totalCarts, 0, ',', '.') }}<span><span>đ</span>
                                         </li>
                                     </ul>
