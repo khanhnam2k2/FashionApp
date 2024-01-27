@@ -77,6 +77,7 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
+                    <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
                     <a class="position-relative" id="cartIcon" href="{{ route('cart.index') }}"><img
                             src="{{ asset('img/icon/cart.png') }}" alt="cart"><span id="countProduct">0</span>
                     </a>
