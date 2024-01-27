@@ -56,6 +56,7 @@
                                     </div>
 
                                 </div>
+                                
                                 <p>Địa chỉ giao hàng<span>*</span></p>
                                 <div class="row mb-3">
                                     <div class="col-lg-6">
@@ -149,6 +150,7 @@
                 <div class="text-center">
                     <h2>Giỏ hàng của bạn đang trống! Vui lòng kiểm tra lại giỏ hàng của bạn.</h2>
                 </div>
+
             @endif
 
         </div>
@@ -181,6 +183,7 @@
                     renderData(data, "city");
                 })
             }
+
 
             /**
              * Call api list district 
