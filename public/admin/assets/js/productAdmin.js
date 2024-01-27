@@ -6,6 +6,9 @@ let arrayImagesUpload = []; // array of images product upload
  * @param {Number} page current page
  */
 function searchProduct(page = 1, searchName = '', categoryId = null) {
+    $('#product_table').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingProduct}" alt="">
+                            </div>`);
     $.ajax({
         url: globalRouter.urlSearchPost + '?page=' + page,
         type: 'POST',

@@ -13,9 +13,7 @@
         </div>
         <div class="mt-3">
             <div id="category_table">
-                <div class="d-flex justify-content-center mt-5">
-                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -24,13 +22,16 @@
 @section('web-script')
     <script>
         const urlDeleteCategory = "{{ route('admin.category.delete', ['id' => ':id']) }}";
-
+        const iconLoadingCateory = "{{ asset('admin/assets/images/loading.svg') }}";
         /**
          * Load cagtegory list
          * @param page current page
          * @param searchName name of the search
          */
         function searchCategory(page = 1, searchName = '') {
+            $('#category_table').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingCateory}" alt="">
+                            </div>`);
             $.ajax({
                 url: '<?= route('admin.category.search') ?>?page=' + page,
                 type: "POST",

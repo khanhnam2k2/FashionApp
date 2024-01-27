@@ -10,9 +10,7 @@
         </div>
         <div class="mt-3">
             <div id="order_table">
-                <div class="d-flex justify-content-center mt-5">
-                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -21,6 +19,7 @@
 @section('web-script')
     <script>
         const urlDeleteOrder = "{{ route('admin.order.delete', ['id' => ':id']) }}";
+        const iconLoadingOrder = "{{ asset('admin/assets/images/loading.svg') }}";
 
         /**
          * Load cagtegory list
@@ -28,6 +27,9 @@
          * @param searchName - name of the search
          */
         function searchOrderAdmin(page = 1, searchName = '') {
+            $('#order_table').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingOrder}" alt="">
+                            </div>`);
             $.ajax({
                 url: '<?= route('admin.order.search') ?>?page=' + page,
                 type: "POST",

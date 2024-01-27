@@ -15,9 +15,7 @@
         </div>
         <div class="mt-3">
             <div id="customer_table">
-                <div class="d-flex justify-content-center mt-5">
-                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -26,6 +24,7 @@
 @section('web-script')
     <script>
         const urlDeleteCustomer = "{{ route('admin.account.delete', ['id' => ':id']) }}";
+        const iconLoadingAccount = "{{ asset('admin/assets/images/loading.svg') }}";
 
         /**
          * Load customer list
@@ -33,6 +32,9 @@
          * @param searchName name of the search
          */
         function searchCustomer(page = 1, searchName = '') {
+            $('#customer_table').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingAccount}" alt="">
+                            </div>`);
             $.ajax({
                 url: '<?= route('admin.account.search') ?>?page=' + page,
                 type: "POST",

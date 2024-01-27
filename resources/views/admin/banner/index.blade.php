@@ -13,9 +13,7 @@
         </div>
         <div class="mt-3">
             <div id="banner_table">
-                <div class="d-flex justify-content-center mt-5">
-                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -24,6 +22,7 @@
 @section('web-script')
     <script>
         const urlDeleteBanner = "{{ route('admin.banner.delete', ['id' => ':id']) }}";
+        const iconLoadingBanner = "{{ asset('admin/assets/images/loading.svg') }}";
 
         /**
          * Load banner list
@@ -31,6 +30,9 @@
          * @param searchName name of the search 
          */
         function searchBanner(page = 1, searchName = '') {
+            $('#banner_table').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingBanner}" alt="">
+                            </div>`);
             $.ajax({
                 url: '<?= route('admin.banner.search') ?>?page=' + page,
                 type: "POST",

@@ -15,9 +15,7 @@
         </div>
         <div class="mt-3">
             <div id="order_details_table">
-                <div class="d-flex justify-content-center mt-5">
-                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -25,12 +23,17 @@
 @endsection
 @section('web-script')
     <script>
+        const iconLoadingOrderDetail = "{{ asset('admin/assets/images/loading.svg') }}";
+
         /**
          * Load order details list
          * @param page - current page
          * @param searchName - name of the search
          */
         function searchOrderDetailsAdmin(page = 1, searchName = '') {
+            $('#order_details_table').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingOrderDetail}" alt="">
+                            </div>`);
             $.ajax({
                 url: '<?= route('admin.order.searchDetails') ?>?page=' + page,
                 type: "POST",

@@ -12,9 +12,7 @@
         </div>
         <div class="mt-3">
             <div id="post_table">
-                <div class="d-flex justify-content-center mt-5">
-                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -37,6 +35,7 @@
             });
 
         const urlDeletePost = "{{ route('admin.post.delete', ['id' => ':id']) }}";
+        const iconLoadingPost = "{{ asset('admin/assets/images/loading.svg') }}";
 
         /**
          * Load cagtegory list
@@ -44,6 +43,9 @@
          * @param searchName name of the search
          */
         function searchPost(page = 1, searchName = '') {
+            $('#post_table').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingPost}" alt="">
+                            </div>`);
             $.ajax({
                 url: '<?= route('admin.post.search') ?>?page=' + page,
                 type: "POST",

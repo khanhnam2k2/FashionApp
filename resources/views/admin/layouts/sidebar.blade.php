@@ -33,14 +33,14 @@
                         <span>
                             <i class="fa-solid fa-truck-fast"></i>
                         </span>
-                        <span class="hide-menu">Danh sách đặt hàng</span>
+                        <span class="hide-menu">Quản lý đặt hàng</span>
                     </a>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('admin.category.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-article"></i>
                         </span>
-                        <span class="hide-menu">Danh mục sản phẩm</span>
+                        <span class="hide-menu">Quản lý danh mục sản phẩm</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -48,7 +48,7 @@
                         <span>
                             <i class="fa-solid fa-shirt"></i>
                         </span>
-                        <span class="hide-menu">Danh sách sản phẩm</span>
+                        <span class="hide-menu">Quản lý sản phẩm</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -56,7 +56,7 @@
                         <span>
                             <i class="fa-solid fa-blog"></i>
                         </span>
-                        <span class="hide-menu">Bài viết</span>
+                        <span class="hide-menu">Quản lý bài viết</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -64,7 +64,7 @@
                         <span>
                             <i class="fa-solid fa-address-book"></i>
                         </span>
-                        <span class="hide-menu">Liên hệ</span>
+                        <span class="hide-menu">Quản lý liên hệ</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

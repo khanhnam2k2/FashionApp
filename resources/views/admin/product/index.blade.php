@@ -26,9 +26,7 @@
         </div>
         <div class="mt-3">
             <div id="product_table">
-                <div class="d-flex justify-content-center mt-5">
-                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -46,6 +44,7 @@
             urlgetRevenueByProduct: "{{ route('admin.product.getRevenueByProduct', ['id' => ':id']) }}",
 
         }
+        const iconLoadingProduct = "{{ asset('admin/assets/images/loading.svg') }}";
     </script>
     <script src="{{ asset('admin/assets/js/productAdmin.js') }}"></script>
 @endsection

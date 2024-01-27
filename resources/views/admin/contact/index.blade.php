@@ -10,9 +10,7 @@
         </div>
         <div class="mt-3">
             <div id="contact_table">
-                <div class="d-flex justify-content-center mt-5">
-                    <img src="{{ asset('admin/assets/images/loading.svg') }}" alt="">
-                </div>
+
             </div>
         </div>
     </div>
@@ -20,6 +18,7 @@
 @section('web-script')
     <script>
         const urlDeleteContact = "{{ route('admin.contact.delete', ['id' => ':id']) }}";
+        const iconLoadingContact = "{{ asset('admin/assets/images/loading.svg') }}";
 
         /**
          * Load contact list
@@ -27,6 +26,9 @@
          * @param searchName name of the search
          */
         function searchContact(page = 1, searchName = '') {
+            $('#contact_table').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingContact}" alt="">
+                            </div>`);
             $.ajax({
                 url: '<?= route('admin.contact.search') ?>?page=' + page,
                 type: "POST",
