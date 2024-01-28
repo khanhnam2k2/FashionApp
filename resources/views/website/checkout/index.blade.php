@@ -2,22 +2,7 @@
 @section('title', 'Đặt hàng - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                        <h4>Thanh toán</h4>
-                        <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Trang chủ</a>
-                            <a href="{{ route('shop.index') }}">Shop</a>
-                            <span>Đặt hàng</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <x-breadcrumb route1="home" nameRoute1="Trang chủ" route2="cart.index" nameRoute2="Giỏ hàng" current="Thanh toán" />
     <!-- Breadcrumb Section End -->
 
     <!-- Checkout Section Begin -->
@@ -56,26 +41,28 @@
                                     </div>
 
                                 </div>
-                                
-                                <p>Địa chỉ giao hàng<span>*</span></p>
-                                <div class="row mb-3">
-                                    <div class="col-lg-6">
-                                        <select id="city" name="city" class="form-control">
-                                            <option value="" selected>Chọn tỉnh thành</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <select id="district" name="district" class="form-control">
-                                            <option value="" selected>Chọn quận huyện</option>
-                                        </select>
-                                    </div>
 
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-lg-12">
-                                        <select id="ward" name="ward" class="form-control">
-                                            <option value="" selected>Chọn phường xã</option>
-                                        </select>
+                                <div class="checkout__input mb-2">
+                                    <p>Địa chỉ giao hàng<span>*</span></p>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-6">
+                                            <select id="city" name="city" class="form-control">
+                                                <option value="" selected>Chọn tỉnh thành</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <select id="district" name="district" class="form-control">
+                                                <option value="" selected>Chọn quận huyện</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-12">
+                                            <select id="ward" name="ward" class="form-control">
+                                                <option value="" selected>Chọn phường xã</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="checkout__input mb-2">
@@ -128,7 +115,7 @@
                                         </tbody>
                                     </table>
                                     <ul class="checkout__total__all">
-                                        <li>Tiền ship: <span>0đ</span></li>
+                                        <li>Phí vận chuyển: <span>0đ</span></li>
                                         <li>Tổng tiền thanh toán: <span
                                                 id="total_order">{{ number_format($totalCarts, 0, ',', '.') }}<span><span>đ</span>
                                         </li>
@@ -176,7 +163,7 @@
 
             /**
              * Call api list city viet nam
-             * @param api 
+             * @param api
              * */
             function callAPI(api) {
                 $.get(api, function(data) {
@@ -186,8 +173,8 @@
 
 
             /**
-             * Call api list district 
-             * @param api 
+             * Call api list district
+             * @param api
              * */
             function callApiDistrict(api) {
                 $.get(api, function(data) {
@@ -196,8 +183,8 @@
             }
 
             /**
-             * Call api list ward 
-             * @param api 
+             * Call api list ward
+             * @param api
              * */
             function callApiWard(api) {
                 $.get(api, function(data) {
@@ -207,7 +194,7 @@
 
             /**
              * Render data html address
-             * @param array data address 
+             * @param array data address
              * @param string name element select
              * */
             function renderData(array, select) {
@@ -287,7 +274,7 @@
                 }
             });
 
-            // Click to order 
+            // Click to order
             $('#btn-order').click(function(e) {
                 e.preventDefault();
                 const btnOrder = $(this);

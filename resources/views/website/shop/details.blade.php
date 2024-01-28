@@ -5,15 +5,8 @@
     <section class="shop-details">
         <div class="product__details__pic">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="product__details__breadcrumb">
-                            <a href="{{ route('home') }}">Home</a>
-                            <a href="{{ route('shop.index') }}">Shop</a>
-                            <span>{{ $product->name }}</span>
-                        </div>
-                    </div>
-                </div>
+                <x-breadcrumb route1="home" nameRoute1="Trang chủ" route2="shop.index" nameRoute2="Shop"
+                    current="{{ $product->name }}" />
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
                         <ul class="nav nav-tabs" role="tablist">

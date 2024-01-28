@@ -2,22 +2,7 @@
 @section('title', 'Giỏ hàng - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                        <h4>Giỏ hàng</h4>
-                        <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Trang chủ</a>
-                            <a href="{{ route('shop.index') }}">Shop</a>
-                            <span>Giỏ hàng</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <x-breadcrumb route1="home" nameRoute1="Trang chủ" route2="shop.index" nameRoute2="Shop" current="Giỏ hàng" />
     <!-- Breadcrumb Section End -->
 
     <!-- Shopping Cart Section Begin -->

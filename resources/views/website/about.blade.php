@@ -2,21 +2,7 @@
 @section('title', 'Về chúng tôi - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                        <h4>Về chúng tôi</h4>
-                        <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Trang chủ</a>
-                            <span>Về chúng tôi</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <x-breadcrumb route1="home" nameRoute1="Trang chủ" current="Về chúng tôi" />
     <!-- Breadcrumb Section End -->
 
     <!-- About Section Begin -->

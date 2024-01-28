@@ -5,21 +5,7 @@
 @section('title', 'Shop - Male Fashion')
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                        <h4>Shop</h4>
-                        <div class="breadcrumb__links">
-                            <a href="{{ route('home') }}">Trang chủ</a>
-                            <span>Shop</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <x-breadcrumb route1="home" nameRoute1="Trang chủ" current="Shop" />
     <!-- Breadcrumb Section End -->
 
     <!-- Shop Section Begin -->
@@ -126,7 +112,7 @@
         /**
          * Load product list
          * @param page current page number
-         * @param searchName name of the search 
+         * @param searchName name of the search
          * @param sortByPrice type sort price
          * @param categoryId id of category
          * @param status status of product
