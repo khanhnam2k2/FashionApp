@@ -34,12 +34,16 @@
 
 @section('web-script')
     <script>
+        const iconLoadingPost = "{{ asset('admin/assets/images/loading.svg') }}";
         /**
          * Load cagtegory list
          * @param page current page
          * @param searchName name of the search
          */
         function searchPostWeb(page = 1, searchName = '') {
+            $('#post_list').html(`<div class="d-flex justify-content-center mt-5">
+                                <img src="${iconLoadingPost}" alt="">
+                            </div>`);
             $.ajax({
                 url: '<?= route('post.search') ?>?page=' + page,
                 type: "POST",
