@@ -64,8 +64,8 @@
         <div class="offcanvas__option">
             @guest
                 <div class="offcanvas__links">
-                    <a href="#">Đăng nhập</a>
-                    <a href="#">Đăng ký</a>
+                    <a href="{{ route('login') }}">Đăng nhập</a>
+                    <a href="{{ route('register') }}">Đăng ký</a>
                 </div>
             @else
                 <div class="offcanvas__top__hover">
@@ -84,9 +84,12 @@
             @endguest
         </div>
         <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="{{ asset('img/icon/search.png') }}" alt=""></a>
-            <a href="#"><img src="{{ asset('img/icon/heart.png') }}" alt=""></a>
-            <a href="#"><img src="{{ asset('img/icon/cart.png') }}" alt=""> <span>0</span></a>
+            <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+            <a class="position-relative" id="cartIcon" href="{{ route('cart.index') }}"><img
+                    src="{{ asset('img/icon/cart.png') }}" alt="cart"><span id="countProduct">0</span>
+            </a>
+            <div id="cart_list" class="position-absolute">
+            </div>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">
