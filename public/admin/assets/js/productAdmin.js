@@ -1,4 +1,5 @@
 let arrayImagesUpload = []; // array of images product upload
+var sizeCount = 0; // Variable that counts the number of sizes added
 /**
  * Load product list
  * @param {Number} page current page
@@ -212,6 +213,27 @@ function showRevenue(productId, month = null, year = null) {
         },
     });
 }
+
+/**
+ * The function creates a new size, removing the selected sizes
+ * @param {Array} selectedOptions
+ * @returns html option new size
+ */
+function generateOptionsSize(selectedOptions) {
+    let options = "";
+    let availableSizes = ["S", "M", "L", "XL"];
+
+    for (let i = 0; i < availableSizes.length; i++) {
+        let size = availableSizes[i];
+        // If size is not selected, add options
+        if (!selectedOptions.includes(size)) {
+            options += `<option value="${size}">${size}</option>`;
+        }
+    }
+
+    return options;
+}
+
 $(document).ready(function () {
     searchProduct();
 
@@ -303,6 +325,15 @@ $(document).ready(function () {
     // Add new row size to product
     $("#addSize").click(function (e) {
         e.preventDefault();
+        // Gets all size values selected in the current select
+        const selectedOptions = $(
+            '#sizeAndQuantityFields select[name="sizes[]"]'
+        )
+            .map(function () {
+                return $(this).val();
+            })
+            .get();
+
         let newField = `
             <div class="row ">
                 <span class="removeSize text-end mt-2" style="cursor:pointer;color:red"><i class="fa-solid fa-circle-xmark"></i></span>
@@ -310,10 +341,7 @@ $(document).ready(function () {
                     <label for="productSize" class="form-label">Size<span
                             class="text-danger">*</span></label>
                     <select name="sizes[]" class="form-select" id="productSize">
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
+                        ${generateOptionsSize(selectedOptions)}
                     </select>
                 </div>
                 <div class="col-md-6">
@@ -323,11 +351,20 @@ $(document).ready(function () {
                 </div>
             </div>`;
         $("#sizeAndQuantityFields").append(newField);
+
+        sizeCount++;
+
+        // If the number of sizes is enough, hide the add size button
+        if (sizeCount >= 3) {
+            $(this).hide();
+        }
     });
 
     // Remove row size
     $("#sizeAndQuantityFields").on("click", ".removeSize", function () {
-        $(this).parent().remove();
+        $(this).parent().remove(); // Remove size from dom;
+        sizeCount--; // Reduce sizes
+        $("#addSize").show(); // show button add new size;
     });
 
     // Add/Change images for product
