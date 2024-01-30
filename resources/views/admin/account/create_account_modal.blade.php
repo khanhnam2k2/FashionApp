@@ -73,7 +73,7 @@
     function doSubmitAccount(btn) {
         const formCreateAccount = $('form#form_create_account');
         let formData = new FormData(formCreateAccount[0]);
-        showConfirmDialog('Bạn có chắc chắn muốn tạo mới tài khoản này không?', function() {
+        showConfirmDialog('Bạn có chắc chắn muốn tạo mới tài khoản này không ?', function() {
             btn.text('Đang tạo...');
             btn.prop('disabled', true);
             createAccount(formData, btn, formCreateAccount);
