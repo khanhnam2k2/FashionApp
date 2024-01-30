@@ -2,10 +2,23 @@ let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
 var dataTotalOrder = [];
 var myChart;
-var monthsInYear = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+var monthsInYear = [
+    "Tháng 1",
+    "Tháng 2",
+    "Tháng 3",
+    "Tháng 4",
+    "Tháng 5",
+    "Tháng 6",
+    "Tháng 7",
+    "Tháng 8",
+    "Tháng 9",
+    "Tháng 10",
+    "Tháng 11",
+    "Tháng 12",
+];
 
 $(document).ready(function () {
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById("myChart");
 
     /**
      * Create chart
@@ -17,24 +30,25 @@ $(document).ready(function () {
             myChart.destroy(); // Cancel the old chart if it exists
         }
         myChart = new Chart(ctx, {
-            type: 'bar',
+            type: "bar",
             data: {
                 labels: labels,
-                datasets: [{
-                    label: '# VNĐ',
-                    data: data,
-                    borderWidth: 1,
-                    borderRadius: Number.MAX_VALUE,
-                },
+                datasets: [
+                    {
+                        label: "# VNĐ",
+                        data: data,
+                        borderWidth: 1,
+                        borderRadius: Number.MAX_VALUE,
+                    },
                 ],
             },
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+                        beginAtZero: true,
+                    },
+                },
+            },
         });
     }
 
@@ -47,32 +61,35 @@ $(document).ready(function () {
             type: "POST",
             url: urlGetTotalOrderInYear,
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             data: {
-                year: year
-            }
-        }).done(function (res) {
-            dataTotalOrder = Object.values(res.data);
-            createChart(monthsInYear, dataTotalOrder);
-        }).fail(function () {
-            notiError();
+                year: year,
+            },
         })
+            .done(function (res) {
+                dataTotalOrder = Object.values(res.data);
+                createChart(monthsInYear, dataTotalOrder);
+            })
+            .fail(function () {
+                notiError();
+            });
     }
 
     getTotalOrderInYear(currentYear);
 
-
+    // Get 3 year order
     for (let i = currentYear; i >= currentYear - 3; i--) {
-        $('#yearSelect').append($('<option>', {
-            value: i,
-            text: i
-        }));
+        $("#yearSelect").append(
+            $("<option>", {
+                value: i,
+                text: i,
+            })
+        );
     }
 
-    $('#yearSelect').change(function () {
-        getTotalOrderInYear($(this).val())
+    // Get total order when change year
+    $("#yearSelect").change(function () {
+        getTotalOrderInYear($(this).val());
     });
-
-
 });
