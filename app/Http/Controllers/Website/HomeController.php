@@ -40,7 +40,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $categories = $this->categoryService->getLimitCategories();
+        $categories = $this->categoryService->getCategories(4);
         $products = $this->productService->searchProduct();
         $postLimit = $this->postService->getLimitPost();
         $bannerLimit = $this->bannerService->getLimitBanner(3);

@@ -13,10 +13,15 @@ class CategoryService
      * Get category list with status on
      * @return Array category list
      */
-    public function getCategories()
+    public function getCategories($limit = null)
     {
         try {
-            $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->get();
+            $categories = Category::where('status', Status::ON)->orderBy('id', 'asc');;
+            if($limit != null && $limit != ''){
+                $categories =  $categories->take($limit)->get();
+            }else{
+                $categories =  $categories->get();
+            }
             return $categories;
         } catch (Exception $e) {
             Log::error($e);
@@ -24,20 +29,20 @@ class CategoryService
         }
     }
 
-    /**
-     * Get category list limit
-     * @return Array category list
-     */
-    public function getLimitCategories()
-    {
-        try {
-            $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->take(4)->get();
-            return $categories;
-        } catch (Exception $e) {
-            Log::error($e);
-            return response()->json($e, 500);
-        }
-    }
+    // /**
+    //  * Get category list limit
+    //  * @return Array category list
+    //  */
+    // public function getLimitCategories()
+    // {
+    //     try {
+    //         $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->take(4)->get();
+    //         return $categories;
+    //     } catch (Exception $e) {
+    //         Log::error($e);
+    //         return response()->json($e, 500);
+    //     }
+    // }
 
     /**
      * Get category list paginate
