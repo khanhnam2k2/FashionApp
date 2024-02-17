@@ -159,65 +159,65 @@
 @section('web-script')
     <script>
         $(document).ready(function() {
-            const host = "https://provinces.open-api.vn/api/";
+            const host = "http://localhost:1234/api/";
 
             /**
-             * Call api list city viet nam
+             * Call api list city Viet Nam
              * @param api
-             * */
+             */
             function callAPI(api) {
                 $.get(api, function(data) {
                     renderData(data, "city");
-                })
+                });
             }
-
 
             /**
              * Call api list district
              * @param api
-             * */
+             */
             function callApiDistrict(api) {
                 $.get(api, function(data) {
-                    renderData(data.districts, "district");
-                })
+                    renderData(data, "district");
+                });
             }
 
             /**
              * Call api list ward
              * @param api
-             * */
+             */
             function callApiWard(api) {
                 $.get(api, function(data) {
-                    renderData(data.wards, "ward");
-                })
+                    renderData(data, "ward");
+                });
             }
 
             /**
              * Render data html address
              * @param array data address
              * @param string name element select
-             * */
+             */
             function renderData(array, select) {
                 let row = '<option disable value="">Chọn</option>';
                 $.each(array, function(index, element) {
                     row +=
-                        `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`;
+                        `<option data-id="${element.id}" value="${element.name}">${element.name}</option>`;
                 });
                 $("#" + select).html(row);
             }
 
             // Call api to render data list city
-            callAPI(host + '?depth=1');
+            callAPI(host + 'provinces');
 
             // When city changes, call api to render data list district
             $("#city").change(() => {
-                callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+                callApiDistrict(host + 'districts/' + $("#city").find(':selected').data('id'));
             });
 
             // When district changes, call api to render data list ward
             $("#district").change(() => {
-                callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
+                callApiWard(host + 'wards/' + $("#district").find(':selected').data('id'));
             });
+
 
             /**
              * Create new orer
