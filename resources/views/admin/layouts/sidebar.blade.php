@@ -35,6 +35,7 @@
                         </span>
                         <span class="hide-menu">Quản lý đặt hàng</span>
                     </a>
+                </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('admin.category.index') }}" aria-expanded="false">
                         <span>
