@@ -29,20 +29,6 @@ class CategoryService
         }
     }
 
-    // /**
-    //  * Get category list limit
-    //  * @return Array category list
-    //  */
-    // public function getLimitCategories()
-    // {
-    //     try {
-    //         $categories = Category::where('status', Status::ON)->orderBy('id', 'asc')->take(4)->get();
-    //         return $categories;
-    //     } catch (Exception $e) {
-    //         Log::error($e);
-    //         return response()->json($e, 500);
-    //     }
-    // }
 
     /**
      * Get category list paginate
