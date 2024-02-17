@@ -170,10 +170,12 @@ class OrderService extends BaseService
                 'order_items.size',
                 'products.id as productId',
                 'products.name as productName',
-                'products.images as productImages'
+                'products.images as productImages',
+                'orders.status as orderStatus',
             )
                 ->selectRaw('SUM(order_items.quantity * order_items.price) as total')
                 ->join('products', 'products.id', '=', 'order_items.product_id')
+                ->join('orders','orders.id','=','order_items.order_id')
                 ->where('order_id', $order->id)
                 ->groupBy(
                     'order_items.order_id',
@@ -182,7 +184,8 @@ class OrderService extends BaseService
                     'order_items.size',
                     'products.id',
                     'products.name',
-                    'products.images'
+                    'products.images',
+                    'orders.status'
                 );
 
             if ($searchName != null && $searchName != '') {

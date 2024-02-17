@@ -1,3 +1,6 @@
+@php
+    use App\Enums\StatusOrder;
+@endphp
 @foreach ($data as $item)
     <div class="row border-bottom border-top p-2 mb-3">
         <div class="col-md-8">
@@ -20,8 +23,10 @@
             <p class="p-3">Thành tiền
                 <span class="text-danger">: {{ number_format($item->total, 0, ',', '.') }}đ</span>
             </p>
-            <div class=""><a href="{{ route('shop.details', $item->productId) }}" class="btn btn-warning">Đánh
-                    giá</a></div>
+            @if ($item->orderStatus == StatusOrder::successfulDelivery)
+                <div class=""><a href="{{ route('shop.details', $item->productId) }}" class="btn btn-warning">Đánh
+                        giá</a></div>
+            @endif
 
         </div>
     </div>
