@@ -47,15 +47,21 @@
                         <div class="nav nav-tabs d-flex justify-content-between align-items-center mb-3" id="nav-tab"
                             role="tablist">
                             <button class="btn-show-order nav-link active border-0" type="button">Tất cả</button>
-                            <button class="btn-show-order nav-link border-0" data-status="1" type="button">Chờ xác
+                            <button class="btn-show-order nav-link border-0" data-status="{{ StatusOrder::orderPlaced }}"
+                                type="button">Chờ xác
                                 nhận</button>
-                            <button class="btn-show-order nav-link border-0" data-status="2" type="button">Xác nhận thành
+                            <button class="btn-show-order nav-link border-0"
+                                data-status="{{ StatusOrder::confirmInformation }}" type="button">Xác nhận thành
                                 công</button>
-                            <button class="btn-show-order nav-link border-0"data-status="3" type="button">Đang
+                            <button class="btn-show-order nav-link border-0"data-status="{{ StatusOrder::delivering }}"
+                                type="button">Đang
                                 giao</button>
-                            <button class="btn-show-order nav-link border-0"data-status="4" type="button">Hoàn
+                            <button
+                                class="btn-show-order nav-link border-0"data-status="{{ StatusOrder::successfulDelivery }}"
+                                type="button">Hoàn
                                 thành</button>
-                            <button class="btn-show-order nav-link border-0"data-status="0" type="button">Đã hủy</button>
+                            <button class="btn-show-order nav-link border-0"data-status="{{ StatusOrder::cancelOrder }}"
+                                type="button">Đã hủy</button>
 
                         </div>
                     </nav>
