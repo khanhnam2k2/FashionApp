@@ -41,7 +41,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = $this->categoryService->getCategories(4);
-        $products = $this->productService->searchProduct();
+        $products = $this->productService->getProducts();
         $postLimit = $this->postService->getLimitPost();
         $bannerLimit = $this->bannerService->getLimitBanner(3);
         return view('website.welcome', compact('categories', 'products', 'postLimit', 'bannerLimit'));

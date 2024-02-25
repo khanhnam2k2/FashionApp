@@ -10,8 +10,8 @@
                         <div class="row">
                             <div class="col-xl-5 col-lg-7 col-md-8">
                                 <div class="hero__text">
-                                    <h2 class="text-white">{{ $banner->title }}</h2>
-                                    <p class="text-white">{{ $banner->description }}</p>
+                                    <h2>{{ $banner->title }}</h2>
+                                    <p>{{ $banner->description }}</p>
                                     <a href="{{ route('shop.index') }}" class="primary-btn">Mua sắm ngay bây giờ <span
                                             class="arrow_right"></span></a>
                                     <div class="hero__social">

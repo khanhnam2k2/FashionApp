@@ -27,7 +27,7 @@
                             <div class="col-md-6 mb-2">
                                 <a href="{{ Storage::url($image) }}" data-lightbox="image">
                                     <img src="{{ Storage::url($image) }}"
-                                        style="width: 100%; height: 100px; object-fit: cover; border-radius: 10px;"
+                                        style="width: 300px; height: 200px; object-fit: contain; border-radius: 10px;"
                                         alt="">
                                 </a>
                             </div>
@@ -52,16 +52,18 @@
                     </label>
                 </td>
                 <td>
-                    <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}"
-                        data-bs-target="#updateProductModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                        class="btn btn-success m-1 me-3"><i class="fa-solid fa-pen-to-square me-2"></i>Chỉnh
-                        sửa</button>
-                    <button id="btnDeleteProduct" data-id="{{ $item->id }}" class="btn btn-danger me-3"><i
-                            class="fa-solid fa-trash-can me-2"></i>Xóa</button>
-                    <button data-bs-toggle="modal" class="btn btn-warning btn-view-revenue"
-                        data-bs-target="#revenueModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                        data-product-id="{{ $item->id }}">Xem doanh
-                        thu</button>
+                    <div class="d-flex justify-between items-center">
+                        <button data-bs-toggle="modal" data-item="{{ json_encode($item) }}"
+                            data-bs-target="#updateProductModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            class="btn btn-success m-1 me-3"><i class="fa-solid fa-pen-to-square me-2"></i>Chỉnh
+                            sửa</button>
+                        <button id="btnDeleteProduct" data-id="{{ $item->id }}" class="btn btn-danger me-3"><i
+                                class="fa-solid fa-trash-can me-2"></i>Xóa</button>
+                        <button data-bs-toggle="modal" class="btn btn-warning btn-view-revenue"
+                            data-bs-target="#revenueModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                            data-product-id="{{ $item->id }}">Xem doanh
+                            thu</button>
+                    </div>
                 </td>
             </tr>
         @endforeach

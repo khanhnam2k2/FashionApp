@@ -40,7 +40,7 @@ class ShopController extends Controller
      */
     public function search(Request $request)
     {
-        $data = $this->productService->searchProduct($request->searchName, $request->sortByPrice, $request->categoryId, $request->status, $request->size);
+        $data = $this->productService->searchProduct($request->searchName, $request->sortByPrice, $request->categoryId,$request->paginate, $request->status, $request->size);
         return view('website.shop.listProduct', compact('data'));
     }
     /**

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\Status;
+use App\Enums\StatusOrder;
 use App\Models\Product;
 use App\Models\ProductSizeQuantity;
 use Exception;
@@ -68,9 +69,38 @@ class ProductService extends BaseService
     public function getProducts()
     {
         try {
-            $products = Product::select('products.*', 'categories.name as categoryName', 'categories.id as categoryId')
+            $products = Product::select(
+                'products.id',
+                'products.name',
+                'products.price',
+                'products.category_id',
+                'products.description',
+                'products.sku',
+                'products.images',
+                'products.status',
+                'categories.name as categoryName',
+                DB::raw('GROUP_CONCAT(product_size_quantities.size) as sizes'),
+                DB::raw('GROUP_CONCAT(product_size_quantities.quantity) as quantities')
+            )
                 ->join('categories', 'products.category_id', '=', 'categories.id')
-                ->where('products.status', Status::ON)
+                ->join('product_size_quantities', function ($join) {
+                    $join->on('products.id', '=', 'product_size_quantities.product_id')
+                        ->where('product_size_quantities.quantity', '>', 0);
+                })
+                ->whereNull('products.deleted_at');
+
+            $products = $products->groupBy(
+                'products.id',
+                'products.name',
+                'products.price',
+                'products.category_id',
+                'products.description',
+                'products.sku',
+                'products.images',
+                'products.status',
+                'categories.name'
+            )
+                ->orderBy('products.created_at', 'desc')
                 ->get();
 
             return $products;
@@ -88,7 +118,7 @@ class ProductService extends BaseService
      * @param number $status status product
      * @return Array product list
      */
-    public function searchProduct($searchName = null, $sortByPrice = null, $categoryId = null, $status = null, $size = null)
+    public function searchProduct($searchName = null, $sortByPrice = null, $categoryId = null,$paginate = 3, $status = null, $size = null)
     {
         try {
             $products = Product::select(
@@ -143,7 +173,7 @@ class ProductService extends BaseService
                 'categories.name'
             )
                 ->orderBy('products.created_at', 'desc')
-                ->paginate(9);
+                ->paginate($paginate);
 
             return $products;
         } catch (Exception $e) {
@@ -387,7 +417,8 @@ class ProductService extends BaseService
                 DB::raw('SUM(order_items.quantity) as total_quantity_sold'),
             )
                 ->join('order_items', 'products.id', '=', 'order_items.product_id')
-                ->join('orders', 'order_items.order_id', '=', 'orders.id');
+                ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                ->where('orders.status', '=', StatusOrder::successfulDelivery);
 
             if ($selectedMonth != null && $selectedMonth != '') {
                 $productRevenue->whereMonth('orders.complete_date', $selectedMonth);
@@ -399,7 +430,7 @@ class ProductService extends BaseService
 
             $productRevenue = $productRevenue->groupBy('products.id', 'products.name', 'products.images')
                 ->paginate(4);
-
+            
             return $productRevenue;
         } catch (Exception $e) {
             Log::error($e);

@@ -130,6 +130,7 @@
                     searchName: searchName,
                     sortByPrice: sortByPrice,
                     categoryId: categoryId,
+                    paginate: 9,
                     status: status ?? statusON,
                     size: size
                 }
