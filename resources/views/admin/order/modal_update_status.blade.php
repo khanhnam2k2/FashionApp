@@ -29,7 +29,7 @@
                                     <option value="2">Xác nhận thành công</option>
                                     <option value="3">Đang giao</option>
                                     <option value="4">Giao hàng thành công</option>
-                                    <option value="0">Hủy đơn hàng</option>
+                                    {{-- <option value="0">Hủy đơn hàng</option> --}}
                                 </select>
                             </div>
                             <div class="mb-3" id="cancellationReasonGroup" style="display: none;">
