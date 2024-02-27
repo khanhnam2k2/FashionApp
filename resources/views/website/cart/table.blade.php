@@ -45,7 +45,9 @@
                                         </td>
                                         <td class="quantity__item">
                                             <div class="quantity">
-                                                @if ($item->quantity > $item->quantityAvailable)
+                                                @if ($item->quantityAvailable == 0)
+                                                    <span class="btn btn-danger">Hết hàng</span>
+                                                @elseif ($item->quantity > $item->quantityAvailable && $item->quantity > 0)
                                                     <span class="btn btn-danger">Hết hàng</span>
                                                 @else
                                                     <div

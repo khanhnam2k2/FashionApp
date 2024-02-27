@@ -109,7 +109,7 @@ class CartService extends BaseService
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
                 ->join('product_size_quantities', function ($join) {
-                    $join->on('products.id', '=', 'product_size_quantities.product_id');
+                    $join->on('cart_items.product_id', '=', 'product_size_quantities.product_id');
                     $join->on('cart_items.size', '=', 'product_size_quantities.size');
                 })
                 ->select(
@@ -126,6 +126,7 @@ class CartService extends BaseService
                 ->groupBy('cart_items.cart_id', 'cart_items.size', 'cart_items.quantity', 'products.id', 'products.name', 'products.price', 'products.images', 'product_size_quantities.quantity')
                 ->orderBy('cart_items.created_at', 'desc')
                 ->get();
+
             $totalCarts = 0;
             foreach ($cartItems as $item) {
                 if ($item->quantity <= $item->quantityAvailable) {
@@ -150,7 +151,7 @@ class CartService extends BaseService
     public function showCartLimit()
     {
         try {
-            $user  = Auth::user();
+                $user  = Auth::user();
             $cart = Cart::where('user_id', $user->id)->first();
 
             if (!$cart) {
@@ -161,7 +162,7 @@ class CartService extends BaseService
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
                 ->join('product_size_quantities', function ($join) {
-                    $join->on('products.id', '=', 'product_size_quantities.product_id');
+                    $join->on('cart_items.product_id', '=', 'product_size_quantities.product_id');
                     $join->on('cart_items.size', '=', 'product_size_quantities.size');
                 })
                 ->select(
@@ -211,7 +212,7 @@ class CartService extends BaseService
             $cartItems = CartItem::where('cart_id', $cart->id)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
                 ->join('product_size_quantities', function ($join) {
-                    $join->on('products.id', '=', 'product_size_quantities.product_id');
+                    $join->on('cart_items.product_id', '=', 'product_size_quantities.product_id');
                     $join->on('cart_items.size', '=', 'product_size_quantities.size');
                 })
                 ->select(
@@ -237,6 +238,9 @@ class CartService extends BaseService
                 )
                 ->orderBy('cart_items.created_at', 'desc')
                 ->get();
+                
+            $totalCarts = 0;
+
             foreach ($cartItems as $key => $item) {
                 if ($item->quantity > $item->quantityAvailable) {
                     CartItem::where('cart_id', $cart->id)
@@ -245,12 +249,10 @@ class CartService extends BaseService
                         ->delete();
 
                     unset($cartItems[$key]);
+                }else{
+                    $totalCarts += $item->total;
                 }
-            }
 
-            $totalCarts = 0;
-            foreach ($cartItems as $item) {
-                $totalCarts += $item->total;
             }
 
             return [

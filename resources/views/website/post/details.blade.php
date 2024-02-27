@@ -25,8 +25,8 @@
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-12">
-                    <div class="blog__details__pic">
-                        <img src="{{ Storage::url($post->image) }}" alt="">
+                    <div class="blog__details__pic text-center">
+                        <img src="{{ Storage::url($post->image) }}" style="min-width:50%;object-fit: cover" alt="">
                     </div>
                 </div>
                 <div class="col-lg-8">
