@@ -35,7 +35,7 @@ class OrderController extends Controller
      */
     public function search(Request $request)
     {
-        $data = $this->orderService->searchOrder(null, $request->statusOrder);
+        $data = $this->orderService->searchOrderUser(null, $request->statusOrder);
         return view('website.order.orderList', ['data' => $data]);
     }
 

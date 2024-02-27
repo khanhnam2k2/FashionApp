@@ -84,6 +84,33 @@ class OrderService extends BaseService
             return response()->json($e, 500);
         }
     }
+    
+    public function searchOrderUser($searchName = null, $statusOrder = null)
+    {
+        try {
+            $user = Auth::user();
+
+            $orders = Order::select('orders.*', 'users.name as username')
+                ->join('users', 'users.id', '=', 'orders.user_id')
+                ->where('orders.user_id', '=', $user->id);
+
+            if ($searchName != null && $searchName != '') {
+                $orders = $orders->where('orders.full_name', 'LIKE', '%' . $searchName . '%')
+                    ->orWhere('orders.code', 'LIKE', '%' . $searchName . '%');
+            }
+
+            if ($statusOrder != null && $statusOrder != '') {
+                $orders->where('orders.status', '=', $statusOrder);
+            }
+
+            $orders = $orders->latest()->paginate(6);
+
+            return $orders;
+        } catch (Exception $e) {
+            Log::error($e);
+            return response()->json($e, 500);
+        }
+    }
 
 
     /**
