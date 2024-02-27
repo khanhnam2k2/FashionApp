@@ -18,8 +18,11 @@
                 <tr>
                     <td>{{ $key + 1 }}</td>
                     <td>{{ $item->title }}</td>
-                    <td><img src="{{ Storage::url($item->image) }}" style="border-radius:10px;object-fit:cover"
-                            width="200px" height="150px" alt="">
+                    <td>
+                        <a href="{{ Storage::url($item->image) }}" data-lightbox="image"><img
+                                src="{{ Storage::url($item->image) }}" style="border-radius:10px;object-fit:cover"
+                                width="200px" height="150px" alt="">
+                        </a>
                     </td>
                     <td>
                         <p class="text-break">
