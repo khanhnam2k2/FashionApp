@@ -86,8 +86,7 @@ class ProductService extends BaseService
                 ->join('product_size_quantities', function ($join) {
                     $join->on('products.id', '=', 'product_size_quantities.product_id')
                         ->where('product_size_quantities.quantity', '>', 0);
-                })
-                ->whereNull('products.deleted_at');
+                });
 
             $products = $products->groupBy(
                 'products.id',
@@ -138,8 +137,7 @@ class ProductService extends BaseService
                 ->join('product_size_quantities', function ($join) {
                     $join->on('products.id', '=', 'product_size_quantities.product_id')
                         ->where('product_size_quantities.quantity', '>', 0);
-                })
-                ->whereNull('products.deleted_at');
+                });
 
             if ($status != null && $status != '') {
                 $products = $products->where('products.status', '=', $status);
