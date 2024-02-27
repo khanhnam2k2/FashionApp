@@ -104,7 +104,7 @@ class OrderService extends BaseService
                 if ($cancellationReason == null || $cancellationReason == '') {
                     return response()->json(['error' => 'Vui lòng nhập lý do hủy đơn hàng']);
                 } else {
-                    if ($user->role == UserRole::ADMIN || $order->status == StatusOrder::orderPlaced) {
+                    if ($order->status == StatusOrder::orderPlaced) {
                         $order->status = $newStatus;
                         $order->cancellationReason = $cancellationReason;
                         $order->save();
@@ -240,7 +240,7 @@ class OrderService extends BaseService
      * @param Obecjt $order data
      * @return Array array total order in year
      */
-    public function processOrder($order)
+    public function processOrderItem($order)
     {
         $cart = Cart::where('user_id', Auth::id())->first();
 
@@ -255,7 +255,6 @@ class OrderService extends BaseService
                 ->where('size', $item->size)
                 ->first();
             if (!$productSizeQuantity || $productSizeQuantity->quantity < $item->quantity) {
-                DB::rollBack();
                 return response()->json(['error' => 'Không đủ số lượng sản phẩm cho một số sản phẩm. Vui lòng kiểm tra lại']);
             }
 
@@ -306,7 +305,7 @@ class OrderService extends BaseService
             ];
             $order = Order::create($orderData);
 
-            $this->processOrder($order, $request);
+            $this->processOrderItem($order, $request);
 
             DB::commit();
             return response()->json(['success' => 'Đặt hàng thành công! Vui lòng kiểm tra đơn mua của bạn']);
