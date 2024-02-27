@@ -42,7 +42,7 @@
                         $quantities = explode(',', $item->quantities);
                     @endphp
                     @foreach ($sizes as $key => $size)
-                        <div class="btn btn-primary mb-2">{{ $size }} - {{ $quantities[$key] }} </div>
+                        <div class="btn btn-dark mb-2">{{ $size }} - {{ $quantities[$key] }} </div>
                     @endforeach
                 </td>
                 <td><label class="toggle">
